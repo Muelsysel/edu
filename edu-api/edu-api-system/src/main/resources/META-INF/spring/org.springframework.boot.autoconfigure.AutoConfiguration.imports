@@ -1,0 +1,3 @@
+com.edu.system.api.factory.RemoteUserFallbackFactory
+com.edu.system.api.factory.RemoteLogFallbackFactory
+com.edu.system.api.factory.RemoteFileFallbackFactory

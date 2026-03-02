@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.edu.system.mapper.EduAchievementMapper">
+    
+    <resultMap type="EduAchievement" id="EduAchievementResult">
+        <result property="achievementId"    column="achievement_id"    />
+        <result property="title"    column="title"    />
+        <result property="type"    column="type"    />
+        <result property="level"    column="level"    />
+        <result property="gainDate"    column="gain_date"    />
+        <result property="teacherId"    column="teacher_id"    />
+        <result property="teacherName"    column="teacher_name"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="status"    column="status"    />
+        <result property="fileUrl"    column="file_url"    />
+        <result property="remark"    column="remark"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectEduAchievementVo">
+        select achievement_id, title, type, level, gain_date, teacher_id, teacher_name, dept_id, status, file_url, remark, create_by, create_time, update_by, update_time from edu_achievement
+    </sql>
+
+    <select id="selectEduAchievementList" parameterType="EduAchievement" resultMap="EduAchievementResult">
+        <include refid="selectEduAchievementVo"/>
+        <where>  
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="level != null  and level != ''"> and level = #{level}</if>
+            <if test="gainDate != null "> and gain_date = #{gainDate}</if>
+            <if test="teacherId != null "> and teacher_id = #{teacherId}</if>
+            <if test="teacherName != null  and teacherName != ''"> and teacher_name like concat('%', #{teacherName}, '%')</if>
+            <if test="deptId != null "> and dept_id = #{deptId}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="fileUrl != null  and fileUrl != ''"> and file_url = #{fileUrl}</if>
+        </where>
+    </select>
+    
+    <select id="selectEduAchievementByAchievementId" parameterType="Long" resultMap="EduAchievementResult">
+        <include refid="selectEduAchievementVo"/>
+        where achievement_id = #{achievementId}
+    </select>
+
+    <insert id="insertEduAchievement" parameterType="EduAchievement" useGeneratedKeys="true" keyProperty="achievementId">
+        insert into edu_achievement
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="title != null and title != ''">title,</if>
+            <if test="type != null">type,</if>
+            <if test="level != null">level,</if>
+            <if test="gainDate != null">gain_date,</if>
+            <if test="teacherId != null">teacher_id,</if>
+            <if test="teacherName != null">teacher_name,</if>
+            <if test="deptId != null">dept_id,</if>
+            <if test="status != null">status,</if>
+            <if test="fileUrl != null">file_url,</if>
+            <if test="remark != null">remark,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="title != null and title != ''">#{title},</if>
+            <if test="type != null">#{type},</if>
+            <if test="level != null">#{level},</if>
+            <if test="gainDate != null">#{gainDate},</if>
+            <if test="teacherId != null">#{teacherId},</if>
+            <if test="teacherName != null">#{teacherName},</if>
+            <if test="deptId != null">#{deptId},</if>
+            <if test="status != null">#{status},</if>
+            <if test="fileUrl != null">#{fileUrl},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateEduAchievement" parameterType="EduAchievement">
+        update edu_achievement
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="title != null and title != ''">title = #{title},</if>
+            <if test="type != null">type = #{type},</if>
+            <if test="level != null">level = #{level},</if>
+            <if test="gainDate != null">gain_date = #{gainDate},</if>
+            <if test="teacherId != null">teacher_id = #{teacherId},</if>
+            <if test="teacherName != null">teacher_name = #{teacherName},</if>
+            <if test="deptId != null">dept_id = #{deptId},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="fileUrl != null">file_url = #{fileUrl},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where achievement_id = #{achievementId}
+    </update>
+
+    <delete id="deleteEduAchievementByAchievementId" parameterType="Long">
+        delete from edu_achievement where achievement_id = #{achievementId}
+    </delete>
+
+    <delete id="deleteEduAchievementByAchievementIds" parameterType="String">
+        delete from edu_achievement where achievement_id in 
+        <foreach item="achievementId" collection="array" open="(" separator="," close=")">
+            #{achievementId}
+        </foreach>
+    </delete>
+</mapper>
