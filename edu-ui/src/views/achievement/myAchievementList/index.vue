@@ -20,6 +20,14 @@
       <el-col :span="6">
         <el-card shadow="hover" class="stat-card">
           <div class="stat-content">
+            <div class="stat-label">待审核</div>
+            <div class="stat-value text-warning">{{ auditCount }}</div>
+          </div>
+        </el-card>
+      </el-col>
+      <el-col :span="6">
+        <el-card shadow="hover" class="stat-card">
+          <div class="stat-content">
             <div class="stat-label">被驳回</div>
             <div class="stat-value text-danger">{{ rejectCount }}</div>
           </div>
@@ -69,11 +77,13 @@
 
             <el-button
               v-if="scope.row.status !== '3'"
-              size="mini"
-              type="text"
-              icon="el-icon-edit"
-              @click="handleUpdate(scope.row)"
+              size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
             >修改</el-button>
+
+            <el-button
+              v-if="scope.row.status === '0' || scope.row.status === '4' || scope.row.status === '1'"
+              size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)"
+            >删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -110,7 +120,7 @@
 </template>
 
 <script>
-import { myListAchievement } from "@/api/achievement/achievement";
+import { myListAchievement, delAchievement } from "@/api/achievement/achievement";
 
 export default {
   name: "MyAchievementList",
@@ -122,6 +132,7 @@ export default {
       showSearch: true,
       total: 0,
       passCount: 0,
+      auditCount: 0,
       rejectCount: 0,
       achievementList: [],
       open: false,
@@ -146,16 +157,38 @@ export default {
         this.achievementList = response.rows;
         this.total = response.total;
         this.loading = false;
-        // 简单模拟统计（真实应调用后端统计接口）
+        // 每次请求列表后，更新统计
         this.updateStats();
       });
+    },
+    /** 统计各状态数量（当前页全量数据统计） */
+    updateStats() {
+      // 在正式生产环境，建议后端接口直接返回这些统计数字
+      // 这里作为毕设前端演示逻辑，对当前展示的数据进行归类
+      let pass = 0;
+      let audit = 0;
+      let reject = 0;
+
+      this.achievementList.forEach(item => {
+        if (item.status === '3') {
+          pass++;
+        } else if (item.status === '1' || item.status === '2') {
+          audit++;
+        } else if (item.status === '4') {
+          reject++;
+        }
+      });
+
+      this.passCount = pass;
+      this.auditCount = audit;
+      this.rejectCount = reject;
     },
     /** 状态标签格式化 */
     statusFormat(status) {
       const statusMap = {
         '0': { label: '草稿', type: 'info' },
-        '1': { label: '院级审核中', type: 'warning' },
-        '2': { label: '校级审核中', type: 'warning' },
+        '1': { label: '待审核', type: 'warning' },
+        '2': { label: '审核中', type: 'warning' },
         '3': { label: '已通过', type: 'success' },
         '4': { label: '已驳回', type: 'danger' }
       };
@@ -184,13 +217,19 @@ export default {
     /** 修改按钮跳转 */
     handleUpdate(row) {
       this.$router.push({
-        path: '/myAchievement', // 或者是你菜单管理里填的那个“路由地址”
+        path: '/myAchievement',
         query: { id: row.achievementId }
       });
     },
-    /** 后续可补充真实的统计请求 */
-    updateStats() {
-      // 后期可以在后端写专门的 SQL 统计各状态数量
+    /** 删除按钮操作 */
+    handleDelete(row) {
+      const achievementId = row.achievementId;
+      this.$modal.confirm('是否确认删除标题为 "' + row.title + '" 的成果记录？').then(function () {
+        return delAchievement(achievementId);
+      }).then(() => {
+        this.getList();
+        this.$modal.msgSuccess("删除成功");
+      }).catch(() => {});
     }
   }
 };
@@ -198,11 +237,12 @@ export default {
 
 <style scoped>
 .mb20 { margin-bottom: 20px; }
-.stat-card { text-align: center; }
+.stat-card { text-align: center; border-radius: 8px; }
 .stat-label { font-size: 14px; color: #909399; }
-.stat-value { font-size: 24px; font-weight: bold; margin-top: 10px; }
+.stat-value { font-size: 26px; font-weight: bold; margin-top: 10px; }
 .text-primary { color: #409EFF; }
 .text-success { color: #67C23A; }
+.text-warning { color: #E6A23C; }
 .text-danger { color: #F56C6C; }
-.editor-view { padding: 10px; border: 1px solid #f2f2f2; border-radius: 4px; max-height: 300px; overflow-y: auto; }
+.editor-view { padding: 12px; border: 1px solid #EBEEF5; border-radius: 4px; max-height: 400px; overflow-y: auto; background-color: #fafafa; }
 </style>

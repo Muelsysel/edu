@@ -44,6 +44,8 @@ export function delAchievement(achievementId) {
 }
 
 
+
+
 // 教师端专用的新增接口
 export function myAddAchievement(data) {
   return request({
@@ -62,7 +64,7 @@ export function myAchievementList(query) {
   })
 }
 
-// 1. 教师查询自己的成果列表
+//教师查询自己的成果列表
 export function myListAchievement(query) {
   return request({
     url: '/achievement/achievement/myList',

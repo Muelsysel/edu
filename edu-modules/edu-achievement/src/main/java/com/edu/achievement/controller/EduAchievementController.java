@@ -118,13 +118,25 @@ public class EduAchievementController extends BaseController
     }
 
     /**
-     * 删除教学成果管理
+     * 删除教学成果
      */
-    @RequiresPermissions("achievement:achievement:remove")
-    @Log(title = "教学成果管理", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{achievementIds}")
+    @PreAuthorize("@ss.hasPermi('achievement:achievement:remove')")
+    @DeleteMapping("/{achievementIds}")
     public AjaxResult remove(@PathVariable Long[] achievementIds)
     {
+        for (Long id : achievementIds) {
+            EduAchievement ach = eduAchievementService.selectEduAchievementByAchievementId(id);
+            // 权限校验：非管理员只能删除自己的
+            if (!SecurityUtils.isAdmin(SecurityUtils.getUserId())) {
+                if (!ach.getTeacherId().equals(SecurityUtils.getUserId())) {
+                    return AjaxResult.error("你无权删除他人的成果");
+                }
+                // 状态校验：只有草稿(0)和驳回(4)能删
+                if (!"0".equals(ach.getStatus()) && !"4".equals(ach.getStatus())) {
+                    return AjaxResult.error("该成果处于审核中或已通过，无法删除");
+                }
+            }
+        }
         return toAjax(eduAchievementService.deleteEduAchievementByAchievementIds(achievementIds));
     }
     /**
@@ -161,6 +173,5 @@ public class EduAchievementController extends BaseController
         List<EduAchievement> list = eduAchievementService.selectEduAchievementList(eduAchievement);
         return getDataTable(list);
     }
-
 
 }
