@@ -52,7 +52,17 @@ export function myAddAchievement(data) {
     data: data
   })
 }
-//myList
+
+//myAchievementList
+export function myAchievementList(query) {
+  return request({
+    url: '/achievement/achievement/myAchievementList',
+    method: 'get',
+    params: query
+  })
+}
+
+// 1. 教师查询自己的成果列表
 export function myListAchievement(query) {
   return request({
     url: '/achievement/achievement/myList',
@@ -60,3 +70,6 @@ export function myListAchievement(query) {
     params: query
   })
 }
+
+
+

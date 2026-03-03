@@ -1,0 +1,208 @@
+<template>
+  <div class="app-container">
+    <el-row :gutter="20" class="mb20">
+      <el-col :span="6">
+        <el-card shadow="hover" class="stat-card">
+          <div class="stat-content">
+            <div class="stat-label">全部记录</div>
+            <div class="stat-value text-primary">{{ total }}</div>
+          </div>
+        </el-card>
+      </el-col>
+      <el-col :span="6">
+        <el-card shadow="hover" class="stat-card">
+          <div class="stat-content">
+            <div class="stat-label">已通过</div>
+            <div class="stat-value text-success">{{ passCount }}</div>
+          </div>
+        </el-card>
+      </el-col>
+      <el-col :span="6">
+        <el-card shadow="hover" class="stat-card">
+          <div class="stat-content">
+            <div class="stat-label">被驳回</div>
+            <div class="stat-value text-danger">{{ rejectCount }}</div>
+          </div>
+        </el-card>
+      </el-col>
+    </el-row>
+
+    <el-tabs v-model="activeTab" type="border-card" @tab-click="handleTabClick">
+      <el-tab-pane label="全部" name="all"></el-tab-pane>
+      <el-tab-pane label="待审核" name="1"></el-tab-pane>
+      <el-tab-pane label="已通过" name="3"></el-tab-pane>
+      <el-tab-pane label="已驳回" name="4"></el-tab-pane>
+
+      <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch">
+        <el-form-item label="成果标题" prop="title">
+          <el-input v-model="queryParams.title" placeholder="请输入成果标题" clearable @keyup.enter.native="handleQuery"/>
+        </el-form-item>
+        <el-form-item label="成果类型" prop="category">
+          <el-select v-model="queryParams.category" placeholder="请选择" clearable>
+            <el-option v-for="dict in dict.type.edu_achievement_category" :key="dict.value" :label="dict.label" :value="dict.value" />
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" icon="el-icon-search" @click="handleQuery">搜索</el-button>
+          <el-button icon="el-icon-refresh" @click="resetQuery">重置</el-button>
+        </el-form-item>
+      </el-form>
+
+      <el-table v-loading="loading" :data="achievementList">
+        <el-table-column label="成果标题" align="center" prop="title" :show-overflow-tooltip="true" />
+        <el-table-column label="成果类型" align="center" prop="category">
+          <template slot-scope="scope">
+            <dict-tag :options="dict.type.edu_achievement_category" :value="scope.row.category"/>
+          </template>
+        </el-table-column>
+        <el-table-column label="状态" align="center" prop="status">
+          <template slot-scope="scope">
+            <el-tag :type="statusFormat(scope.row.status).type">
+              {{ statusFormat(scope.row.status).label }}
+            </el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column label="提交时间" align="center" prop="createTime" width="180" />
+        <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+          <template slot-scope="scope">
+            <el-button size="mini" type="text" icon="el-icon-view" @click="handleView(scope.row)">详情</el-button>
+
+            <el-button
+              v-if="scope.row.status !== '3'"
+              size="mini"
+              type="text"
+              icon="el-icon-edit"
+              @click="handleUpdate(scope.row)"
+            >修改</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+
+      <pagination
+        v-show="total>0"
+        :total="total"
+        :page.sync="queryParams.pageNum"
+        :limit.sync="queryParams.pageSize"
+        @pagination="getList"
+      />
+    </el-tabs>
+
+    <el-dialog title="成果详情预览" :visible.sync="open" width="700px" append-to-body>
+      <el-descriptions :column="1" border>
+        <el-descriptions-item label="成果标题">{{ form.title }}</el-descriptions-item>
+        <el-descriptions-item label="成果类型">
+          <dict-tag :options="dict.type.edu_achievement_category" :value="form.category"/>
+        </el-descriptions-item>
+        <el-descriptions-item label="证明材料">
+          <div v-for="(url, index) in (form.fileUrl || '').split(',')" :key="index">
+            <el-link :href="url" target="_blank" type="primary" v-if="url">附件 {{index+1}}</el-link>
+          </div>
+        </el-descriptions-item>
+        <el-descriptions-item label="成果描述">
+          <div v-html="form.content" class="editor-view"></div>
+        </el-descriptions-item>
+      </el-descriptions>
+      <div slot="footer">
+        <el-button @click="open = false">关 闭</el-button>
+      </div>
+    </el-dialog>
+  </div>
+</template>
+
+<script>
+import { myListAchievement } from "@/api/achievement/achievement";
+
+export default {
+  name: "MyAchievementList",
+  dicts: ['edu_achievement_category'],
+  data() {
+    return {
+      activeTab: 'all',
+      loading: true,
+      showSearch: true,
+      total: 0,
+      passCount: 0,
+      rejectCount: 0,
+      achievementList: [],
+      open: false,
+      form: {},
+      queryParams: {
+        pageNum: 1,
+        pageSize: 10,
+        title: undefined,
+        category: undefined,
+        status: undefined
+      }
+    };
+  },
+  created() {
+    this.getList();
+  },
+  methods: {
+    /** 查询列表 */
+    getList() {
+      this.loading = true;
+      myListAchievement(this.queryParams).then(response => {
+        this.achievementList = response.rows;
+        this.total = response.total;
+        this.loading = false;
+        // 简单模拟统计（真实应调用后端统计接口）
+        this.updateStats();
+      });
+    },
+    /** 状态标签格式化 */
+    statusFormat(status) {
+      const statusMap = {
+        '0': { label: '草稿', type: 'info' },
+        '1': { label: '院级审核中', type: 'warning' },
+        '2': { label: '校级审核中', type: 'warning' },
+        '3': { label: '已通过', type: 'success' },
+        '4': { label: '已驳回', type: 'danger' }
+      };
+      return statusMap[status] || { label: '未知', type: '' };
+    },
+    /** Tab点击处理 */
+    handleTabClick(tab) {
+      this.queryParams.status = tab.name === 'all' ? undefined : tab.name;
+      this.handleQuery();
+    },
+    /** 搜索按钮操作 */
+    handleQuery() {
+      this.queryParams.pageNum = 1;
+      this.getList();
+    },
+    /** 重置按钮操作 */
+    resetQuery() {
+      this.resetForm("queryForm");
+      this.handleQuery();
+    },
+    /** 查看详情 */
+    handleView(row) {
+      this.form = row;
+      this.open = true;
+    },
+    /** 修改按钮跳转 */
+    handleUpdate(row) {
+      this.$router.push({
+        path: '/myAchievement', // 或者是你菜单管理里填的那个“路由地址”
+        query: { id: row.achievementId }
+      });
+    },
+    /** 后续可补充真实的统计请求 */
+    updateStats() {
+      // 后期可以在后端写专门的 SQL 统计各状态数量
+    }
+  }
+};
+</script>
+
+<style scoped>
+.mb20 { margin-bottom: 20px; }
+.stat-card { text-align: center; }
+.stat-label { font-size: 14px; color: #909399; }
+.stat-value { font-size: 24px; font-weight: bold; margin-top: 10px; }
+.text-primary { color: #409EFF; }
+.text-success { color: #67C23A; }
+.text-danger { color: #F56C6C; }
+.editor-view { padding: 10px; border: 1px solid #f2f2f2; border-radius: 4px; max-height: 300px; overflow-y: auto; }
+</style>
