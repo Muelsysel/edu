@@ -13,6 +13,7 @@
         <module>edu-gen</module>
         <module>edu-job</module>
         <module>edu-file</module>
+        <module>edu-achievement</module>
     </modules>
 
     <artifactId>edu-modules</artifactId>
