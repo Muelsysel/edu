@@ -187,8 +187,8 @@ export default {
     statusFormat(status) {
       const statusMap = {
         '0': { label: '草稿', type: 'info' },
-        '1': { label: '待审核', type: 'warning' },
-        '2': { label: '审核中', type: 'warning' },
+        '1': { label: '待院审', type: 'warning' },
+        '2': { label: '待校审', type: 'warning' },
         '3': { label: '已通过', type: 'success' },
         '4': { label: '已驳回', type: 'danger' }
       };

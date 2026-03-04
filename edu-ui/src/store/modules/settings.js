@@ -6,17 +6,17 @@ const { sideTheme, showSettings, navType, tagsView, tagsIcon, fixedHeader, sideb
 const storageSetting = JSON.parse(localStorage.getItem('layout-setting')) || ''
 const state = {
   title: '',
-  theme: storageSetting.theme || '#409EFF',
-  sideTheme: storageSetting.sideTheme || sideTheme,
-  showSettings: showSettings,
-  navType: storageSetting.navType === undefined ? navType : storageSetting.navType,
-  tagsView: storageSetting.tagsView === undefined ? tagsView : storageSetting.tagsView,
-  tagsIcon: storageSetting.tagsIcon === undefined ? tagsIcon : storageSetting.tagsIcon,
-  fixedHeader: storageSetting.fixedHeader === undefined ? fixedHeader : storageSetting.fixedHeader,
-  sidebarLogo: storageSetting.sidebarLogo === undefined ? sidebarLogo : storageSetting.sidebarLogo,
-  dynamicTitle: storageSetting.dynamicTitle === undefined ? dynamicTitle : storageSetting.dynamicTitle,
-  footerVisible: storageSetting.footerVisible === undefined ? footerVisible : storageSetting.footerVisible,
-  footerContent: footerContent
+  theme: '#009688',
+  sideTheme: 'theme-light',
+  showSettings: false,
+  navType: 3,
+  tagsView: true,
+  tagsIcon: true,
+  fixedHeader: true,
+  sidebarLogo: true,
+  dynamicTitle: true,
+  footerVisible: true,
+  footerContent: '基于 Spring Cloud 的高校教学成果管理系统'
 }
 const mutations = {
   CHANGE_SETTING: (state, { key, value }) => {

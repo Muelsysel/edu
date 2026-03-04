@@ -154,7 +154,7 @@ export default {
       return map[status] || 'info';
     },
     statusLabelFormat(status) {
-      const map = { '0': '草稿', '1': '待院审', '2': '校审中', '3': '已通过', '4': '已驳回' };
+      const map = { '0': '草稿', '1': '待院审', '2': '待校审', '3': '已通过', '4': '已驳回' };
       return map[status] || '未知';
     },
     getList() {
