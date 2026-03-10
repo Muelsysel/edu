@@ -72,7 +72,7 @@
 
 <script>
 // 导入增加获取详情和更新的接口
-import { myAddAchievement, getAchievement, updateAchievement } from "@/api/achievement/achievement";
+import { teacherAddAchievement , teacherListAchievement,teacherUpdateAchievement ,} from "@/api/achievement/achievement";
 import { listDept } from "@/api/system/dept";
 
 export default {
@@ -103,7 +103,7 @@ export default {
   computed: {
     // 判断当前用户是否为管理员
     isAdmin() {
-      // RuoYi 获取用户角色的标准方式
+      // 获取用户角色的标准方式
       const roles = this.$store.getters && this.$store.getters.roles;
       return roles.includes('admin');
     }
@@ -120,7 +120,7 @@ export default {
     /** 获取成果详情回显 */
     handleGetDetail(id) {
       this.loading = true;
-      getAchievement(id).then(response => {
+      teacherListAchievement(id).then(response => {
         this.form = response.data;
         this.loading = false;
       });
@@ -138,13 +138,13 @@ export default {
           this.loading = true;
           // 根据是否有 ID 判断是新增还是修改
           if (this.form.achievementId) {
-            updateAchievement(this.form).then(response => {
+            teacherUpdateAchievement(this.form).then(response => {
               this.$modal.msgSuccess("管理修改成功");
               this.loading = false;
               this.$router.back(); // 修改完返回
             });
           } else {
-            myAddAchievement(this.form).then(response => {
+            teacherAddAchievement(this.form).then(response => {
               this.$modal.msgSuccess("申报成功");
               this.loading = false;
               this.reset();

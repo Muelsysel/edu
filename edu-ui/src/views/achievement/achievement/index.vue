@@ -4,14 +4,26 @@
       <el-form-item label="成果标题" prop="title">
         <el-input v-model="queryParams.title" placeholder="请输入成果标题" clearable @keyup.enter.native="handleQuery" />
       </el-form-item>
+
+      <el-form-item label="归属学院" prop="collegeId">
+        <el-select v-model="queryParams.collegeId" placeholder="请选择学院" clearable>
+          <el-option v-for="item in collegeOptions" :key="item.deptId" :label="item.deptName" :value="item.deptId" />
+        </el-select>
+      </el-form-item>
+
+      <el-form-item label="教师ID" prop="teacherName">
+        <el-input v-model="queryParams.teacherId" placeholder="请输入教师ID" clearable @keyup.enter.native="handleQuery" />
+      </el-form-item>
+
       <el-form-item label="审核状态" prop="status">
         <el-select v-model="queryParams.status" placeholder="状态选择" clearable>
-          <el-option label="待审核" value="1" />
-          <el-option label="审核中" value="2" />
+          <el-option label="待院审" value="1" />
+          <el-option label="待校审" value="2" />
           <el-option label="已通过" value="3" />
           <el-option label="已驳回" value="4" />
         </el-select>
       </el-form-item>
+
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -33,13 +45,17 @@
       <el-table-column label="序号" type="index" width="60" align="center" />
       <el-table-column label="成果标题" align="left" prop="title" :show-overflow-tooltip="true" min-width="200" />
 
+      <el-table-column label="归属学院" align="center" prop="collegeId" :formatter="collegeFormat" width="150" />
+
+      <el-table-column label="教师ID" align="center" prop="teacherId" width="120" />
+
       <el-table-column label="成果类型" align="center" prop="category" width="120">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.edu_achievement_category" :value="scope.row.category" />
         </template>
       </el-table-column>
 
-      <el-table-column label="当前进程" align="center" width="150">
+      <el-table-column label="当前进程" align="center" width="120">
         <template slot-scope="scope">
           <el-tag :type="statusTypeFormat(scope.row.status)">
             {{ statusLabelFormat(scope.row.status) }}
@@ -47,7 +63,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="提交时间" align="center" prop="createTime" width="160">
+      <el-table-column label="提交时间" align="center" prop="createTime" width="120">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
         </template>
@@ -92,6 +108,20 @@
             </el-form-item>
           </el-col>
 
+          <el-col :span="12">
+            <el-form-item label="归属学院" prop="collegeId">
+              <el-select
+                v-model="form.collegeId"
+                placeholder="请选择学院"
+                style="width: 100%"
+                clearable
+                :disabled="form.status === '3'"
+              >
+                <el-option v-for="item in collegeOptions" :key="item.deptId" :label="item.deptName" :value="item.deptId" />
+              </el-select>
+            </el-form-item>
+          </el-col>
+
           <el-col :span="24">
             <el-form-item label="证明材料">
               <file-upload v-model="form.fileUrl" />
@@ -115,6 +145,9 @@
 
 <script>
 import { listAchievement, getAchievement, delAchievement, addAchievement, updateAchievement } from "@/api/achievement/achievement"
+import { listDept } from "@/api/system/dept";
+import {parseTime} from "../../../utils/ruoyi";
+import dict from "@/utils/dict";
 
 export default {
   name: "Achievement",
@@ -128,6 +161,7 @@ export default {
       showSearch: true,
       total: 0,
       achievementList: [],
+      collegeOptions: [],
       title: "",
       open: false,
       queryParams: {
@@ -135,7 +169,9 @@ export default {
         pageSize: 10,
         title: null,
         status: null,
-        category: null
+        category: null,
+        teacherId: null, // 查询参数：教师名字
+        collegeId: null    // 查询参数：学院ID
       },
       form: {},
       rules: {
@@ -146,9 +182,19 @@ export default {
     }
   },
   created() {
-    this.getList()
+    this.getCollegeList(); // 先加载学院列表，保证 formatter 能匹配到名称
+    this.getList();
   },
   methods: {
+    dict,
+    parseTime,
+    // 学院名称格式化
+    collegeFormat(row, column) {
+      if (!row.collegeId) return '-';
+      const college = this.collegeOptions.find(item => item.deptId === row.collegeId);
+      // 如果后端直接返回了 collegeName 可以写成 row.collegeName || (college ? college.deptName : row.collegeId)
+      return college ? college.deptName : row.collegeId;
+    },
     statusTypeFormat(status) {
       const map = { '0': 'info', '1': 'warning', '2': 'warning', '3': 'success', '4': 'danger' };
       return map[status] || 'info';
@@ -176,6 +222,8 @@ export default {
         content: null,
         fileUrl: null,
         category: null,
+        collegeId: null,
+        teacherId: null,
         status: "0"
       };
       this.resetForm("form");
@@ -205,6 +253,12 @@ export default {
         this.form = response.data;
         this.open = true;
         this.title = "编辑/审核教学成果";
+      });
+    },
+    /** 查询学院列表 */
+    getCollegeList() {
+      listDept().then(response => {
+        this.collegeOptions = response.data;
       });
     },
     submitForm() {

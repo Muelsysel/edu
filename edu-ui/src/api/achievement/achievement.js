@@ -1,5 +1,8 @@
 import request from '@/utils/request'
 
+
+
+
 // 查询教学成果管理列表
 export function listAchievement(query) {
   return request({
@@ -35,6 +38,7 @@ export function updateAchievement(data) {
   })
 }
 
+
 // 删除教学成果管理
 export function delAchievement(achievementId) {
   return request({
@@ -46,32 +50,61 @@ export function delAchievement(achievementId) {
 
 
 
-// 教师端专用的新增接口
-export function myAddAchievement(data) {
+
+// 教师专用
+
+//教师新增成果
+export function teacherAddAchievement(data) {
   return request({
-    url: '/achievement/achievement/myAdd',
+    url: '/achievement/achievement/teacherAddAchievement',
     method: 'post',
     data: data
   })
 }
 
-//myAchievementList
-export function myAchievementList(query) {
+
+//教师删除成果
+export function teacherDelAchievement(achievementId) {
   return request({
-    url: '/achievement/achievement/myAchievementList',
+    url: '/achievement/achievement/teacherDelAchievement/' + achievementId,
+    method: 'delete'
+  })
+}
+
+//教师修改成果
+export function teacherUpdateAchievement(data) {
+  return request({
+    url: '/achievement/achievement/teacherUpdateAchievement',
+    method: 'put',
+    data: data
+  })
+}
+
+
+
+//教师查询成果列表
+export function teacherListAchievement(query) {
+  return request({
+    url: '/achievement/achievement/teacherListAchievement',
     method: 'get',
     params: query
   })
 }
 
-//教师查询自己的成果列表
-export function myListAchievement(query) {
+ //教师查询成果详细
+export function teacherGetAchievement(achievementId) {
   return request({
-    url: '/achievement/achievement/myList',
-    method: 'get',
-    params: query
+    url: '/achievement/achievement/teacherGetAchievement/' + achievementId,
+    method: 'get'
   })
 }
+export function teacherListAllAchievement(query) {
+  return request({
+    url: '/achievement/achievement/teacherListAllAchievement',
+  })
+}
+
+
 
 
 

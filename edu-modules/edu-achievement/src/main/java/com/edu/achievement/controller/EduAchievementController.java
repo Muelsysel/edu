@@ -4,6 +4,8 @@ import java.util.List;
 import java.io.IOException;
 import javax.servlet.http.HttpServletResponse;
 
+import com.edu.common.core.web.page.PageDomain;
+import com.edu.common.core.web.page.TableSupport;
 import com.edu.common.security.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -81,6 +83,8 @@ public class EduAchievementController extends BaseController
     @PostMapping
     public AjaxResult add(@RequestBody EduAchievement eduAchievement)
     {
+        eduAchievement.setTeacherId(SecurityUtils.getUserId());
+        eduAchievement.setCreateBy(SecurityUtils.getUsername());
         return toAjax(eduAchievementService.insertEduAchievement(eduAchievement));
     }
 
@@ -122,56 +126,114 @@ public class EduAchievementController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('achievement:achievement:remove')")
     @DeleteMapping("/{achievementIds}")
-    public AjaxResult remove(@PathVariable Long[] achievementIds)
-    {
-        for (Long id : achievementIds) {
-            EduAchievement ach = eduAchievementService.selectEduAchievementByAchievementId(id);
-            // 权限校验：非管理员只能删除自己的
-            if (!SecurityUtils.isAdmin(SecurityUtils.getUserId())) {
-                if (!ach.getTeacherId().equals(SecurityUtils.getUserId())) {
-                    return AjaxResult.error("你无权删除他人的成果");
-                }
-                // 状态校验：只有草稿(0)和驳回(4)能删
-                if (!"0".equals(ach.getStatus()) && !"4".equals(ach.getStatus())) {
-                    return AjaxResult.error("该成果处于审核中或已通过，无法删除");
-                }
-            }
-        }
+    public AjaxResult remove(@PathVariable Long[] achievementIds){
         return toAjax(eduAchievementService.deleteEduAchievementByAchievementIds(achievementIds));
     }
+
+
+
+
+    // 教师功能
+
     /**
-     * 教师端：提交教学成果申报
+     * 教师查询成果列表
      */
-    @PreAuthorize("@ss.hasPermi('achievement:achievement:add')")
-    @PostMapping("/myAdd")
-    public AjaxResult myAdd(@RequestBody EduAchievement eduAchievement)
-    {
-        // 1. 自动获取当前登录用户的 ID (核心安全保障)
-        Long userId = SecurityUtils.getUserId();
-        eduAchievement.setTeacherId(userId); // 对应你数据库的 teacher_id
-
-        // 1 为“待审核”，0 为“草稿”。
-        eduAchievement.setStatus("1");
-
-        // 4. 设置基础审计字段
-        eduAchievement.setCreateBy(SecurityUtils.getUsername());
-
-        return toAjax(eduAchievementService.insertEduAchievement(eduAchievement));
-    }
-    /**
-     * 查询个人成果列表（教师端）
-     */
-    @PreAuthorize("@ss.hasPermi('achievement:achievement:myList')")
-    @GetMapping("/myList")
-    public TableDataInfo myList(EduAchievement eduAchievement)
-    {
+    @PreAuthorize("@ss.hasPermi('achievement:achievement:teacherQuery')")
+    @GetMapping("/teacherListAchievement")
+    public TableDataInfo teacherList(EduAchievement eduAchievement) {
         startPage();
-        // 关键：强制设置教师ID为当前登录用户ID，实现数据隔离
+        // 【核心】：强制将当前登录用户的ID注入查询条件，确保教师只能查出自己的数据
         eduAchievement.setTeacherId(SecurityUtils.getUserId());
-
-        // 调用 service 查询
         List<EduAchievement> list = eduAchievementService.selectEduAchievementList(eduAchievement);
         return getDataTable(list);
     }
+
+    /**
+     * 教师新增成果
+     */
+
+    @PreAuthorize("@ss.hasPermi('achievement:achievement:teacherAdd')")
+    @Log(title = "我的成果-新增", businessType = BusinessType.INSERT)
+    @PostMapping("/teacherAddAchievement")
+    public AjaxResult teacherAdd(@RequestBody EduAchievement eduAchievement) {
+        // 强制绑定当前登录用户的ID，作为该成果的所有者
+        eduAchievement.setTeacherId(SecurityUtils.getUserId());
+        return toAjax(eduAchievementService.insertEduAchievement(eduAchievement));
+    }
+
+    /**
+     * 教师修改成果
+     */
+    @PreAuthorize("@ss.hasPermi('achievement:achievement:teacherEdit')")
+    @Log(title = "我的成果-修改", businessType = BusinessType.UPDATE)
+    @PutMapping("/teacherUpdateAchievement")
+    public AjaxResult teacherEdit(@RequestBody EduAchievement eduAchievement) {
+        // 1. 先从数据库查出旧数据
+        EduAchievement oldData = eduAchievementService.selectEduAchievementByAchievementId(eduAchievement.getAchievementId());
+
+        // 2. 强制将当前登录用户的ID注入查询条件，确保教师只能修改自己的数据
+        eduAchievement.setTeacherId(SecurityUtils.getUserId());
+
+        // 3. 状态检查：已通过(3)禁止修改
+        return toAjax(eduAchievementService.updateEduAchievement(eduAchievement));
+    }
+
+    /**
+     * 教师删除成果
+     */
+    @PreAuthorize("@ss.hasPermi('achievement:achievement:teacherRemove')")
+    @DeleteMapping("/teacherDelAchievement/{achievementIds}")
+    public AjaxResult teacherRemove(@PathVariable Long[] achievementIds) {
+        return toAjax(eduAchievementService.deleteEduAchievementByAchievementIds(achievementIds));
+    }
+
+    // 教师获取单个成果信息、
+    @PreAuthorize("@ss.hasPermi('achievement:achievement:teacherGet')")
+    @GetMapping("/teacherGetAchievement/{achievementId}")
+    public AjaxResult teacherGet(@PathVariable Long achievementId) {
+        return success(eduAchievementService.selectEduAchievementByAchievementId(achievementId));
+    }
+
+    /**
+     * 教师端：获取该教师的所有成果并统计各状态数量
+     * 对应前端的 teacherListAllAchievement
+     */
+    @PreAuthorize("@ss.hasPermi('achievement:achievement:teacherQuery')")
+    @GetMapping("/teacherListAllAchievement")
+    public AjaxResult teacherAllList(EduAchievement eduAchievement)
+    {
+        // 1. 核心防越权：强制将查询条件设置为当前登录的账号ID
+        eduAchievement.setTeacherId(SecurityUtils.getUserId());
+
+        // 2. 不分页，查询该教师的全量数据
+        List<EduAchievement> list = eduAchievementService.selectEduAchievementList(eduAchievement);
+
+        // 3. 在内存中进行状态统计
+        long total = list.size();
+        long passCount = 0;
+        long auditCount = 0;
+        long rejectCount = 0;
+
+        for (EduAchievement item : list) {
+            String status = item.getStatus();
+            if ("3".equals(status)) {
+                passCount++; // 已通过
+            } else if ("1".equals(status) || "2".equals(status)) {
+                auditCount++; // 院级审核中(1) 或 校级审核中(2)，都算作审核中
+            } else if ("4".equals(status)) {
+                rejectCount++; // 已驳回
+            }
+        }
+
+        // 4. 使用 AjaxResult 封装自定义字段返回给前端
+        AjaxResult ajax = AjaxResult.success();
+        ajax.put("total", total);
+        ajax.put("pass", passCount);
+        ajax.put("audit", auditCount);
+        ajax.put("reject", rejectCount);
+
+        return ajax;
+    }
+
 
 }

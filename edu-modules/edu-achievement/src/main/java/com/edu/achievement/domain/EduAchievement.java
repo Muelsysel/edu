@@ -46,6 +46,19 @@ public class EduAchievement extends BaseEntity
     @Excel(name = "成果类型", readConverterExp = "1=论文,2=教材,3=竞赛,4=教改")
     private String category;
 
+    /**
+     * 非数据库字段，仅用于控制层向前端返回或接收搜索条件
+     */
+    private String teacherName;
+
+    public String getTeacherName() {
+        return teacherName;
+    }
+
+    public void setTeacherName(String teacherName) {
+        this.teacherName = teacherName;
+    }
+
     public void setCategory(String category) {
         this.category = category;
     }
