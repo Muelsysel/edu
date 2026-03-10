@@ -1,144 +1,128 @@
-<p align="center">
-	<img alt="logo" src="https://oscimg.oschina.net/oscnet/up-b99b286755aef70355a7084753f89cdb7c9.png">
-</p>
-<h1 align="center" style="margin: 30px 0 30px; font-weight: bold;">RuoYi v3.6.7</h1>
-<h4 align="center">基于 Vue/Element UI 和 Spring Boot/Spring Cloud & Alibaba 前后端分离的分布式微服务架构</h4>
-<p align="center">
-	<a href="https://gitee.com/y_project/RuoYi-Cloud/stargazers"><img src="https://gitee.com/y_project/RuoYi-Cloud/badge/star.svg?theme=dark"></a>
-	<a href="https://gitee.com/y_project/RuoYi-Cloud"><img src="https://img.shields.io/badge/RuoYi-v3.6.7-brightgreen.svg"></a>
-	<a href="https://gitee.com/y_project/RuoYi-Cloud/blob/master/LICENSE"><img src="https://img.shields.io/github/license/mashape/apistatus.svg"></a>
-</p>
+# 🎓 高校教学成果管理系统 (Educational Achievement Management System)
 
-## 平台简介
+基于 Spring Cloud Alibaba 微服务架构构建的高校教学成果全生命周期管理平台。
 
-一套全部开源的开发平台。
+本项目致力于解决高校内部教学成果（科研、教材、竞赛、教改等）申报流程繁琐、跨部门审核不透明、数据孤岛等痛点。通过分布式架构与无纸化审批流，实现教学成果的标准化采集、多级智能化审核、数字化存储与多维可视化分析。
 
-* 采用前后端分离的模式，微服务版本前端(基于 [RuoYi-Vue](https://gitee.com/y_project/RuoYi-Vue))。
-* 后端采用Spring Boot、Spring Cloud & Alibaba。
-* 注册中心、配置中心选型Nacos，权限认证使用Redis。
-* 流量控制框架选型Sentinel，分布式事务选型Seata。
+---
 
-## 系统模块
+## 🚀 核心技术栈
 
-~~~
-edu    
-├── edu-ui              // 前端框架 [80]
-├── edu-gateway         // 网关模块 [8080]
-├── edu-auth            // 认证中心 [9200]
-├── edu-api             // 接口模块
-│       └── edu-api-system                          // 系统接口
-├── edu-common          // 通用模块
-│       └── edu-common-core                         // 核心模块
-│       └── edu-common-datascope                    // 权限范围
-│       └── edu-common-datasource                   // 多数据源
-│       └── edu-common-log                          // 日志记录
-│       └── edu-common-redis                        // 缓存服务
-│       └── edu-common-seata                        // 分布式事务
-│       └── edu-common-security                     // 安全模块
-│       └── edu-common-sensitive                    // 数据脱敏
-│       └── edu-common-swagger                      // 系统接口
-├── edu-modules         // 业务模块
-│       └── edu-system                              // 系统模块 [9201]
-│       └── edu-gen                                 // 代码生成 [9202]
-│       └── edu-job                                 // 定时任务 [9203]
-│       └── edu-file                                // 文件服务 [9300]
-├── edu-visual          // 图形化管理模块
-│       └── edu-visual-monitor                      // 监控中心 [9100]
-├──pom.xml                // 公共依赖
-~~~
+本项目采用标准的前后端分离与微服务架构。
 
-## 架构图
+### 后端 (Backend)
+* **核心框架**: Spring Boot 2.7 + Spring Cloud 2021.0.9
+* **微服务生态**: Spring Cloud Alibaba 2021.0.6 (Nacos 注册/配置中心)
+* **API 网关**: Spring Cloud Gateway
+* **安全鉴权**: 基于 JWT 的分布式统一 OAuth2 认证 (自定义 `edu-auth`)
+* **持久层**: MyBatis + PageHelper
+* **分布式事务**: Seata (保障审批流转数据一致性)
+* **对象存储**: MinIO 分布式文件系统 (承载大容量成果证明材料)
 
-<img src="https://oscimg.oschina.net/oscnet/up-82e9722ecb846786405a904bafcf19f73f3.png"/>
+### 前端 (Frontend)
+* **核心框架**: Vue 2.6.12 + Vue Router + Vuex
+* **UI 组件库**: Element UI
+* **数据可视化**: ECharts (构建多维成果贡献度看板)
+* **构建工具**: Webpack / pnpm
 
-## 内置功能
+### 中间件 & 环境 (Infrastructure)
+* **数据库**: MySQL 8.0
+* **缓存**: Redis 3.2 (热点字典数据、Token 管理)
+* **运行环境**: JDK 1.8+, Node.js (v16+ recommended), Docker
 
-1.  用户管理：用户是系统操作者，该功能主要完成系统用户配置。
-2.  部门管理：配置系统组织机构（公司、部门、小组），树结构展现支持数据权限。
-3.  岗位管理：配置系统用户所属担任职务。
-4.  菜单管理：配置系统菜单，操作权限，按钮权限标识等。
-5.  角色管理：角色菜单权限分配、设置角色按机构进行数据范围权限划分。
-6.  字典管理：对系统中经常使用的一些较为固定的数据进行维护。
-7.  参数管理：对系统动态配置常用参数。
-8.  通知公告：系统通知公告信息发布维护。
-9.  操作日志：系统正常操作日志记录和查询；系统异常信息日志记录和查询。
-10. 登录日志：系统登录日志记录查询包含登录异常。
-11. 在线用户：当前系统中活跃用户状态监控。
-12. 定时任务：在线（添加、修改、删除)任务调度包含执行结果日志。
-13. 代码生成：前后端代码的生成（java、html、xml、sql）支持CRUD下载 。
-14. 系统接口：根据业务代码自动生成相关的api接口文档。
-15. 服务监控：监视当前系统CPU、内存、磁盘、堆栈等相关信息。
-16. 在线构建器：拖动表单元素生成相应的HTML代码。
-17. 连接池监视：监视当前系统数据库连接池状态，可进行分析SQL找出系统性能瓶颈。
+---
 
-1.  用户管理：用户是系统操作者，该功能主要完成系统用户配置。
-2.  部门管理：配置系统组织机构（公司、部门、小组），树结构展现支持数据权限。
-3.  岗位管理：配置系统用户所属担任职务。
-4.  菜单管理：配置系统菜单，操作权限，按钮权限标识等。
-5.  角色管理：角色菜单权限分配、设置角色按机构进行数据范围权限划分。
-6.  字典管理：对系统中经常使用的一些较为固定的数据进行维护。
-7.  参数管理：对系统动态配置常用参数。
-8.  通知公告：系统通知公告信息发布维护。
-9.  操作日志：系统正常操作日志记录和查询；系统异常信息日志记录和查询。
-10. 登录日志：系统登录日志记录查询包含登录异常。
-11. 在线用户：当前系统中活跃用户状态监控。
-12. 定时任务：在线（添加、修改、删除)任务调度包含执行结果日志。
-13. 代码生成：前后端代码的生成（java、html、xml、sql）支持CRUD下载 。
-14. 系统接口：根据业务代码自动生成相关的api接口文档。
-15. 服务监控：监视当前系统CPU、内存、磁盘、堆栈等相关信息。
-16. 在线构建器：拖动表单元素生成相应的HTML代码。
-17. 连接池监视：监视当前系统数据库连接池状态，可进行分析SQL找出系统性能瓶颈。
+## 🧩 系统架构与模块划分
 
-## 在线体验
+系统遵循高内聚低耦合的原则，核心目录结构如下：
 
-- admin/admin123  
-- 陆陆续续收到一些打赏，为了更好的体验已用于演示服务器升级。谢谢各位小伙伴。
+```text
+edu-achievement
+├── edu-ui              // 接入层：Vue 响应式前端门户
+├── edu-gateway         // 网关层：微服务动态路由、跨域与限流控制 [8080]
+├── edu-auth            // 认证层：统一登录中心与 Token 签发 [9200]
+├── edu-api             // 接口层：通用 Feign 接口与微服务间通信定义
+├── edu-common          // 公共支撑层
+│   ├── common-core       // 核心基础工具与实体
+│   ├── common-security   // 细粒度角色权限拦截 (RBAC)
+│   ├── common-sensitive  // 隐私数据脱敏组件 (AOP + 注解实现)
+│   ├── common-redis      // 分布式缓存组件
+│   └── common-seata      // 分布式事务组件
+├── edu-modules         // 核心业务层
+│   ├── edu-system        // 系统基础支撑模块 (部门/字典/权限配置)
+│   ├── edu-file          // 对象存储微服务 (MinIO 附件管理)
+│   └── edu-achievement   // 🎓 教学成果核心业务微服务 (申报与多级审核状态机)
+✨ 核心业务功能
+👨‍🏫 教师自助申报门户
 
-演示地址：http://ruoyi.vip  
-文档地址：http://doc.ruoyi.vip
+支持多类型成果在线申报与数据异步校验。
 
-## 演示图
+基于 MinIO 的证明材料切片上传与在线回显预览。
 
-<table>
-    <tr>
-        <td><img src="https://oscimg.oschina.net/oscnet/cd1f90be5f2684f4560c9519c0f2a232ee8.jpg"/></td>
-        <td><img src="https://oscimg.oschina.net/oscnet/1cbcf0e6f257c7d3a063c0e3f2ff989e4b3.jpg"/></td>
-    </tr>
-    <tr>
-        <td><img src="https://oscimg.oschina.net/oscnet/up-8074972883b5ba0622e13246738ebba237a.png"/></td>
-        <td><img src="https://oscimg.oschina.net/oscnet/up-9f88719cdfca9af2e58b352a20e23d43b12.png"/></td>
-    </tr>
-    <tr>
-        <td><img src="https://oscimg.oschina.net/oscnet/up-39bf2584ec3a529b0d5a3b70d15c9b37646.png"/></td>
-        <td><img src="https://oscimg.oschina.net/oscnet/up-4148b24f58660a9dc347761e4cf6162f28f.png"/></td>
-    </tr>
-	<tr>
-        <td><img src="https://oscimg.oschina.net/oscnet/up-b2d62ceb95d2dd9b3fbe157bb70d26001e9.png"/></td>
-        <td><img src="https://oscimg.oschina.net/oscnet/up-d67451d308b7a79ad6819723396f7c3d77a.png"/></td>
-    </tr>	 
-    <tr>
-        <td><img src="https://oscimg.oschina.net/oscnet/5e8c387724954459291aafd5eb52b456f53.jpg"/></td>
-        <td><img src="https://oscimg.oschina.net/oscnet/644e78da53c2e92a95dfda4f76e6d117c4b.jpg"/></td>
-    </tr>
-	<tr>
-        <td><img src="https://oscimg.oschina.net/oscnet/up-8370a0d02977eebf6dbf854c8450293c937.png"/></td>
-        <td><img src="https://oscimg.oschina.net/oscnet/up-49003ed83f60f633e7153609a53a2b644f7.png"/></td>
-    </tr>
-	<tr>
-        <td><img src="https://oscimg.oschina.net/oscnet/up-d4fe726319ece268d4746602c39cffc0621.png"/></td>
-        <td><img src="https://oscimg.oschina.net/oscnet/up-c195234bbcd30be6927f037a6755e6ab69c.png"/></td>
-    </tr>
-	<tr>
-        <td><img src="https://oscimg.oschina.net/oscnet/up-ece3fd37a3d4bb75a3926e905a3c5629055.png"/></td>
-        <td><img src="https://oscimg.oschina.net/oscnet/up-92ffb7f3835855cff100fa0f754a6be0d99.png"/></td>
-    </tr>
-    <tr>
-        <td><img src="https://oscimg.oschina.net/oscnet/up-ff9e3066561574aca73005c5730c6a41f15.png"/></td>
-        <td><img src="https://oscimg.oschina.net/oscnet/up-5e4daac0bb59612c5038448acbcef235e3a.png"/></td>
-    </tr>
-</table>
+申报进度实时追踪追踪与历史电子档案归档。
 
+🛡️ 动态流转审批中枢
 
-## 若依微服务交流群
+引入严格的状态机模型控制审批流 (0草稿 -> 1待院审 -> 2校审中 -> 3已通过/4已驳回)。
 
-QQ群： [![加入QQ群](https://img.shields.io/badge/已满-42799195-blue.svg)](https://jq.qq.com/?_wv=1027&k=yqInfq0S) [![加入QQ群](https://img.shields.io/badge/已满-170157040-blue.svg)](https://jq.qq.com/?_wv=1027&k=Oy1mb3p8) [![加入QQ群](https://img.shields.io/badge/已满-130643120-blue.svg)](https://jq.qq.com/?_wv=1027&k=rvxkJtXK) [![加入QQ群](https://img.shields.io/badge/已满-225920371-blue.svg)](https://jq.qq.com/?_wv=1027&k=0Ck3PvTe) [![加入QQ群](https://img.shields.io/badge/已满-201705537-blue.svg)](https://jq.qq.com/?_wv=1027&k=FnHHP4TT) [![加入QQ群](https://img.shields.io/badge/已满-236543183-blue.svg)](https://jq.qq.com/?_wv=1027&k=qdT1Ojpz) [![加入QQ群](https://img.shields.io/badge/已满-213618602-blue.svg)](https://jq.qq.com/?_wv=1027&k=nw3OiyXs) [![加入QQ群](https://img.shields.io/badge/已满-148794840-blue.svg)](https://jq.qq.com/?_wv=1027&k=kiU5WDls) [![加入QQ群](https://img.shields.io/badge/已满-118752664-blue.svg)](https://jq.qq.com/?_wv=1027&k=MtBy6YfT) [![加入QQ群](https://img.shields.io/badge/已满-101038945-blue.svg)](https://jq.qq.com/?_wv=1027&k=FqImHgH2) [![加入QQ群](https://img.shields.io/badge/已满-128355254-blue.svg)](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=G4jZ4EtdT50PhnMBudTnEwgonxkXOscJ&authKey=FkGHYfoTKlGE6wHdKdjH9bVoOgQjtLP9WM%2Fj7pqGY1msoqw9uxDiBo39E2mLgzYg&noverify=0&group_code=128355254) [![加入QQ群](https://img.shields.io/badge/已满-179219821-blue.svg)](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=irnwcXhbLOQEv1g-TwGifjNTA_f4wZiA&authKey=4bpzEwhcUY%2FvsPDHvzYn6xfoS%2FtOArvZ%2BGXzfr7O0%2FEqLfkKA%2BuCDXlzHIFg8t93&noverify=0&group_code=179219821) [![加入QQ群](https://img.shields.io/badge/已满-158753145-blue.svg)](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=lx1uEdEDuxeM7rUvF3qmlFdqKqdJ5Z-R&authKey=rgyPW9yhhh4IIURKVFa6NgP3qiqH04WAzrJ0trsgkr3pjzm6sKIOGyA58oOjoj%2FJ&noverify=0&group_code=158753145) [![加入QQ群](https://img.shields.io/badge/112869560-blue.svg)](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=Kuaw0Xdlw2Nlgn6s8h9elzuquHGxGObD&authKey=cSrQcWQ%2BzQZAFFrwxaR%2BbzcumX4WRduZnd1O6JO1dlclQMiu%2BKwxAy8t2JfNp67V&noverify=0&group_code=112869560) 点击按钮入群。
+支持多级协同审核，支持审核意见批注与驳回重修。
+
+全生命周期审核日志 (AuditLog) 追溯。
+
+📊 多维数据可视化大屏
+
+通过聚合查询，按学院、按月份、按成果类型生成统计图表。
+
+辅助校级管理层进行教学质量评估与决策。
+
+🔒 细粒度安全与权限控制 (RBAC)
+
+实现“数据行级与列级隔离”：教师仅见个人成果，院级专家管理本院数据，校级管理员纵览全局。
+
+提供基于 @Sensitive 注解的敏感数据（如教师手机号、身份证）自动化脱敏输出，保障数据合规。
+
+🛠️ 本地开发与运行指南
+1. 环境准备
+确保本地已安装并启动以下基础服务：
+
+Nacos (2.2.3)
+
+Redis
+
+MySQL (8.0+)
+
+MinIO (可选，默认可回退使用本地存储)
+
+2. 数据库初始化
+建立数据库 edu_config，导入 sql/edu_config.sql（Nacos 配置）。
+
+建立数据库 edu_system，导入 sql/edu_system.sql（系统基础表）。
+
+导入 sql/data/edu_achievement.sql（教学成果核心业务表）。
+
+3. 后端启动
+启动 edu-gateway (网关模块)。
+
+启动 edu-auth (认证模块)。
+
+启动 edu-modules-system (系统基础模块)。
+
+启动 edu-modules-achievement (教学成果业务模块)。
+
+4. 前端启动
+Bash
+
+# 进入前端目录
+cd edu-ui
+
+# 安装依赖 (推荐使用 pnpm 或 npm)
+npm install
+
+# 启动开发服务器
+npm run dev
+打开浏览器访问 http://localhost:80 即可进入系统。默认超管账号：admin / admin123。
+
+📄 许可证 (License)
+本项目仅供学术交流与毕业设计参考使用。遵循 MIT License 开源协议。
+
+Designed & Developed by [你的名字/张鹏展] - 郑州轻工业大学软件工程
