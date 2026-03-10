@@ -2,10 +2,10 @@
 D:\.develop\Redis-x64-3.2.100\redis-server.exe D:\.develop\Redis-x64-3.2.100\redis.windows.conf
 2.启动 Nacos (单机模式)
 D:\.develop\nacos\nacos-server-2.2.3\bin\startup.cmd -m standalone
-3.启动 edu-file 服务
+3.启动 minIO 服务
 D:\.develop\minio\minio.exe server D:\.develop\minio\data
 
-Redis -> Nacos -> (等待10秒) -> Auth -> Gateway -> System
+Redis -> Nacos -> minIO -> (等待10秒) -> Auth -> Gateway -> System
 
 进入ui CMD,执行
 (第一次) npm install --registry=https://registry.npmmirror.com
@@ -14,3 +14,7 @@ pnpm run dev
 默认账号密码
 admin admin123
 nacos nacos
+
+//设置网络
+set HTTP_PROXY=http://127.0.0.1:2026
+set HTTPS_PROXY=http://127.0.0.1:2026

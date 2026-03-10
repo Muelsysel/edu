@@ -36,8 +36,8 @@ services:
           '--lower-case-table-names=1'
         ]
     environment:
-      MYSQL_DATABASE: 'ry-cloud'
-      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: 'edu_system'
+      MYSQL_ROOT_PASSWORD: 242648
   edu-redis:
     container_name: edu-redis
     image: redis
