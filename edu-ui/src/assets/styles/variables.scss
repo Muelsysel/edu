@@ -8,38 +8,23 @@ $tiffany: #4AB7BD;
 $yellow:#FEC171;
 $panGreen: #30B08F;
 
-// 默认菜单主题风格
-$base-menu-color:#bfcbd9;
-$base-menu-color-active:#f4f4f5;
-$base-menu-background:#304156;
-$base-logo-title-color: #ffffff;
+// 现代纯白悬浮风 (Light Minimalist)
+$base-menu-color: #4b5563;             // 默认文字颜色 (高级灰)
+$base-menu-color-active: #1890ff;      // 激活文字颜色 (科技蓝)
+$base-menu-background: #ffffff;        // 侧边栏背景色 (纯白)
+$base-logo-title-color: #111827;       // Logo文字颜色 (深灰黑)
 
-$base-menu-light-color:rgba(0,0,0,.70);
-$base-menu-light-background:#ffffff;
-$base-logo-light-title-color: #001529;
+$base-menu-light-color: #4b5563;
+$base-menu-light-background: #ffffff;
+$base-logo-light-title-color: #111827;
 
-$base-sub-menu-background:#1f2d3d;
-$base-sub-menu-hover:#001528;
+$base-sub-menu-background: #ffffff;    // 子菜单背景同样纯白
+$base-sub-menu-hover: #f3f4f6;         // 悬浮时的底色 (极浅灰)
+$base-menu-item-active-bg: #e6f7ff;    // 激活时的胶囊底色 (极浅蓝)
 
-// 自定义暗色菜单风格
-/**
-$base-menu-color:hsla(0,0%,100%,.65);
-$base-menu-color-active:#fff;
-$base-menu-background:#001529;
-$base-logo-title-color: #ffffff;
-
-$base-menu-light-color:rgba(0,0,0,.70);
-$base-menu-light-background:#ffffff;
-$base-logo-light-title-color: #001529;
-
-$base-sub-menu-background:#000c17;
-$base-sub-menu-hover:#001528;
-*/
-
-$base-sidebar-width: 200px;
+$base-sidebar-width: 220px;            // 稍微加宽，增加留白呼吸感
 
 // the :export directive is the magic sauce for webpack
-// https://www.bluematador.com/blog/how-to-share-variables-between-js-and-sass
 :export {
   menuColor: $base-menu-color;
   menuLightColor: $base-menu-light-color;

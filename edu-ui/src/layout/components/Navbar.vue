@@ -8,26 +8,27 @@
       <logo v-show="showLogo" :collapse="false"></logo>
       <top-bar id="topbar-container" class="topbar-container" />
     </template>
-    <div class="right-menu">
-      <template v-if="device!=='mobile'">
-        <search id="header-search" class="right-menu-item" />
 
+    <div class="right-menu">
+      <template v-if="device !== 'mobile'">
+        <search id="header-search" class="right-menu-item" />
       </template>
 
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="hover">
         <div class="avatar-wrapper">
-          <img :src="avatar" class="user-avatar">
-          <span class="user-nickname"> {{ nickName }} </span>
+          <img :src="avatar" class="user-avatar" alt="avatar">
+          <span class="user-nickname">{{ nickName }}</span>
+          <i class="el-icon-arrow-down el-icon--right"></i>
         </div>
-        <el-dropdown-menu slot="dropdown">
+        <el-dropdown-menu slot="dropdown" class="user-dropdown">
           <router-link to="/user/profile">
-            <el-dropdown-item>个人中心</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-user">个人中心</el-dropdown-item>
           </router-link>
-          <el-dropdown-item @click.native="setLayout" v-if="setting">
+          <el-dropdown-item @click.native="setLayout" v-if="setting" icon="el-icon-setting">
             <span>布局设置</span>
           </el-dropdown-item>
-          <el-dropdown-item divided @click.native="logout">
-            <span>退出登录</span>
+          <el-dropdown-item divided @click.native="logout" icon="el-icon-switch-button" class="logout-btn">
+            <span>退出系统</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -42,11 +43,7 @@ import TopNav from '@/components/TopNav'
 import TopBar from './TopBar'
 import Logo from './Sidebar/Logo'
 import Hamburger from '@/components/Hamburger'
-import Screenfull from '@/components/Screenfull'
-import SizeSelect from '@/components/SizeSelect'
 import Search from '@/components/HeaderSearch'
-import RuoYiGit from '@/components/RuoYi/Git'
-import RuoYiDoc from '@/components/RuoYi/Doc'
 
 export default {
   emits: ['setLayout'],
@@ -56,11 +53,7 @@ export default {
     TopNav,
     TopBar,
     Hamburger,
-    Screenfull,
-    SizeSelect,
-    Search,
-    RuoYiGit,
-    RuoYiDoc
+    Search
   },
   computed: {
     ...mapGetters([
@@ -93,10 +86,11 @@ export default {
       this.$emit('setLayout')
     },
     logout() {
-      this.$confirm('确定注销并退出系统吗？', '提示', {
-        confirmButtonText: '确定',
+      this.$confirm('确定注销并退出系统吗？', '系统提示', {
+        confirmButtonText: '确定退出',
         cancelButtonText: '取消',
-        type: 'warning'
+        type: 'warning',
+        customClass: 'modern-confirm' // 为弹窗增加一个自定义类名，显得高级
       }).then(() => {
         this.$store.dispatch('LogOut').then(() => {
           location.href = '/index'
@@ -115,29 +109,26 @@ export default {
 }
 
 .navbar {
-  height: 50px;
+  height: 60px; // 稍微增高顶部导航，增加大气感
   overflow: hidden;
   position: relative;
-  background: #fff;
-  box-shadow: 0 1px 4px rgba(0,21,41,.08);
+  background: transparent; // 配合外层的毛玻璃
   display: flex;
   align-items: center;
-  // padding: 0 8px;
   box-sizing: border-box;
 
   .hamburger-container {
-    line-height: 46px;
+    line-height: 60px;
     height: 100%;
     cursor: pointer;
     transition: background .3s;
-    -webkit-tap-highlight-color:transparent;
+    -webkit-tap-highlight-color: transparent;
     display: flex;
     align-items: center;
-    flex-shrink: 0;
-    margin-right: 8px;
+    padding: 0 15px;
 
     &:hover {
-      background: rgba(0, 0, 0, .025)
+      background: rgba(0, 0, 0, .03);
     }
   }
 
@@ -159,17 +150,12 @@ export default {
     margin-left: 8px;
   }
 
-  .errLog-container {
-    display: inline-block;
-    vertical-align: top;
-  }
-
   .right-menu {
     height: 100%;
-    line-height: 50px;
     display: flex;
     align-items: center;
     margin-left: auto;
+    padding-right: 15px;
 
     &:focus {
       outline: none;
@@ -177,55 +163,62 @@ export default {
 
     .right-menu-item {
       display: inline-block;
-      padding: 0 8px;
+      padding: 0 12px;
       height: 100%;
       font-size: 18px;
       color: #5a5e66;
-      vertical-align: text-bottom;
+      display: flex;
+      align-items: center;
 
       &.hover-effect {
         cursor: pointer;
         transition: background .3s;
+        border-radius: 8px; // 给右侧按钮增加点击悬浮的圆角
+        height: 44px;
 
         &:hover {
-          background: rgba(0, 0, 0, .025)
+          background: rgba(0, 0, 0, .04);
         }
       }
     }
 
     .avatar-container {
-      margin-right: 0px;
-      padding-right: 0px;
+      margin-left: 10px;
 
       .avatar-wrapper {
-        margin-top: 10px;
-        right: 8px;
+        display: flex;
+        align-items: center;
         position: relative;
 
         .user-avatar {
-          cursor: pointer;
-          width: 30px;
-          height: 30px;
+          width: 32px;
+          height: 32px;
           border-radius: 50%;
+          border: 1px solid #f0f0f0;
         }
 
-        .user-nickname{
-          position: relative;
-          bottom: 10px;
-          left: 2px;
+        .user-nickname {
+          margin-left: 10px;
           font-size: 14px;
-          font-weight: bold;
+          font-weight: 500;
+          color: #333;
         }
 
-        .el-icon-caret-bottom {
-          cursor: pointer;
-          position: absolute;
-          right: -20px;
-          top: 25px;
+        .el-icon-arrow-down {
+          margin-left: 5px;
           font-size: 12px;
+          color: #999;
         }
       }
     }
+  }
+}
+
+// 修改下拉菜单弹出框的圆角和颜色
+::v-deep .el-dropdown-menu.user-dropdown {
+  border-radius: 8px;
+  .logout-btn {
+    color: #ff4d4f;
   }
 }
 </style>

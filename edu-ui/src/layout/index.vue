@@ -8,7 +8,7 @@
         <tags-view v-if="needTagsView"/>
       </div>
       <app-main/>
-      <settings ref="settingRef"/>
+      <settings ref="settingRef" v-if="false" />
     </div>
   </div>
 </template>
@@ -55,61 +55,68 @@ export default {
       this.$store.dispatch('app/closeSideBar', { withoutAnimation: false })
     },
     setLayout() {
-      this.$refs.settingRef.openSetting()
+      if(this.$refs.settingRef) {
+        this.$refs.settingRef.openSetting()
+      }
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-  @import "~@/assets/styles/mixin.scss";
-  @import "~@/assets/styles/variables.scss";
+@import "~@/assets/styles/mixin.scss";
+@import "~@/assets/styles/variables.scss";
 
-  .app-wrapper {
-    @include clearfix;
-    position: relative;
-    height: 100%;
-    width: 100%;
+.app-wrapper {
+  @include clearfix;
+  position: relative;
+  height: 100%;
+  width: 100%;
 
-    &.mobile.openSidebar {
-      position: fixed;
-      top: 0;
-    }
-  }
-
-  .main-container:has(.fixed-header) {
-    height: 100vh;
-    overflow: hidden;
-  }
-
-  .drawer-bg {
-    background: #000;
-    opacity: 0.3;
-    width: 100%;
-    top: 0;
-    height: 100%;
-    position: absolute;
-    z-index: 999;
-  }
-
-  .fixed-header {
+  &.mobile.openSidebar {
     position: fixed;
     top: 0;
-    right: 0;
-    z-index: 9;
-    width: calc(100% - #{$base-sidebar-width});
-    transition: width 0.28s;
   }
+}
 
-  .hideSidebar .fixed-header {
-    width: calc(100% - 54px);
-  }
+.main-container:has(.fixed-header) {
+  height: 100vh;
+  overflow: hidden;
+}
 
-  .sidebarHide .fixed-header {
-    width: 100%;
-  }
+.drawer-bg {
+  background: #000;
+  opacity: 0.3;
+  width: 100%;
+  top: 0;
+  height: 100%;
+  position: absolute;
+  z-index: 999;
+}
 
-  .mobile .fixed-header {
-    width: 100%;
-  }
+.fixed-header {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 9;
+  width: calc(100% - #{$base-sidebar-width});
+  transition: width 0.28s;
+
+  /* 🌟 核心高级感：毛玻璃顶部导航条 */
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 1px 4px rgba(0, 21, 41, 0.03);
+}
+
+.hideSidebar .fixed-header {
+  width: calc(100% - 64px); /* 配合我们之前修改的折叠宽度 64px */
+}
+
+.sidebarHide .fixed-header {
+  width: 100%;
+}
+
+.mobile .fixed-header {
+  width: 100%;
+}
 </style>

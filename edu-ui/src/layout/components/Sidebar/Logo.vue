@@ -1,13 +1,13 @@
 <template>
-  <div class="sidebar-logo-container" :class="{'collapse':collapse}" :style="{ backgroundColor: sideTheme === 'theme-dark' && navType !== 3 ? variables.menuBackground : variables.menuLightBackground }">
+  <div class="sidebar-logo-container" :class="{'collapse':collapse}">
     <transition name="sidebarLogoFade">
       <router-link v-if="collapse" key="collapse" class="sidebar-logo-link" to="/">
         <img v-if="logo" :src="logo" class="sidebar-logo" />
-        <h1 v-else class="sidebar-title" :style="{ color: sideTheme === 'theme-dark' && navType !== 3 ? variables.logoTitleColor : variables.logoLightTitleColor }">{{ title }} </h1>
+        <h1 v-else class="sidebar-title">{{ title }}</h1>
       </router-link>
       <router-link v-else key="expand" class="sidebar-logo-link" to="/">
         <img v-if="logo" :src="logo" class="sidebar-logo" />
-        <h1 class="sidebar-title" :style="{ color: sideTheme === 'theme-dark' && navType !== 3 ? variables.logoTitleColor : variables.logoLightTitleColor }">{{ title }} </h1>
+        <h1 class="sidebar-title">{{ title }}</h1>
       </router-link>
     </transition>
   </div>
@@ -15,7 +15,6 @@
 
 <script>
 import logoImg from '@/assets/logo/logo.png'
-import variables from '@/assets/styles/variables.scss'
 
 export default {
   name: 'SidebarLogo',
@@ -25,20 +24,9 @@ export default {
       required: true
     }
   },
-  computed: {
-    variables() {
-      return variables
-    },
-    sideTheme() {
-      return this.$store.state.settings.sideTheme
-    },
-    navType() {
-      return this.$store.state.settings.navType
-    }
-  },
   data() {
     return {
-      title: process.env.VUE_APP_TITLE,
+      title: process.env.VUE_APP_TITLE || '高校教学成果管理系统',
       logo: logoImg
     }
   }
@@ -57,32 +45,37 @@ export default {
 
 .sidebar-logo-container {
   position: relative;
-  height: 50px;
-  line-height: 50px;
-  background: #2b2f3a;
+  height: 60px; // 稍微增高一点显得大气
+  line-height: 60px;
+  background: transparent; // 背景透明，融入侧边栏
   text-align: center;
   overflow: hidden;
+  border-bottom: 1px solid #f0f0f0; // 极简底部分割线
 
   & .sidebar-logo-link {
     height: 100%;
     width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
     & .sidebar-logo {
       width: 32px;
       height: 32px;
       vertical-align: middle;
-      margin-right: 12px;
+      margin-right: 10px;
+      border-radius: 4px; // 给Logo稍微加点圆角
     }
 
     & .sidebar-title {
       display: inline-block;
       margin: 0;
-      color: #fff;
-      font-weight: 600;
-      line-height: 50px;
-      font-size: 14px;
-      font-family: Avenir, Helvetica Neue, Arial, Helvetica, sans-serif;
+      color: #111827; // 高级深黑
+      font-weight: 700;
+      font-size: 16px; // 字体加大
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       vertical-align: middle;
+      letter-spacing: 1px;
     }
   }
 

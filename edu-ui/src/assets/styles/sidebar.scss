@@ -5,6 +5,7 @@
     transition: margin-left .28s;
     margin-left: $base-sidebar-width;
     position: relative;
+    background-color: #f5f7fa; // 让右侧内容区带一点点灰，反衬左侧侧边栏的纯白
   }
 
   .sidebarHide {
@@ -15,7 +16,7 @@
     -webkit-transition: width .28s;
     transition: width 0.28s;
     width: $base-sidebar-width !important;
-    background-color: $base-menu-background;
+    background-color: $base-menu-background !important;
     height: 100%;
     position: fixed;
     font-size: 0px;
@@ -24,8 +25,9 @@
     left: 0;
     z-index: 1001;
     overflow: hidden;
-    -webkit-box-shadow: 2px 0 6px rgba(0,21,41,.35);
-    box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.1);
+    // 现代感的轻柔阴影与极细分割线
+    box-shadow: 2px 0 8px 0 rgba(29, 35, 41, 0.05);
+    border-right: 1px solid #f0f0f0;
 
     // reset element-ui css
     .horizontal-collapse-transition {
@@ -61,45 +63,49 @@
     }
 
     .svg-icon {
-      margin-right: 10px !important;
+      margin-right: 12px !important;
+      font-size: 16px;
     }
 
     .el-menu {
       border: none;
       height: 100%;
       width: 100% !important;
+      background: transparent !important;
     }
 
+    /* 🌟 核心：飞书/Notion 风格胶囊菜单 */
     .el-menu-item, .el-submenu__title {
+      margin: 4px 12px; // 四周留白
+      border-radius: 8px; // 胶囊圆角
+      height: 44px !important;
+      line-height: 44px !important;
+      width: calc(100% - 24px) !important;
+      color: $base-menu-color !important;
+      transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
       overflow: hidden !important;
       text-overflow: ellipsis !important;
       white-space: nowrap !important;
-    }
 
-    // menu hover
-    .submenu-title-noDropdown,
-    .el-submenu__title {
       &:hover {
-        background-color: rgba(0, 0, 0, 0.06) !important;
+        background-color: $base-sub-menu-hover !important;
+        color: $base-menu-color-active !important;
       }
     }
 
-    & .theme-dark .is-active > .el-submenu__title {
+    /* 🌟 激活状态样式 */
+    .is-active > .el-submenu__title,
+    .el-menu-item.is-active {
       color: $base-menu-color-active !important;
+      background-color: #e6f7ff !important; // 胶囊底色
+      font-weight: 600;
     }
 
-    & .nest-menu .el-submenu>.el-submenu__title,
-    & .el-submenu .el-menu-item {
-      min-width: $base-sidebar-width !important;
-
-      &:hover {
-        background-color: rgba(0, 0, 0, 0.06) !important;
-      }
-    }
-
-    & .theme-dark .nest-menu .el-submenu>.el-submenu__title,
-    & .theme-dark .el-submenu .el-menu-item {
-      background-color: $base-sub-menu-background !important;
+    /* 重置子菜单样式 */
+    .nest-menu .el-submenu>.el-submenu__title,
+    .el-submenu .el-menu-item {
+      min-width: calc(#{$base-sidebar-width} - 24px) !important;
+      background-color: transparent !important;
 
       &:hover {
         background-color: $base-sub-menu-hover !important;
@@ -107,40 +113,28 @@
     }
   }
 
+  // 折叠侧边栏样式微调
   .hideSidebar {
     .sidebar-container {
-      width: 54px !important;
+      width: 64px !important; // 稍微加宽一点点折叠状态，不然圆角放不下
     }
 
     .main-container {
-      margin-left: 54px;
+      margin-left: 64px;
     }
 
-    .el-menu:not(.el-menu--horizontal) {
-      .submenu-title-noDropdown {
-        padding: 0 !important;
-        position: relative;
-
-        .el-tooltip {
-          padding: 0 !important;
-
-          .svg-icon {
-            margin-left: 20px;
-          }
-        }
-      }
+    .el-menu-item, .el-submenu__title {
+      margin: 4px 8px !important;
+      width: calc(100% - 16px) !important;
+      padding: 0 16px !important;
     }
 
     .el-submenu {
       overflow: hidden;
-
       &>.el-submenu__title {
-        padding: 0 !important;
-
         .svg-icon {
-          margin-left: 20px;
+          margin-left: 0px;
         }
-
       }
     }
 
@@ -160,7 +154,7 @@
   }
 
   .el-menu--collapse .el-menu .el-submenu {
-    min-width: $base-sidebar-width !important;
+    min-width: 64px !important;
   }
 
   // mobile responsive
@@ -184,7 +178,6 @@
   }
 
   .withoutAnimation {
-
     .main-container,
     .sidebar-container {
       transition: none;
@@ -192,7 +185,7 @@
   }
 }
 
-// when menu collapsed
+// 弹出式子菜单悬浮样式
 .el-menu--vertical {
   &>.el-menu {
     .svg-icon {
@@ -202,27 +195,33 @@
 
   .nest-menu .el-submenu>.el-submenu__title,
   .el-menu-item {
+    border-radius: 8px;
+    margin: 2px 8px;
     &:hover {
-      // you can use $subMenuHover
-      background-color: rgba(0, 0, 0, 0.06) !important;
+      background-color: $base-sub-menu-hover !important;
+      color: $base-menu-color-active !important;
     }
   }
+  .el-menu-item.is-active {
+    background-color: #e6f7ff !important;
+    color: $base-menu-color-active !important;
+  }
 
-  // the scroll bar appears when the subMenu is too long
   >.el-menu--popup {
     max-height: 100vh;
     overflow-y: auto;
+    border-radius: 10px; // 弹出的菜单也加圆角
+    box-shadow: 0 6px 16px 0 rgba(0,0,0,0.08);
+    border: 1px solid #f0f0f0;
 
     &::-webkit-scrollbar-track-piece {
-      background: #d3dce6;
+      background: #f5f7fa;
     }
-
     &::-webkit-scrollbar {
       width: 6px;
     }
-
     &::-webkit-scrollbar-thumb {
-      background: #99a9bf;
+      background: #c0c4cc;
       border-radius: 20px;
     }
   }

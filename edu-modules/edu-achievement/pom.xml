@@ -75,10 +75,6 @@
             <groupId>com.edu</groupId>
             <artifactId>edu-api-system</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.security</groupId>
-            <artifactId>spring-security-core</artifactId>
-        </dependency>
 
     </dependencies>
 
