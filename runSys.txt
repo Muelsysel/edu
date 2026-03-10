@@ -5,7 +5,7 @@ D:\.develop\nacos\nacos-server-2.2.3\bin\startup.cmd -m standalone
 3.启动 minIO 服务
 D:\.develop\minio\minio.exe server D:\.develop\minio\data
 
-Redis -> Nacos -> minIO -> (等待10秒) -> Auth -> Gateway -> System
+Redis -> Nacos -> minIO -> (等待10秒) -> Auth -> Gateway -> System -> Achievement ->  File
 
 进入ui CMD,执行
 (第一次) npm install --registry=https://registry.npmmirror.com
