@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80033
 File Encoding         : 65001
 
-Date: 2026-03-03 13:04:35
+Date: 2026-03-15 17:59:54
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -41,15 +41,14 @@ CREATE TABLE `sys_menu` (
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) DEFAULT '' COMMENT '备注',
   PRIMARY KEY (`menu_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3016 DEFAULT CHARSET=utf8mb3 COMMENT='菜单权限表';
+) ENGINE=InnoDB AUTO_INCREMENT=3048 DEFAULT CHARSET=utf8mb3 COMMENT='菜单权限表';
 
 -- ----------------------------
 -- Records of sys_menu
 -- ----------------------------
-INSERT INTO `sys_menu` VALUES ('1', '系统管理', '0', '1', 'system', null, '', '', '1', '0', 'M', '0', '0', '', 'system', 'admin', '2026-03-02 22:42:14', '', null, '系统管理目录');
-INSERT INTO `sys_menu` VALUES ('2', '系统监控', '0', '2', 'monitor', null, '', '', '1', '0', 'M', '0', '0', '', 'monitor', 'admin', '2026-03-02 22:42:14', '', null, '系统监控目录');
-INSERT INTO `sys_menu` VALUES ('3', '系统工具', '0', '3', 'tool', null, '', '', '1', '0', 'M', '0', '0', '', 'tool', 'admin', '2026-03-02 22:42:14', '', null, '系统工具目录');
-INSERT INTO `sys_menu` VALUES ('4', '若依官网', '0', '4', 'http://ruoyi.vip', null, '', '', '0', '0', 'M', '0', '0', '', 'guide', 'admin', '2026-03-02 22:42:14', '', null, '若依官网地址');
+INSERT INTO `sys_menu` VALUES ('1', '系统管理', '0', '9', 'system', null, '', '', '1', '0', 'M', '0', '0', '', 'system', 'admin', '2026-03-02 22:42:14', 'admin', '2026-03-03 16:44:48', '系统管理目录');
+INSERT INTO `sys_menu` VALUES ('2', '系统监控', '0', '10', 'monitor', null, '', '', '1', '0', 'M', '0', '0', '', 'monitor', 'admin', '2026-03-02 22:42:14', 'admin', '2026-03-03 16:44:31', '系统监控目录');
+INSERT INTO `sys_menu` VALUES ('3', '系统工具', '0', '10', 'tool', null, '', '', '1', '0', 'M', '0', '0', '', 'tool', 'admin', '2026-03-02 22:42:14', 'admin', '2026-03-03 16:44:27', '系统工具目录');
 INSERT INTO `sys_menu` VALUES ('100', '用户管理', '1', '1', 'user', 'system/user/index', '', '', '1', '0', 'C', '0', '0', 'system:user:list', 'user', 'admin', '2026-03-02 22:42:14', '', null, '用户管理菜单');
 INSERT INTO `sys_menu` VALUES ('101', '角色管理', '1', '2', 'role', 'system/role/index', '', '', '1', '0', 'C', '0', '0', 'system:role:list', 'peoples', 'admin', '2026-03-02 22:42:14', '', null, '角色管理菜单');
 INSERT INTO `sys_menu` VALUES ('102', '菜单管理', '1', '3', 'menu', 'system/menu/index', '', '', '1', '0', 'C', '0', '0', 'system:menu:list', 'tree-table', 'admin', '2026-03-02 22:42:14', '', null, '菜单管理菜单');
@@ -130,19 +129,20 @@ INSERT INTO `sys_menu` VALUES ('1057', '生成删除', '115', '3', '#', '', '', 
 INSERT INTO `sys_menu` VALUES ('1058', '导入代码', '115', '2', '#', '', '', '', '1', '0', 'F', '0', '0', 'tool:gen:import', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
 INSERT INTO `sys_menu` VALUES ('1059', '预览代码', '115', '4', '#', '', '', '', '1', '0', 'F', '0', '0', 'tool:gen:preview', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
 INSERT INTO `sys_menu` VALUES ('1060', '生成代码', '115', '5', '#', '', '', '', '1', '0', 'F', '0', '0', 'tool:gen:code', '#', 'admin', '2026-03-02 22:42:16', '', null, '');
-INSERT INTO `sys_menu` VALUES ('3000', '教学成果管理', '0', '1', 'achievement', null, '', '', '1', '0', 'M', '0', '0', '', 'achievement', 'admin', '2026-03-03 13:03:22', '', null, '教学成果管理目录');
-INSERT INTO `sys_menu` VALUES ('3001', '成果申报', '3000', '1', 'achievement', 'achievement/index', '', '', '1', '0', 'C', '0', '0', 'achievement:list', 'form', 'admin', '2026-03-03 13:03:22', '', null, '成果申报主菜单');
-INSERT INTO `sys_menu` VALUES ('3002', '成果申报查询', '3001', '1', '', '', '', '', '1', '0', 'F', '0', '0', 'achievement:query', '#', 'admin', '2026-03-03 13:03:22', '', null, '');
-INSERT INTO `sys_menu` VALUES ('3003', '成果申报新增', '3001', '2', '', '', '', '', '1', '0', 'F', '0', '0', 'achievement:add', '#', 'admin', '2026-03-03 13:03:22', '', null, '');
-INSERT INTO `sys_menu` VALUES ('3004', '成果申报修改', '3001', '3', '', '', '', '', '1', '0', 'F', '0', '0', 'achievement:edit', '#', 'admin', '2026-03-03 13:03:22', '', null, '');
-INSERT INTO `sys_menu` VALUES ('3005', '成果申报提交', '3001', '4', '', '', '', '', '1', '0', 'F', '0', '0', 'achievement:submit', '#', 'admin', '2026-03-03 13:03:22', '', null, '');
-INSERT INTO `sys_menu` VALUES ('3006', '成果申报删除', '3001', '5', '', '', '', '', '1', '0', 'F', '0', '0', 'achievement:remove', '#', 'admin', '2026-03-03 13:03:22', '', null, '');
-INSERT INTO `sys_menu` VALUES ('3007', '成果申报上传', '3001', '6', '', '', '', '', '1', '0', 'F', '0', '0', 'achievement:upload', '#', 'admin', '2026-03-03 13:03:22', '', null, '');
-INSERT INTO `sys_menu` VALUES ('3008', '院级审核', '3000', '2', 'achievement/college', 'achievement/audit', '', '', '1', '0', 'C', '0', '0', 'achievement:list', 'edit', 'admin', '2026-03-03 13:03:22', '', null, '院级审核菜单');
-INSERT INTO `sys_menu` VALUES ('3009', '院级审核查询', '3008', '1', '', '', '', '', '1', '0', 'F', '0', '0', 'achievement:query', '#', 'admin', '2026-03-03 13:03:22', '', null, '');
-INSERT INTO `sys_menu` VALUES ('3010', '院级审核审核', '3008', '2', '', '', '', '', '1', '0', 'F', '0', '0', 'achievement:collegeAudit', '#', 'admin', '2026-03-03 13:03:22', '', null, '');
-INSERT INTO `sys_menu` VALUES ('3011', '校级审核', '3000', '3', 'achievement/school', 'achievement/audit', '', '', '1', '0', 'C', '0', '0', 'achievement:list', 'check', 'admin', '2026-03-03 13:03:22', '', null, '校级审核菜单');
-INSERT INTO `sys_menu` VALUES ('3012', '校级审核查询', '3011', '1', '', '', '', '', '1', '0', 'F', '0', '0', 'achievement:query', '#', 'admin', '2026-03-03 13:03:22', '', null, '');
-INSERT INTO `sys_menu` VALUES ('3013', '校级审核审核', '3011', '2', '', '', '', '', '1', '0', 'F', '0', '0', 'achievement:schoolAudit', '#', 'admin', '2026-03-03 13:03:22', '', null, '');
-INSERT INTO `sys_menu` VALUES ('3014', '成果统计', '3000', '4', 'achievement/statistic', 'achievement/statistic', '', '', '1', '0', 'C', '0', '0', 'achievement:list', 'chart', 'admin', '2026-03-03 13:03:22', '', null, '成果统计菜单');
-INSERT INTO `sys_menu` VALUES ('3015', '成果统计查询', '3014', '1', '', '', '', '', '1', '0', 'F', '0', '0', 'achievement:query', '#', 'admin', '2026-03-03 13:03:22', '', null, '');
+INSERT INTO `sys_menu` VALUES ('3028', '教学成果管理', '0', '1', 'achievement', 'achievement/achievement/index', null, '', '1', '0', 'C', '0', '0', 'achievement:achievement:list', 'system', 'admin', '2026-03-03 14:08:45', 'admin', '2026-03-03 15:45:34', '教学成果管理菜单');
+INSERT INTO `sys_menu` VALUES ('3029', '教学成果管理查询', '3028', '1', '#', '', null, '', '1', '0', 'F', '0', '0', 'achievement:achievement:query', '#', 'admin', '2026-03-03 14:08:45', '', null, '');
+INSERT INTO `sys_menu` VALUES ('3030', '教学成果管理新增', '3028', '2', '#', '', null, '', '1', '0', 'F', '0', '0', 'achievement:achievement:add', '#', 'admin', '2026-03-03 14:08:45', '', null, '');
+INSERT INTO `sys_menu` VALUES ('3031', '教学成果管理修改', '3028', '3', '#', '', null, '', '1', '0', 'F', '0', '0', 'achievement:achievement:edit', '#', 'admin', '2026-03-03 14:08:45', '', null, '');
+INSERT INTO `sys_menu` VALUES ('3032', '教学成果管理删除', '3028', '4', '#', '', null, '', '1', '0', 'F', '0', '0', 'achievement:achievement:remove', '#', 'admin', '2026-03-03 14:08:45', '', null, '');
+INSERT INTO `sys_menu` VALUES ('3033', '教学成果管理导出', '3028', '5', '#', '', null, '', '1', '0', 'F', '0', '0', 'achievement:achievement:export', '#', 'admin', '2026-03-03 14:08:45', '', null, '');
+INSERT INTO `sys_menu` VALUES ('3034', '成果申报', '0', '1', 'myAchievement', 'achievement/myAchievement/index', null, 'MyAchievement', '1', '0', 'C', '0', '0', '', 'upload', 'admin', '2026-03-03 14:55:04', 'admin', '2026-03-03 15:46:35', '');
+INSERT INTO `sys_menu` VALUES ('3035', '教师新增', '3034', '1', '', null, null, '', '1', '0', 'F', '0', '0', 'achievement:achievement:teacherAdd', '#', 'admin', '2026-03-03 15:25:57', 'admin', '2026-03-10 15:32:12', '');
+INSERT INTO `sys_menu` VALUES ('3036', '查询部门列表', '3034', '2', '', null, null, '', '1', '0', 'F', '0', '0', 'system:dept:list', '#', 'admin', '2026-03-03 15:47:01', '', null, '');
+INSERT INTO `sys_menu` VALUES ('3037', '成果管理', '0', '2', 'myAchievementList', 'achievement/myAchievementList/index', null, 'teacherListAchievement', '1', '0', 'C', '0', '0', 'achievement:achievement:teacherList', 'education', 'admin', '2026-03-03 16:43:36', 'admin', '2026-03-10 15:47:28', '');
+INSERT INTO `sys_menu` VALUES ('3041', '教师修改', '3037', '1', '', null, null, '', '1', '0', 'F', '0', '0', 'achievement:achievement:teacherEdit', '#', 'admin', '2026-03-10 14:47:02', 'admin', '2026-03-10 15:32:46', '');
+INSERT INTO `sys_menu` VALUES ('3042', '教师查询', '3037', '2', '', null, null, '', '1', '0', 'F', '0', '0', 'achievement:achievement:teacherQuery', '#', 'admin', '2026-03-10 14:47:42', 'admin', '2026-03-10 15:33:11', '');
+INSERT INTO `sys_menu` VALUES ('3043', '教师删除', '3037', '3', '', null, null, '', '1', '0', 'F', '0', '0', 'achievement:achievement:teacherRemove', '#', 'admin', '2026-03-10 15:51:44', 'admin', '2026-03-10 15:52:08', '');
+INSERT INTO `sys_menu` VALUES ('3044', '教师成果详情', '3037', '4', '', null, null, '', '1', '0', 'F', '0', '0', 'achievement:achievement:teacherGet', '#', 'admin', '2026-03-10 15:53:06', '', null, '');
+INSERT INTO `sys_menu` VALUES ('3045', '院级审核工作台', '0', '2', 'collegeAudit', 'achievement/collegeAudit/index', null, 'collegeAudit', '1', '0', 'C', '0', '0', null, 'form', 'admin', '2026-03-15 17:15:16', '', null, '');
+INSERT INTO `sys_menu` VALUES ('3046', '校级审核工作台', '0', '2', 'schoolAudit', 'achievement/schoolAudit/index', null, 'schoolAudit', '1', '0', 'C', '0', '0', '', 'form', 'admin', '2026-03-15 17:15:47', 'admin', '2026-03-15 17:16:53', '');
+INSERT INTO `sys_menu` VALUES ('3047', '审核记录', '0', '3', 'auditRecord', 'achievement/auditRecord/index', null, 'auditRecord', '1', '0', 'C', '0', '0', null, 'log', 'admin', '2026-03-15 17:17:41', '', null, '');

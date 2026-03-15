@@ -1,57 +1,71 @@
 <template>
   <div class="app-container">
-    <el-card shadow="hover" :header="form.achievementId ? '📑 成果管理与审核' : '📝 教学成果申报填写'">
-      <el-form ref="form" :model="form" :rules="rules" label-width="120px">
+    <div class="form-card">
+      <div class="form-header">
+        <div class="form-header-icon">
+          <i :class="form.achievementId ? 'el-icon-edit-outline' : 'el-icon-document-add'"></i>
+        </div>
+        <div class="form-header-text">
+          <h3>{{ form.achievementId ? '修改我的成果' : '教学成果申报' }}</h3>
+          <p>{{ form.achievementId ? '修改已有成果信息，修改后将重新进入审核流程' : '填写教学成果信息并提交审核' }}</p>
+        </div>
+      </div>
 
-        <el-row v-if="form.achievementId" class="audit-section">
-          <el-col :span="24">
-            <el-form-item label="当前审核进程" prop="status">
-              <el-radio-group v-model="form.status" :disabled="!isAdmin">
-                <el-radio label="1">待院审</el-radio>
-                <el-radio label="2">待校审</el-radio>
-                <el-radio label="3" class="success-radio">已通过</el-radio>
-                <el-radio label="4" class="danger-radio">已驳回</el-radio>
-              </el-radio-group>
-            </el-form-item>
-          </el-col>
-        </el-row>
+      <el-form ref="form" :model="form" :rules="rules" label-width="120px" class="modern-form">
+        <!-- 审核状态展示（仅编辑时） -->
+        <div v-if="form.achievementId" class="status-display">
+          <div class="status-steps">
+            <div :class="['step', form.status >= '1' ? 'step-active' : '']">
+              <div class="step-dot"></div>
+              <span>提交申报</span>
+            </div>
+            <div class="step-line" :class="{ 'line-active': form.status >= '1' }"></div>
+            <div :class="['step', form.status >= '2' ? 'step-active' : '', form.status === '4' ? 'step-error' : '']">
+              <div class="step-dot"></div>
+              <span>院级审核</span>
+            </div>
+            <div class="step-line" :class="{ 'line-active': form.status >= '2' }"></div>
+            <div :class="['step', form.status >= '3' ? 'step-active' : '', form.status === '4' ? 'step-error' : '']">
+              <div class="step-dot"></div>
+              <span>校级审核</span>
+            </div>
+            <div class="step-line" :class="{ 'line-active': form.status === '3' }"></div>
+            <div :class="['step', form.status === '3' ? 'step-active step-success' : '']">
+              <div class="step-dot"></div>
+              <span>审核通过</span>
+            </div>
+          </div>
+          <el-tag v-if="form.status === '4'" type="danger" effect="dark" size="small" style="margin-top: 8px;">该成果已被驳回，请修改后重新提交</el-tag>
+        </div>
 
-        <el-divider v-if="form.achievementId">申报详情</el-divider>
+        <el-divider v-if="form.achievementId" content-position="left">成果信息</el-divider>
 
         <el-form-item label="成果标题" prop="title">
-          <el-input
-            v-model="form.title"
-            placeholder="请输入成果标题"
-            :disabled="form.status === '3'"
-          />
+          <el-input v-model="form.title" placeholder="请输入成果标题" :disabled="form.status === '3'" />
         </el-form-item>
 
         <el-form-item label="成果类型" prop="category">
           <el-radio-group v-model="form.category" :disabled="form.status === '3'">
-            <el-radio
+            <el-radio-button
               v-for="dict in dict.type.edu_achievement_category"
               :key="dict.value"
               :label="dict.value"
-            >{{ dict.label }}</el-radio>
+            >{{ dict.label }}</el-radio-button>
           </el-radio-group>
         </el-form-item>
 
         <el-form-item label="归属学院" prop="collegeId">
-          <el-select
-            v-model="form.collegeId"
-            placeholder="请选择学院"
-            style="width: 100%"
-            clearable
-            :disabled="form.status === '3'"
-          >
+          <el-select v-model="form.collegeId" placeholder="请选择学院" style="width: 100%" clearable :disabled="form.status === '3'">
             <el-option v-for="item in collegeOptions" :key="item.deptId" :label="item.deptName" :value="item.deptId" />
           </el-select>
         </el-form-item>
 
         <el-form-item label="证明材料" prop="fileUrl">
           <file-upload v-model="form.fileUrl" :limit="5" :fileSize="50" v-if="form.status !== '3'" />
-          <div v-else class="file-link-view">
-            <el-link v-for="(url, i) in (form.fileUrl || '').split(',')" :key="i" :href="url" target="_blank" type="primary">预览附件 {{i+1}}</el-link>
+          <div v-else class="file-preview">
+            <el-link v-for="(url, i) in (form.fileUrl || '').split(',')" :key="i" :href="url" target="_blank" type="primary" v-if="url" :underline="false" class="file-link">
+              <i class="el-icon-document"></i> 附件 {{i+1}}
+            </el-link>
           </div>
         </el-form-item>
 
@@ -59,20 +73,19 @@
           <editor v-model="form.content" :min-height="200" :readOnly="form.status === '3'" />
         </el-form-item>
 
-        <el-form-item style="text-align: center; margin-top: 30px;">
-          <el-button type="primary" :loading="loading" @click="submitForm">
-            {{ form.achievementId ? '保存修改/审核结果' : '立即提交申报' }}
+        <el-form-item style="padding-top: 12px;">
+          <el-button type="primary" :loading="loading" @click="submitForm" icon="el-icon-check">
+            {{ form.achievementId ? '保存修改' : '提交申报' }}
           </el-button>
-          <el-button @click="handleClose">返回列表</el-button>
+          <el-button @click="handleClose" icon="el-icon-back">返回列表</el-button>
         </el-form-item>
       </el-form>
-    </el-card>
+    </div>
   </div>
 </template>
 
 <script>
-// 导入增加获取详情和更新的接口
-import { teacherAddAchievement , teacherListAchievement,teacherUpdateAchievement ,} from "@/api/achievement/achievement";
+import { teacherAddAchievement, teacherListAchievement, teacherUpdateAchievement } from "@/api/achievement/achievement";
 import { listDept } from "@/api/system/dept";
 
 export default {
@@ -99,25 +112,14 @@ export default {
       }
     };
   },
-  // 在 computed 中增加判断（更简洁）
-  computed: {
-    // 判断当前用户是否为管理员
-    isAdmin() {
-      // 获取用户角色的标准方式
-      const roles = this.$store.getters && this.$store.getters.roles;
-      return roles.includes('admin');
-    }
-  },
   created() {
     this.getCollegeList();
-    // 关键：判断 URL 是否带有 ID，如果有则是修改/审核模式
     const achievementId = this.$route.query.id;
     if (achievementId) {
       this.handleGetDetail(achievementId);
     }
   },
   methods: {
-    /** 获取成果详情回显 */
     handleGetDetail(id) {
       this.loading = true;
       teacherListAchievement(id).then(response => {
@@ -125,30 +127,27 @@ export default {
         this.loading = false;
       });
     },
-    /** 查询学院列表 */
     getCollegeList() {
       listDept().then(response => {
         this.collegeOptions = response.data;
       });
     },
-    /** 提交按钮 */
     submitForm() {
       this.$refs["form"].validate(valid => {
         if (valid) {
           this.loading = true;
-          // 根据是否有 ID 判断是新增还是修改
           if (this.form.achievementId) {
-            teacherUpdateAchievement(this.form).then(response => {
-              this.$modal.msgSuccess("管理修改成功");
+            teacherUpdateAchievement(this.form).then(() => {
+              this.$modal.msgSuccess("修改成功");
               this.loading = false;
-              this.$router.back(); // 修改完返回
-            });
+              this.$router.back();
+            }).catch(() => { this.loading = false; });
           } else {
-            teacherAddAchievement(this.form).then(response => {
+            teacherAddAchievement(this.form).then(() => {
               this.$modal.msgSuccess("申报成功");
               this.loading = false;
               this.reset();
-            });
+            }).catch(() => { this.loading = false; });
           }
         }
       });
@@ -158,13 +157,8 @@ export default {
     },
     reset() {
       this.form = {
-        achievementId: undefined,
-        title: undefined,
-        category: '1',
-        collegeId: undefined,
-        fileUrl: undefined,
-        content: undefined,
-        status: '1'
+        achievementId: undefined, title: undefined, category: '1',
+        collegeId: undefined, fileUrl: undefined, content: undefined, status: '1'
       };
       this.resetForm("form");
     }
@@ -173,20 +167,60 @@ export default {
 </script>
 
 <style scoped>
-.audit-section {
-  background-color: #fafafa;
-  padding: 20px 10px 5px 10px;
-  border-radius: 8px;
-  border-left: 5px solid #409EFF;
+.form-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 0;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  overflow: hidden;
+}
+.form-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 28px 32px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.form-header-icon {
+  width: 48px; height: 48px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; color: #fff;
+}
+.form-header-text h3 { color: #fff; margin: 0 0 4px; font-size: 18px; }
+.form-header-text p { color: rgba(255,255,255,0.8); margin: 0; font-size: 13px; }
+.modern-form { padding: 28px 32px; }
+
+/* 审核进度展示 */
+.status-display {
+  background: #f8f9fc;
+  border-radius: 12px;
+  padding: 20px 24px;
   margin-bottom: 20px;
 }
-.success-radio /deep/ .el-radio__input.is-checked + .el-radio__label {
-  color: #67C23A;
+.status-steps { display: flex; align-items: center; justify-content: center; }
+.step { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.step-dot {
+  width: 14px; height: 14px; border-radius: 50%;
+  background: #dcdfe6; transition: all .3s;
 }
-.danger-radio  /deep/ .el-radio__input.is-checked + .el-radio__label {
-  color: #F56C6C;
-}
-.file-link-view .el-link {
-  margin-right: 15px;
+.step span { font-size: 12px; color: #909399; }
+.step-active .step-dot { background: #409EFF; box-shadow: 0 0 0 4px rgba(64,158,255,0.15); }
+.step-active span { color: #409EFF; font-weight: 600; }
+.step-success .step-dot { background: #67C23A; box-shadow: 0 0 0 4px rgba(103,194,58,0.15); }
+.step-success span { color: #67C23A; }
+.step-error .step-dot { background: #F56C6C; box-shadow: 0 0 0 4px rgba(245,108,108,0.15); }
+.step-error span { color: #F56C6C; }
+.step-line { width: 60px; height: 2px; background: #dcdfe6; margin: 0 8px; margin-bottom: 20px; }
+.line-active { background: #409EFF; }
+
+/* 附件预览 */
+.file-preview { display: flex; gap: 12px; flex-wrap: wrap; }
+.file-link {
+  padding: 6px 14px;
+  background: #f0f5ff;
+  border-radius: 8px;
+  font-size: 13px;
 }
 </style>

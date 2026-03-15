@@ -18,26 +18,32 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updateTime"    column="update_time"    />
         <result property="delFlag"    column="del_flag"    />
         <result property="category"    column="category"    />
+        <result property="teacherName"  column="nick_name"    />
     </resultMap>
 
     <sql id="selectEduAchievementVo">
-        select achievement_id, title, content, file_url, teacher_id, college_id, status, create_by, create_time, update_by, update_time, del_flag, category from edu_achievement
+        select a.achievement_id, a.title, a.content, a.file_url, a.teacher_id, a.college_id,
+               a.status, a.create_by, a.create_time, a.update_by, a.update_time, a.del_flag, a.category,
+               u.nick_name
+        from edu_achievement a
+        left join sys_user u on a.teacher_id = u.user_id
     </sql>
 
     <select id="selectEduAchievementList" parameterType="EduAchievement" resultMap="EduAchievementResult">
         <include refid="selectEduAchievementVo"/>
         <where>  
-            <if test="title != null  and title != ''"> and title like concat('%', #{title}, '%')</if>
-            <if test="teacherId != null "> and teacher_id = #{teacherId}</if>
-            <if test="collegeId != null "> and college_id = #{collegeId}</if>
-            <if test="status != null  and status != ''"> and status = #{status}</if>
-            <if test="category != null  and category != ''"> and category = #{category}</if>
+            <if test="title != null  and title != ''"> and a.title like concat('%', #{title}, '%')</if>
+            <if test="teacherId != null "> and a.teacher_id = #{teacherId}</if>
+            <if test="teacherName != null and teacherName != ''"> and u.nick_name like concat('%', #{teacherName}, '%')</if>
+            <if test="collegeId != null "> and a.college_id = #{collegeId}</if>
+            <if test="status != null  and status != ''"> and a.status = #{status}</if>
+            <if test="category != null  and category != ''"> and a.category = #{category}</if>
         </where>
     </select>
     
     <select id="selectEduAchievementByAchievementId" parameterType="Long" resultMap="EduAchievementResult">
         <include refid="selectEduAchievementVo"/>
-        where achievement_id = #{achievementId}
+        where a.achievement_id = #{achievementId}
     </select>
 
     <insert id="insertEduAchievement" parameterType="EduAchievement" useGeneratedKeys="true" keyProperty="achievementId">

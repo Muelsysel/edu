@@ -4,66 +4,58 @@ import java.util.List;
 import com.edu.achievement.domain.EduAchievement;
 
 /**
- * 教学成果 Mapper 接口
+ * 教学成果管理Mapper接口
  * 
- * @author edu
+ * @author zpz
+ * @date 2026-03-03
  */
-
 public interface EduAchievementMapper 
 {
     /**
-     * 查询教学成果
+     * 查询教学成果管理
      * 
-     * @param achievementId 成果 ID
-     * @return 教学成果
+     * @param achievementId 教学成果管理主键
+     * @return 教学成果管理
      */
-    public EduAchievement selectAchievementById(Long achievementId);
+    public EduAchievement selectEduAchievementByAchievementId(Long achievementId);
 
     /**
-     * 查询教学成果列表
+     * 查询教学成果管理列表
      * 
-     * @param eduAchievement 教学成果
-     * @return 教学成果集合
+     * @param eduAchievement 教学成果管理
+     * @return 教学成果管理集合
      */
-    public List<EduAchievement> selectAchievementList(EduAchievement eduAchievement);
+    public List<EduAchievement> selectEduAchievementList(EduAchievement eduAchievement);
 
     /**
-     * 新增教学成果
+     * 新增教学成果管理
      * 
-     * @param eduAchievement 教学成果
+     * @param eduAchievement 教学成果管理
      * @return 结果
      */
-    public int insertAchievement(EduAchievement eduAchievement);
+    public int insertEduAchievement(EduAchievement eduAchievement);
 
     /**
-     * 修改教学成果
+     * 修改教学成果管理
      * 
-     * @param eduAchievement 教学成果
+     * @param eduAchievement 教学成果管理
      * @return 结果
      */
-    public int updateAchievement(EduAchievement eduAchievement);
+    public int updateEduAchievement(EduAchievement eduAchievement);
 
     /**
-     * 删除教学成果
+     * 删除教学成果管理
      * 
-     * @param achievementId 成果 ID
+     * @param achievementId 教学成果管理主键
      * @return 结果
      */
-    public int deleteAchievementById(Long achievementId);
+    public int deleteEduAchievementByAchievementId(Long achievementId);
 
     /**
-     * 批量删除教学成果
+     * 批量删除教学成果管理
      * 
-     * @param achievementIds 需要删除的数据 ID
+     * @param achievementIds 需要删除的数据主键集合
      * @return 结果
      */
-    public int deleteAchievementByIds(Long[] achievementIds);
-
-    /**
-     * 查询成果详情（含审核记录）
-     * 
-     * @param achievementId 成果 ID
-     * @return 教学成果
-     */
-    public EduAchievement selectAchievementDetailById(Long achievementId);
+    public int deleteEduAchievementByAchievementIds(Long[] achievementIds);
 }

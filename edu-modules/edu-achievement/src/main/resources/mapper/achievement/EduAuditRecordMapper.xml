@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.edu.achievement.mapper.EduAuditRecordMapper">
+
+    <resultMap type="EduAuditRecord" id="EduAuditRecordResult">
+        <result property="recordId"          column="record_id"          />
+        <result property="achievementId"     column="achievement_id"     />
+        <result property="auditLevel"        column="audit_level"        />
+        <result property="auditResult"       column="audit_result"       />
+        <result property="auditOpinion"      column="audit_opinion"      />
+        <result property="auditorId"         column="auditor_id"         />
+        <result property="auditorName"       column="auditor_name"       />
+        <result property="createTime"        column="create_time"        />
+        <result property="achievementTitle"  column="title"              />
+        <result property="category"          column="category"           />
+        <result property="collegeId"         column="college_id"         />
+    </resultMap>
+
+    <sql id="selectEduAuditRecordVo">
+        select r.record_id, r.achievement_id, r.audit_level, r.audit_result, r.audit_opinion,
+               r.auditor_id, r.auditor_name, r.create_time,
+               a.title, a.category, a.college_id
+        from edu_audit_record r
+        left join edu_achievement a on r.achievement_id = a.achievement_id
+    </sql>
+
+    <select id="selectEduAuditRecordList" parameterType="EduAuditRecord" resultMap="EduAuditRecordResult">
+        <include refid="selectEduAuditRecordVo"/>
+        <where>
+            <if test="achievementId != null"> and r.achievement_id = #{achievementId}</if>
+            <if test="auditLevel != null and auditLevel != ''"> and r.audit_level = #{auditLevel}</if>
+            <if test="auditResult != null and auditResult != ''"> and r.audit_result = #{auditResult}</if>
+            <if test="auditorId != null"> and r.auditor_id = #{auditorId}</if>
+            <if test="auditorName != null and auditorName != ''"> and r.auditor_name like concat('%', #{auditorName}, '%')</if>
+            <if test="achievementTitle != null and achievementTitle != ''"> and a.title like concat('%', #{achievementTitle}, '%')</if>
+            <if test="collegeId != null"> and a.college_id = #{collegeId}</if>
+        </where>
+        order by r.create_time desc
+    </select>
+
+    <select id="selectEduAuditRecordByRecordId" parameterType="Long" resultMap="EduAuditRecordResult">
+        <include refid="selectEduAuditRecordVo"/>
+        where r.record_id = #{recordId}
+    </select>
+
+    <insert id="insertEduAuditRecord" parameterType="EduAuditRecord" useGeneratedKeys="true" keyProperty="recordId">
+        insert into edu_audit_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="achievementId != null">achievement_id,</if>
+            <if test="auditLevel != null and auditLevel != ''">audit_level,</if>
+            <if test="auditResult != null and auditResult != ''">audit_result,</if>
+            <if test="auditOpinion != null">audit_opinion,</if>
+            <if test="auditorId != null">auditor_id,</if>
+            <if test="auditorName != null">auditor_name,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="achievementId != null">#{achievementId},</if>
+            <if test="auditLevel != null and auditLevel != ''">#{auditLevel},</if>
+            <if test="auditResult != null and auditResult != ''">#{auditResult},</if>
+            <if test="auditOpinion != null">#{auditOpinion},</if>
+            <if test="auditorId != null">#{auditorId},</if>
+            <if test="auditorName != null">#{auditorName},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+</mapper>
