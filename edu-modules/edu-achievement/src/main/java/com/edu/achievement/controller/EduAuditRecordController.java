@@ -1,6 +1,9 @@
 package com.edu.achievement.controller;
 
 import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletResponse;
 
 import com.edu.achievement.domain.EduAuditRecord;
@@ -27,6 +30,16 @@ import com.edu.common.core.web.page.TableDataInfo;
 /**
  * 审核管理Controller
  *
+ * <p>提供院级审核、校级审核的待审列表查询、审核操作（通过/驳回）、
+ * 审核记录查询和导出、以及全局统计数据接口。</p>
+ *
+ * <p>审核操作流程：
+ * <ul>
+ *   <li>院级审核：成果 status 1→2（通过）或 1→4（驳回）</li>
+ *   <li>校级审核：成果 status 2→3（通过）或 2→4（驳回）</li>
+ * </ul>
+ * 每次审核操作都会在 edu_audit_record 表中写入一条记录。</p>
+ *
  * @author zpz
  * @date 2026-03-15
  */
@@ -42,16 +55,19 @@ public class EduAuditRecordController extends BaseController
 
     /**
      * 院级审核 - 获取待审核列表
-     * 自动按当前审核人所在学院过滤，只返回 status=1（院级审核中）的成果
+     *
+     * <p>自动按当前审核人所在学院（dept_id）过滤，只返回 status=1（院级审核中）的成果。
+     * 确保院级审核员只能看到本院的成果数据。</p>
+     *
+     * @param eduAchievement 查询条件（可按 title、category 等过滤）
+     * @return 分页后的待审核成果列表
      */
-    @RequiresPermissions("achievement:audit:collegeList")
+    @RequiresPermissions("achievement:audit:college")
     @GetMapping("/college/list")
     public TableDataInfo collegeList(EduAchievement eduAchievement)
     {
         startPage();
-        // 强制过滤状态为"院级审核中"
         eduAchievement.setStatus("1");
-        // 按当前用户所在学院过滤（院级审核员只能审核本院的成果）
         Long deptId = SecurityUtils.getLoginUser().getSysUser().getDeptId();
         eduAchievement.setCollegeId(deptId);
         List<EduAchievement> list = eduAchievementService.selectEduAchievementList(eduAchievement);
@@ -60,14 +76,17 @@ public class EduAuditRecordController extends BaseController
 
     /**
      * 校级审核 - 获取待审核列表
-     * 返回 status=2（校级审核中）的所有成果
+     *
+     * <p>返回全校范围内 status=2（校级审核中）的所有成果，不做学院过滤。</p>
+     *
+     * @param eduAchievement 查询条件
+     * @return 分页后的待审核成果列表
      */
-    @RequiresPermissions("achievement:audit:schoolList")
+    @RequiresPermissions("achievement:audit:school")
     @GetMapping("/school/list")
     public TableDataInfo schoolList(EduAchievement eduAchievement)
     {
         startPage();
-        // 强制过滤状态为"校级审核中"
         eduAchievement.setStatus("2");
         List<EduAchievement> list = eduAchievementService.selectEduAchievementList(eduAchievement);
         return getDataTable(list);
@@ -75,6 +94,9 @@ public class EduAuditRecordController extends BaseController
 
     /**
      * 获取成果详细信息（审核时查看）
+     *
+     * @param achievementId 成果主键ID
+     * @return 成果完整信息（含教师姓名、学院等 JOIN 字段）
      */
     @RequiresPermissions("achievement:audit:query")
     @GetMapping("/detail/{achievementId}")
@@ -85,15 +107,23 @@ public class EduAuditRecordController extends BaseController
 
     /**
      * 院级审核操作
-     * 通过 -> 成果 status 改为 2（进入校级审核）
-     * 驳回 -> 成果 status 改为 4（已驳回）
+     *
+     * <p>业务逻辑：
+     * <ol>
+     *   <li>校验成果当前状态必须为 1（院级审核中），否则拒绝操作</li>
+     *   <li>根据审核结果更新成果状态：通过→2（进入校级审核），驳回→4（已驳回）</li>
+     *   <li>将审核操作写入 edu_audit_record 表，记录审核级别、结果、意见、审核人</li>
+     *   <li>向成果提交者发送站内通知（插入 sys_notice 表）</li>
+     * </ol></p>
+     *
+     * @param auditRecord 包含 achievementId、auditResult（1:通过 2:驳回）、auditOpinion
+     * @return 操作结果
      */
-    @RequiresPermissions("achievement:audit:collegeHandle")
+    @RequiresPermissions("achievement:audit:college")
     @Log(title = "院级审核", businessType = BusinessType.UPDATE)
     @PostMapping("/college/handle")
     public AjaxResult collegeHandle(@RequestBody EduAuditRecord auditRecord)
     {
-        // 1. 校验成果当前状态是否为"院级审核中(1)"
         EduAchievement achievement = eduAchievementService.selectEduAchievementByAchievementId(auditRecord.getAchievementId());
         if (achievement == null) {
             return AjaxResult.error("成果不存在");
@@ -102,40 +132,56 @@ public class EduAuditRecordController extends BaseController
             return AjaxResult.error("该成果当前状态不允许院级审核操作");
         }
 
-        // 2. 更新成果状态
+        // 更新成果状态
         EduAchievement update = new EduAchievement();
         update.setAchievementId(auditRecord.getAchievementId());
+        String resultText;
         if ("1".equals(auditRecord.getAuditResult())) {
-            // 通过 -> 进入校级审核
             update.setStatus("2");
+            resultText = "通过院级审核，已进入校级审核";
+        } else if ("3".equals(auditRecord.getAuditResult())) {
+            // 退回修改
+            update.setStatus("5");
+            resultText = "院级审核退回修改，请修改后重新提交";
         } else {
-            // 驳回
             update.setStatus("4");
+            resultText = "院级审核未通过";
         }
         update.setUpdateBy(SecurityUtils.getUsername());
         eduAchievementService.updateEduAchievement(update);
 
-        // 3. 写入审核记录
-        auditRecord.setAuditLevel("1"); // 院级审核
+        // 写入审核记录
+        auditRecord.setAuditLevel("1");
         auditRecord.setAuditorId(SecurityUtils.getUserId());
         auditRecord.setAuditorName(SecurityUtils.getUsername());
         auditRecord.setCreateTime(DateUtils.getNowDate());
         eduAuditRecordService.insertEduAuditRecord(auditRecord);
+
+        // 发送站内通知给成果提交者
+        sendAuditNotice(achievement.getTeacherId(), achievement.getTitle(), resultText, auditRecord.getAuditOpinion());
 
         return success();
     }
 
     /**
      * 校级审核操作
-     * 通过 -> 成果 status 改为 3（已通过）
-     * 驳回 -> 成果 status 改为 4（已驳回）
+     *
+     * <p>业务逻辑：
+     * <ol>
+     *   <li>校验成果当前状态必须为 2（校级审核中），否则拒绝操作</li>
+     *   <li>根据审核结果更新成果状态：通过→3（最终通过），驳回→4（已驳回）</li>
+     *   <li>将审核操作写入 edu_audit_record 表</li>
+     *   <li>向成果提交者发送站内通知</li>
+     * </ol></p>
+     *
+     * @param auditRecord 包含 achievementId、auditResult（1:通过 2:驳回）、auditOpinion
+     * @return 操作结果
      */
-    @RequiresPermissions("achievement:audit:schoolHandle")
+    @RequiresPermissions("achievement:audit:school")
     @Log(title = "校级审核", businessType = BusinessType.UPDATE)
     @PostMapping("/school/handle")
     public AjaxResult schoolHandle(@RequestBody EduAuditRecord auditRecord)
     {
-        // 1. 校验成果当前状态是否为"校级审核中(2)"
         EduAchievement achievement = eduAchievementService.selectEduAchievementByAchievementId(auditRecord.getAchievementId());
         if (achievement == null) {
             return AjaxResult.error("成果不存在");
@@ -144,43 +190,61 @@ public class EduAuditRecordController extends BaseController
             return AjaxResult.error("该成果当前状态不允许校级审核操作");
         }
 
-        // 2. 更新成果状态
+        // 更新成果状态
         EduAchievement update = new EduAchievement();
         update.setAchievementId(auditRecord.getAchievementId());
+        String resultText;
         if ("1".equals(auditRecord.getAuditResult())) {
-            // 通过
             update.setStatus("3");
+            resultText = "恭喜！您的成果已通过校级审核";
+        } else if ("3".equals(auditRecord.getAuditResult())) {
+            // 退回修改
+            update.setStatus("5");
+            resultText = "校级审核退回修改，请修改后重新提交";
         } else {
-            // 驳回
             update.setStatus("4");
+            resultText = "校级审核未通过";
         }
         update.setUpdateBy(SecurityUtils.getUsername());
         eduAchievementService.updateEduAchievement(update);
 
-        // 3. 写入审核记录
-        auditRecord.setAuditLevel("2"); // 校级审核
+        // 写入审核记录
+        auditRecord.setAuditLevel("2");
         auditRecord.setAuditorId(SecurityUtils.getUserId());
         auditRecord.setAuditorName(SecurityUtils.getUsername());
         auditRecord.setCreateTime(DateUtils.getNowDate());
         eduAuditRecordService.insertEduAuditRecord(auditRecord);
+
+        // 发送站内通知给成果提交者
+        sendAuditNotice(achievement.getTeacherId(), achievement.getTitle(), resultText, auditRecord.getAuditOpinion());
 
         return success();
     }
 
     /**
      * 查询审核记录列表
+     *
+     * @param eduAuditRecord 查询条件（可按成果标题、审核级别、审核结果、审核人过滤）
+     * @return 分页后的审核记录列表
      */
     @RequiresPermissions("achievement:audit:recordList")
     @GetMapping("/record/list")
     public TableDataInfo recordList(EduAuditRecord eduAuditRecord)
     {
         startPage();
+        // 非管理员只能看到自己审核的记录
+        if (!SecurityUtils.isAdmin(SecurityUtils.getUserId())) {
+            eduAuditRecord.setAuditorId(SecurityUtils.getUserId());
+        }
         List<EduAuditRecord> list = eduAuditRecordService.selectEduAuditRecordList(eduAuditRecord);
         return getDataTable(list);
     }
 
     /**
      * 导出审核记录列表
+     *
+     * @param response HTTP 响应对象
+     * @param eduAuditRecord 查询条件
      */
     @RequiresPermissions("achievement:audit:export")
     @Log(title = "审核记录", businessType = BusinessType.EXPORT)
@@ -190,5 +254,102 @@ public class EduAuditRecordController extends BaseController
         List<EduAuditRecord> list = eduAuditRecordService.selectEduAuditRecordList(eduAuditRecord);
         ExcelUtil<EduAuditRecord> util = new ExcelUtil<EduAuditRecord>(EduAuditRecord.class);
         util.exportExcel(response, list, "审核记录数据");
+    }
+
+    /**
+     * 首页统计接口 - 获取成果的全局统计数据
+     *
+     * <p>返回数据包括：
+     * <ul>
+     *   <li>各状态数量（草稿、院审中、校审中、已通过、已驳回）</li>
+     *   <li>各学院成果数量分布</li>
+     *   <li>各类型成果数量分布</li>
+     * </ul></p>
+     *
+     * @return 统计数据 Map
+     */
+    @GetMapping("/statistics")
+    public AjaxResult statistics()
+    {
+        int total = eduAchievementService.countTotal();
+
+        // SQL 聚合：状态统计
+        Map<String, Long> statusMap = new HashMap<>();
+        statusMap.put("draft", 0L);
+        statusMap.put("collegeAudit", 0L);
+        statusMap.put("schoolAudit", 0L);
+        statusMap.put("passed", 0L);
+        statusMap.put("rejected", 0L);
+        statusMap.put("returnRevision", 0L);
+        for (Map<String, Object> row : eduAchievementService.countByStatus()) {
+            String k = String.valueOf(row.get("k"));
+            long v = ((Number) row.get("v")).longValue();
+            switch (k) {
+                case "0": statusMap.put("draft", v); break;
+                case "1": statusMap.put("collegeAudit", v); break;
+                case "2": statusMap.put("schoolAudit", v); break;
+                case "3": statusMap.put("passed", v); break;
+                case "4": statusMap.put("rejected", v); break;
+                case "5": statusMap.put("returnRevision", v); break;
+            }
+        }
+
+        // SQL 聚合：类型统计
+        Map<String, Long> categoryMap = new HashMap<>();
+        for (Map<String, Object> row : eduAchievementService.countByCategory()) {
+            String k = String.valueOf(row.get("k"));
+            long v = ((Number) row.get("v")).longValue();
+            String name = "";
+            switch (k) {
+                case "1": name = "论文"; break;
+                case "2": name = "教材"; break;
+                case "3": name = "竞赛"; break;
+                case "4": name = "教改"; break;
+            }
+            if (!name.isEmpty()) categoryMap.put(name, v);
+        }
+
+        // SQL 聚合：学院统计
+        Map<String, Long> collegeMap = new HashMap<>();
+        for (Map<String, Object> row : eduAchievementService.countByCollege()) {
+            String k = String.valueOf(row.get("k"));
+            long v = ((Number) row.get("v")).longValue();
+            collegeMap.put(k, v);
+        }
+
+        AjaxResult ajax = AjaxResult.success();
+        ajax.put("total", total);
+        ajax.put("statusData", statusMap);
+        ajax.put("categoryData", categoryMap);
+        ajax.put("collegeData", collegeMap);
+
+        return ajax;
+    }
+
+    /**
+     * 向成果提交者发送站内审核结果通知
+     *
+     * <p>通过直接插入 sys_notice 表实现站内通知。
+     * 通知标题为"教学成果审核结果通知"，内容包含成果标题、审核结果和审核意见。</p>
+     *
+     * @param teacherId 成果提交者的用户ID
+     * @param achievementTitle 成果标题
+     * @param resultText 审核结果描述
+     * @param opinion 审核意见
+     */
+    private void sendAuditNotice(Long teacherId, String achievementTitle, String resultText, String opinion)
+    {
+        try {
+            String noticeTitle = "您的教学成果审核结果通知";
+            String noticeContent = "您申报的成果「" + achievementTitle + "」" + resultText + "。"
+                    + (opinion != null && !opinion.isEmpty() ? "\n审核意见：" + opinion : "");
+
+            // 通过 MyBatis 直接插入 sys_notice 表
+            // 注意：如果跨库需调整为 Feign 调用
+            eduAuditRecordService.insertSysNotice(noticeTitle, noticeContent, String.valueOf(teacherId));
+        } catch (Exception e) {
+            // 通知发送失败不影响主流程
+            logger.error("发送审核通知失败", e);
+        }
     }
 }

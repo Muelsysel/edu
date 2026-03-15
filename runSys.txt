@@ -15,6 +15,12 @@ pnpm run dev
 admin admin123
 nacos nacos
 
+角色        账号            密码
+管理员  admin1
+教师   teacher          123456
+校审核   CollegeAudit    123456
+院审核   SchoolAudit     123456
+
 //设置网络
 set HTTP_PROXY=http://127.0.0.1:2026
 set HTTPS_PROXY=http://127.0.0.1:2026

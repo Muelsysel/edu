@@ -34,4 +34,13 @@ public interface IEduAuditRecordService
      * @return 结果
      */
     public int insertEduAuditRecord(EduAuditRecord eduAuditRecord);
+
+    /**
+     * 向 sys_notice 表插入站内通知
+     *
+     * @param noticeTitle 通知标题
+     * @param noticeContent 通知内容
+     * @param targetUserId 目标用户ID
+     */
+    public void insertSysNotice(String noticeTitle, String noticeContent, String targetUserId);
 }

@@ -1,48 +1,64 @@
 <template>
   <div class="dashboard-container">
+    <!-- 欢迎卡片 -->
     <div class="welcome-card">
       <div class="welcome-left">
         <img :src="avatar" class="user-avatar" alt="avatar" />
         <div class="welcome-info">
           <h2 class="greeting">{{ greeting }}，{{ nickName }}</h2>
-          <p class="weather">欢迎使用 高校教学成果管理平台。今天也要在学术的道路上继续发光发热哦！</p>
+          <p class="weather">欢迎使用高校教学成果管理平台</p>
         </div>
       </div>
       <div class="welcome-right">
         <div class="stat-item">
-          <div class="stat-title">系统版本</div>
-          <div class="stat-val">v3.6.7</div>
-        </div>
-        <div class="stat-item">
           <div class="stat-title">当前角色</div>
           <div class="stat-val role-tag">{{ roleName }}</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-title">总成果数</div>
+          <div class="stat-val">{{ stats.total || 0 }}</div>
         </div>
       </div>
     </div>
 
+    <!-- 统计卡片 -->
     <panel-group :panel-list="currentPanelData" />
 
+    <!-- ECharts 图表区 -->
     <el-row :gutter="20" class="chart-wrapper">
       <el-col :xs="24" :sm="24" :lg="12">
         <el-card shadow="hover" class="chart-card">
           <div slot="header" class="chart-header">
-            <span>成果申报趋势</span>
+            <span><i class="el-icon-s-data"></i> 成果类型分布</span>
           </div>
-          <div class="chart-placeholder">
-            <svg-icon icon-class="chart" class="placeholder-icon"/>
-            <p>近六个月数据统计</p>
-          </div>
+          <div ref="pieChart" class="chart-container"></div>
         </el-card>
       </el-col>
       <el-col :xs="24" :sm="24" :lg="12">
         <el-card shadow="hover" class="chart-card">
           <div slot="header" class="chart-header">
-            <span>成果类型分布</span>
+            <span><i class="el-icon-data-analysis"></i> 审核状态分布</span>
           </div>
-          <div class="chart-placeholder">
-            <svg-icon icon-class="chart" class="placeholder-icon"/>
-            <p>科研 / 教材 / 竞赛 / 教改</p>
+          <div ref="barChart" class="chart-container"></div>
+        </el-card>
+      </el-col>
+    </el-row>
+
+    <el-row :gutter="20" class="chart-wrapper" style="margin-top: 20px;">
+      <el-col :xs="24" :sm="24" :lg="12">
+        <el-card shadow="hover" class="chart-card">
+          <div slot="header" class="chart-header">
+            <span><i class="el-icon-pie-chart"></i> 审核通过率</span>
           </div>
+          <div ref="rateChart" class="chart-container"></div>
+        </el-card>
+      </el-col>
+      <el-col :xs="24" :sm="24" :lg="12">
+        <el-card shadow="hover" class="chart-card">
+          <div slot="header" class="chart-header">
+            <span><i class="el-icon-office-building"></i> 各学院成果数量</span>
+          </div>
+          <div ref="collegeChart" class="chart-container"></div>
         </el-card>
       </el-col>
     </el-row>
@@ -52,33 +68,18 @@
 <script>
 import { mapGetters } from "vuex";
 import PanelGroup from "./dashboard/PanelGroup";
+import { getStatistics } from "@/api/achievement/audit";
+import { listDept } from "@/api/system/dept";
+import * as echarts from "echarts";
 
 export default {
   name: "Index",
-  components: {
-    PanelGroup
-  },
+  components: { PanelGroup },
   data() {
     return {
-      // 预设三种角色的面板数据
-      teacherPanels: [
-        { title: "我的申报", icon: "form", count: 12, color: "#1890ff" },
-        { title: "审核中", icon: "time-range", count: 3, color: "#faad14" },
-        { title: "已通过", icon: "validCode", count: 8, color: "#52c41a" },
-        { title: "被驳回", icon: "message", count: 1, color: "#ff4d4f" }
-      ],
-      auditorPanels: [
-        { title: "待我审核", icon: "peoples", count: 25, color: "#ff4d4f" },
-        { title: "今日已审", icon: "validCode", count: 14, color: "#1890ff" },
-        { title: "本院总申报", icon: "form", count: 156, color: "#722ed1" },
-        { title: "驳回率(%)", icon: "chart", count: 12, color: "#faad14" }
-      ],
-      adminPanels: [
-        { title: "全校总成果", icon: "education", count: 799, color: "#1890ff" },
-        { title: "活跃教师", icon: "peoples", count: 12, color: "#52c41a" },
-        { title: "系统访问量", icon: "online", count: 114514, color: "#722ed1" },
-        { title: "今日新增成果", icon: "server", count: 4, color: "#faad14" }
-      ]
+      stats: {},
+      deptMap: {},
+      charts: []
     };
   },
   computed: {
@@ -91,22 +92,159 @@ export default {
       if (hour < 18) return "下午好";
       return "晚上好";
     },
-    // 判断当前用户的最高角色权重，用于展示名称
     roleName() {
       if (this.roles.includes("admin")) return "系统管理员";
       if (this.roles.includes("auditor")) return "成果审核专家";
       return "高校教师";
     },
-    // 根据角色动态渲染不同的卡片数据
     currentPanelData() {
+      const s = this.stats.statusData || {};
       if (this.roles.includes("admin")) {
-        return this.adminPanels;
+        return [
+          { title: "全校总成果", icon: "education", count: this.stats.total || 0, color: "#1890ff" },
+          { title: "已通过", icon: "validCode", count: s.passed || 0, color: "#52c41a" },
+          { title: "审核中", icon: "time-range", count: (s.collegeAudit || 0) + (s.schoolAudit || 0), color: "#faad14" },
+          { title: "已驳回/退回", icon: "message", count: (s.rejected || 0) + (s.returnRevision || 0), color: "#ff4d4f" }
+        ];
       } else if (this.roles.includes("auditor")) {
-        return this.auditorPanels;
+        return [
+          { title: "待审核", icon: "peoples", count: (s.collegeAudit || 0) + (s.schoolAudit || 0), color: "#ff4d4f" },
+          { title: "已通过", icon: "validCode", count: s.passed || 0, color: "#52c41a" },
+          { title: "退回修改", icon: "chart", count: s.returnRevision || 0, color: "#722ed1" },
+          { title: "已驳回", icon: "message", count: s.rejected || 0, color: "#faad14" }
+        ];
       } else {
-        // 默认显示教师数据
-        return this.teacherPanels;
+        return [
+          { title: "我的申报", icon: "form", count: this.stats.total || 0, color: "#1890ff" },
+          { title: "审核中", icon: "time-range", count: (s.collegeAudit || 0) + (s.schoolAudit || 0), color: "#faad14" },
+          { title: "已通过", icon: "validCode", count: s.passed || 0, color: "#52c41a" },
+          { title: "退回修改", icon: "message", count: s.returnRevision || 0, color: "#ff4d4f" }
+        ];
       }
+    }
+  },
+  created() {
+    this.loadData();
+  },
+  mounted() {
+    window.addEventListener("resize", this.handleResize);
+  },
+  beforeDestroy() {
+    window.removeEventListener("resize", this.handleResize);
+    this.charts.forEach(c => c.dispose());
+  },
+  methods: {
+    handleResize() {
+      this.charts.forEach(c => c.resize());
+    },
+    async loadData() {
+      try {
+        const deptRes = await listDept();
+        (deptRes.data || []).forEach(d => { this.deptMap[d.deptId] = d.deptName; });
+      } catch (e) { /* ignore */ }
+
+      try {
+        const res = await getStatistics();
+        this.stats = res;
+        this.$nextTick(() => { this.initCharts(); });
+      } catch (e) { /* ignore */ }
+    },
+    initCharts() {
+      this.initPieChart();
+      this.initBarChart();
+      this.initRateChart();
+      this.initCollegeChart();
+    },
+    initPieChart() {
+      const chart = echarts.init(this.$refs.pieChart);
+      this.charts.push(chart);
+      const cat = this.stats.categoryData || {};
+      chart.setOption({
+        tooltip: { trigger: 'item', formatter: '{b}: {c} ({d}%)' },
+        legend: { bottom: '5%', left: 'center' },
+        color: ['#5470C6', '#91CC75', '#FAC858', '#EE6666'],
+        series: [{
+          type: 'pie', radius: ['40%', '70%'], avoidLabelOverlap: false,
+          itemStyle: { borderRadius: 10, borderColor: '#fff', borderWidth: 2 },
+          label: { show: false, position: 'center' },
+          emphasis: { label: { show: true, fontSize: 18, fontWeight: 'bold' } },
+          data: Object.keys(cat).map(k => ({ value: cat[k], name: k }))
+        }]
+      });
+    },
+    initBarChart() {
+      const chart = echarts.init(this.$refs.barChart);
+      this.charts.push(chart);
+      const s = this.stats.statusData || {};
+      chart.setOption({
+        tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+        grid: { left: '3%', right: '6%', bottom: '3%', containLabel: true },
+        xAxis: { type: 'category', data: ['草稿', '院审中', '校审中', '已通过', '已驳回'],
+          axisLine: { lineStyle: { color: '#ddd' } }, axisLabel: { color: '#666' } },
+        yAxis: { type: 'value', axisLine: { show: false }, splitLine: { lineStyle: { color: '#f0f0f0' } } },
+        series: [{
+          type: 'bar', barWidth: '45%',
+          itemStyle: {
+            borderRadius: [6, 6, 0, 0],
+            color: function(params) {
+              var colors = ['#909399', '#E6A23C', '#F56C6C', '#67C23A', '#F56C6C'];
+              return colors[params.dataIndex];
+            }
+          },
+          data: [s.draft || 0, s.collegeAudit || 0, s.schoolAudit || 0, s.passed || 0, s.rejected || 0]
+        }]
+      });
+    },
+    initRateChart() {
+      const chart = echarts.init(this.$refs.rateChart);
+      this.charts.push(chart);
+      const s = this.stats.statusData || {};
+      const total = (this.stats.total || 0) - (s.draft || 0); // 排除草稿
+      const passed = s.passed || 0;
+      const rate = total > 0 ? Math.round((passed / total) * 100) : 0;
+      chart.setOption({
+        series: [{
+          type: 'gauge', startAngle: 200, endAngle: -20,
+          min: 0, max: 100,
+          pointer: { show: true, length: '60%', width: 6 },
+          progress: { show: true, width: 18, roundCap: true,
+            itemStyle: { color: { type: 'linear', x: 0, y: 0, x2: 1, y2: 0,
+              colorStops: [{ offset: 0, color: '#58D9F9' }, { offset: 1, color: '#67C23A' }] } } },
+          axisLine: { lineStyle: { width: 18, color: [[1, '#f0f0f0']] } },
+          axisTick: { show: false }, splitLine: { show: false },
+          axisLabel: { distance: 25, color: '#999', fontSize: 12 },
+          detail: { valueAnimation: true, fontSize: 28, fontWeight: 'bold', color: '#333',
+            formatter: '{value}%', offsetCenter: [0, '70%'] },
+          title: { offsetCenter: [0, '90%'], fontSize: 14, color: '#999' },
+          data: [{ value: rate, name: '通过率' }]
+        }]
+      });
+    },
+    initCollegeChart() {
+      const chart = echarts.init(this.$refs.collegeChart);
+      this.charts.push(chart);
+      const col = this.stats.collegeData || {};
+      const names = []; const values = [];
+      Object.keys(col).forEach(k => {
+        names.push(this.deptMap[k] || '学院' + k);
+        values.push(col[k]);
+      });
+      chart.setOption({
+        tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+        grid: { left: '3%', right: '6%', bottom: '3%', containLabel: true },
+        xAxis: { type: 'value', splitLine: { lineStyle: { color: '#f0f0f0' } } },
+        yAxis: { type: 'category', data: names, axisLine: { lineStyle: { color: '#ddd' } },
+          axisLabel: { color: '#666' } },
+        series: [{
+          type: 'bar', barWidth: '60%',
+          itemStyle: { borderRadius: [0, 6, 6, 0],
+            color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+              { offset: 0, color: '#1890ff' }, { offset: 1, color: '#69c0ff' }
+            ])
+          },
+          data: values
+        }]
+      });
     }
   }
 };
@@ -118,7 +256,6 @@ export default {
   background-color: #f5f7fa;
   min-height: calc(100vh - 84px);
 
-  /* 欢迎卡片样式 */
   .welcome-card {
     background: #ffffff;
     border-radius: 12px;
@@ -132,97 +269,42 @@ export default {
     .welcome-left {
       display: flex;
       align-items: center;
-
       .user-avatar {
-        width: 64px;
-        height: 64px;
-        border-radius: 50%;
-        margin-right: 20px;
-        border: 2px solid #e6f7ff;
+        width: 64px; height: 64px; border-radius: 50%;
+        margin-right: 20px; border: 2px solid #e6f7ff;
       }
-
-      .welcome-info {
-        .greeting {
-          margin: 0 0 8px 0;
-          font-size: 22px;
-          font-weight: 600;
-          color: #1f2d3d;
-        }
-        .weather {
-          margin: 0;
-          font-size: 14px;
-          color: #909399;
-        }
-      }
+      .greeting { margin: 0 0 8px; font-size: 22px; font-weight: 600; color: #1f2d3d; }
+      .weather { margin: 0; font-size: 14px; color: #909399; }
     }
 
     .welcome-right {
-      display: flex;
-      gap: 40px;
-
-      .stat-item {
-        text-align: right;
-        .stat-title {
-          font-size: 13px;
-          color: #909399;
-          margin-bottom: 8px;
-        }
-        .stat-val {
-          font-size: 20px;
-          font-weight: bold;
-          color: #303133;
-        }
-        .role-tag {
-          color: #1890ff;
-          background: #e6f7ff;
-          padding: 2px 10px;
-          border-radius: 4px;
-          font-size: 14px;
-        }
+      display: flex; gap: 40px;
+      .stat-item { text-align: right;
+        .stat-title { font-size: 13px; color: #909399; margin-bottom: 8px; }
+        .stat-val { font-size: 20px; font-weight: bold; color: #303133; }
+        .role-tag { color: #1890ff; background: #e6f7ff; padding: 2px 10px; border-radius: 4px; font-size: 14px; }
       }
     }
   }
 
-  /* 图表占位区样式 */
   .chart-wrapper {
     margin-top: 24px;
     .chart-card {
-      border-radius: 12px;
-      border: none;
+      border-radius: 12px; border: none;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-
-      .chart-header {
-        font-weight: 600;
-        color: #333;
+      .chart-header { font-weight: 600; color: #333; display: flex; align-items: center; gap: 6px;
+        i { color: #1890ff; }
       }
-
-      .chart-placeholder {
-        height: 300px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        color: #c0c4cc;
-        background: #fafafa;
-        border-radius: 8px;
-
-        .placeholder-icon {
-          font-size: 48px;
-          margin-bottom: 15px;
-        }
-      }
+      .chart-container { height: 320px; }
     }
   }
 }
 
 @media (max-width: 768px) {
   .welcome-card {
-    flex-direction: column;
+    flex-direction: column !important;
     align-items: flex-start !important;
-    .welcome-right {
-      margin-top: 20px;
-      justify-content: flex-start;
-    }
+    .welcome-right { margin-top: 20px; justify-content: flex-start; }
   }
 }
 </style>

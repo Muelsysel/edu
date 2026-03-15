@@ -34,4 +34,11 @@ public interface EduAuditRecordMapper
      * @return 结果
      */
     public int insertEduAuditRecord(EduAuditRecord eduAuditRecord);
+
+    /**
+     * 插入站内通知
+     */
+    public void insertSysNotice(@org.apache.ibatis.annotations.Param("noticeTitle") String noticeTitle,
+                                @org.apache.ibatis.annotations.Param("noticeContent") String noticeContent,
+                                @org.apache.ibatis.annotations.Param("createBy") String createBy);
 }

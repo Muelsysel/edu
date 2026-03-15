@@ -58,4 +58,24 @@ public interface EduAchievementMapper
      * @return 结果
      */
     public int deleteEduAchievementByAchievementIds(Long[] achievementIds);
+
+    /**
+     * 按状态统计成果数量（SQL 聚合）
+     */
+    public List<java.util.Map<String, Object>> countByStatus();
+
+    /**
+     * 按成果类型统计数量（SQL 聚合）
+     */
+    public List<java.util.Map<String, Object>> countByCategory();
+
+    /**
+     * 按学院统计成果数量（SQL 聚合）
+     */
+    public List<java.util.Map<String, Object>> countByCollege();
+
+    /**
+     * 查询成果总数
+     */
+    public int countTotal();
 }

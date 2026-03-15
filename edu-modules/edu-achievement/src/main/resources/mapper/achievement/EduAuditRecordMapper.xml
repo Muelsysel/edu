@@ -66,4 +66,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="createTime != null">#{createTime},</if>
          </trim>
     </insert>
+
+    <!-- 向 sys_notice 表插入站内通知 -->
+    <insert id="insertSysNotice">
+        insert into sys_notice (notice_title, notice_type, notice_content, status, create_by, create_time)
+        values (#{noticeTitle}, '1', #{noticeContent}, '0', #{createBy}, sysdate())
+    </insert>
 </mapper>

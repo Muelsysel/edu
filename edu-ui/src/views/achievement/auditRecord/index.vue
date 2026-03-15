@@ -87,6 +87,7 @@
 import { listAuditRecord } from "@/api/achievement/audit";
 import { listDept } from "@/api/system/dept";
 import { parseTime } from "@/utils/ruoyi";
+import dict from "@/utils/dict";
 
 export default {
   name: "AuditRecord",
@@ -101,6 +102,7 @@ export default {
   },
   created() { this.getCollegeList(); this.getList(); },
   methods: {
+    dict,
     parseTime,
     getList() {
       this.loading = true;

@@ -93,12 +93,25 @@
       }
     }
 
-    /* 🌟 激活状态样式 */
+    /* 激活状态样式 */
     .is-active > .el-submenu__title,
     .el-menu-item.is-active {
       color: $base-menu-color-active !important;
-      background-color: #e6f7ff !important; // 胶囊底色
+      background-color: #e6f7ff !important;
       font-weight: 600;
+      position: relative;
+
+      &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 3px;
+        height: 60%;
+        border-radius: 0 3px 3px 0;
+        background: linear-gradient(180deg, #1890ff 0%, #69c0ff 100%);
+      }
     }
 
     /* 重置子菜单样式 */

@@ -7,8 +7,8 @@ import com.edu.common.security.annotation.EnableRyFeignClients;
 
 /**
  * 系统模块
- * 
- * @author ruoyi
+ *
+ * @author zpz
  */
 @EnableCustomConfig
 @EnableRyFeignClients
@@ -18,15 +18,12 @@ public class EduSystemApplication
     public static void main(String[] args)
     {
         SpringApplication.run(EduSystemApplication.class, args);
-        System.out.println("(♥◠‿◠)ﾉﾞ  系统模块启动成功   ლ(´ڡ`ლ)ﾞ  \n" +
-                " .-------.       ____     __        \n" +
-                " |  _ _   \\      \\   \\   /  /    \n" +
-                " | ( ' )  |       \\  _. /  '       \n" +
-                " |(_ o _) /        _( )_ .'         \n" +
-                " | (_,_).' __  ___(_ o _)'          \n" +
-                " |  |\\ \\  |  ||   |(_,_)'         \n" +
-                " |  | \\ `'   /|   `-'  /           \n" +
-                " |  |  \\    /  \\      /           \n" +
-                " ''-'   `'-'    `-..-'              ");
+        System.out.println("  ______  ______  _   _  _      _____                       \n" +
+                " |___  / |___  /| | | || |    |_   _|                      \n" +
+                "    / /     / / | | | || |      | |                        \n" +
+                "   / /     / /  | | | || |      | |                        \n" +
+                "  / /__   / /__ | |_| || |____  | |                        \n" +
+                " /_____| /_____| \\___/ |______| |_|                        \n" +
+                " :: 系统模块启动成功 ::                                      ");
     }
 }

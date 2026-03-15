@@ -58,3 +58,11 @@ export function listAuditRecord(query) {
     params: query
   })
 }
+
+// 首页统计数据
+export function getStatistics() {
+  return request({
+    url: '/achievement/audit/statistics',
+    method: 'get'
+  })
+}

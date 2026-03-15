@@ -1,15 +1,8 @@
 <template>
-  <div style="padding: 0 15px;" @click="toggleClick">
-    <svg
-      :class="{'is-active':isActive}"
-      class="hamburger"
-      viewBox="0 0 1024 1024"
-      xmlns="http://www.w3.org/2000/svg"
-      width="64"
-      height="64"
-    >
-      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM142.4 642.1L298.7 519a8.84 8.84 0 0 0 0-13.9L142.4 381.9c-5.8-4.6-14.4-.5-14.4 6.9v246.3a8.9 8.9 0 0 0 14.4 7z" />
-    </svg>
+  <div class="hamburger-wrap" :class="{'is-active': isActive}" @click="toggleClick">
+    <span class="bar"></span>
+    <span class="bar"></span>
+    <span class="bar"></span>
   </div>
 </template>
 
@@ -31,14 +24,46 @@ export default {
 </script>
 
 <style scoped>
-.hamburger {
-  display: inline-block;
-  vertical-align: middle;
-  width: 20px;
-  height: 20px;
+.hamburger-wrap {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+  transition: background-color 0.25s ease;
+  margin: 0 8px;
 }
 
-.hamburger.is-active {
-  transform: rotate(180deg);
+.hamburger-wrap:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+.bar {
+  display: block;
+  width: 18px;
+  height: 2px;
+  background-color: #4b5563;
+  border-radius: 2px;
+  transition: all 0.35s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.bar + .bar {
+  margin-top: 4px;
+}
+
+/* 展开状态 → X 形变 */
+.is-active .bar:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+.is-active .bar:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+.is-active .bar:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
 }
 </style>

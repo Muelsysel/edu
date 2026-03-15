@@ -1,6 +1,6 @@
 {
   "name": "edu-ui",
-  "version": "3.6.7",
+  "version": "1.0.0",
   "description": "高校教学成果管理系统",
   "author": "zpz",
   "license": "MIT",
@@ -15,13 +15,11 @@
     "admin",
     "dashboard",
     "element-ui",
-    "boilerplate",
-    "admin-template",
-    "management-system"
+    "edu-achievement"
   ],
   "repository": {
     "type": "git",
-    "url": "https://gitee.com/y_project/RuoYi-Cloud.git"
+    "url": ""
   },
   "dependencies": {
     "@riophae/vue-treeselect": "0.4.0",
