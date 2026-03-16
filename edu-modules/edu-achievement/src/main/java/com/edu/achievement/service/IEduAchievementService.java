@@ -76,4 +76,11 @@ public interface IEduAchievementService
 
     /** 查询成果总数 */
     public int countTotal();
+
+    /** 按教师 ID 统计 */
+    public List<java.util.Map<String, Object>> countByStatusForTeacher(Long teacherId);
+
+    public List<java.util.Map<String, Object>> countByCategoryForTeacher(Long teacherId);
+
+    public int countTotalForTeacher(Long teacherId);
 }

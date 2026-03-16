@@ -124,4 +124,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="countTotal" resultType="int">
         select count(*) from edu_achievement where del_flag = '0'
     </select>
+
+    <!-- 按教师 ID 统计 -->
+    <select id="countByStatusForTeacher" resultType="java.util.Map">
+        select status as k, count(*) as v from edu_achievement where del_flag = '0' and teacher_id = #{teacherId} group by status
+    </select>
+
+    <select id="countByCategoryForTeacher" resultType="java.util.Map">
+        select category as k, count(*) as v from edu_achievement where del_flag = '0' and teacher_id = #{teacherId} group by category
+    </select>
+
+    <select id="countTotalForTeacher" resultType="int">
+        select count(*) from edu_achievement where del_flag = '0' and teacher_id = #{teacherId}
+    </select>
 </mapper>

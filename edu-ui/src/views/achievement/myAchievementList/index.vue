@@ -90,12 +90,16 @@
             <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="180">
+        <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="240">
           <template slot-scope="scope">
             <el-button size="mini" type="text" icon="el-icon-view" @click="handleView(scope.row)">详情</el-button>
-            <el-button v-if="scope.row.status === '0' || scope.row.status === '4'"
+            <el-button size="mini" type="text" icon="el-icon-s-order" @click="handleProgress(scope.row)" style="color:#722ed1;">进度</el-button>
+            <el-button v-if="scope.row.status === '0'"
               size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
               v-hasPermi="['achievement:achievement:teacherUpdate']">修改</el-button>
+            <el-button v-if="scope.row.status === '4'"
+              size="mini" type="text" icon="el-icon-refresh-right" @click="handleResubmit(scope.row)"
+              style="color:#1890ff; font-weight:600;">重新提交</el-button>
             <el-button v-if="scope.row.status === '0' || scope.row.status === '4'"
               size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)"
               v-hasPermi="['achievement:achievement:teacherDel']" style="color: #F56C6C;">删除</el-button>
@@ -115,17 +119,48 @@
         </el-descriptions-item>
         <el-descriptions-item label="归属学院">{{ collegeNameById(form.collegeId) }}</el-descriptions-item>
         <el-descriptions-item label="证明材料">
-          <div v-for="(url, index) in (form.fileUrl || '').split(',')" :key="index">
-            <el-link :href="url" target="_blank" type="primary" v-if="url" :underline="false" class="file-link">
-              <i class="el-icon-document"></i> 附件 {{index+1}}
-            </el-link>
+          <div class="file-preview-list">
+            <template v-for="(url, index) in fileList">
+              <el-image v-if="isImage(url)" :key="index" :src="url" :preview-src-list="imageList" style="width:80px;height:80px;margin:4px;border-radius:8px;cursor:pointer;" fit="cover" />
+              <el-button v-else-if="isPdf(url)" :key="'pdf'+index" size="small" type="primary" plain icon="el-icon-view" @click="previewPdf(url)" style="margin:4px;">预览PDF {{index+1}}</el-button>
+              <el-link v-else :key="'f'+index" :href="url" target="_blank" type="primary" :underline="false" class="file-link"><i class="el-icon-download"></i> 附件 {{index+1}}</el-link>
+            </template>
           </div>
         </el-descriptions-item>
         <el-descriptions-item label="成果描述">
           <div v-html="form.content" class="editor-view"></div>
         </el-descriptions-item>
       </el-descriptions>
+      <!-- 审核进度条 -->
+      <div v-if="form.status && form.status !== '0'" style="margin-top:16px;">
+        <h4 style="margin-bottom:12px;">审核进度</h4>
+        <el-steps :active="stepActive" finish-status="success" align-center>
+          <el-step title="已提交" :description="parseTime(form.createTime, '{y}-{m}-{d}')"></el-step>
+          <el-step title="院级审核" :description="getStepDesc('1')" :status="getStepStatus('1')"></el-step>
+          <el-step title="校级审核" :description="getStepDesc('2')" :status="getStepStatus('2')"></el-step>
+          <el-step title="最终结果" :description="form.status === '3' ? '已通过' : (form.status === '4' ? '已驳回' : '等待中')" :status="form.status === '3' ? 'success' : (form.status === '4' ? 'error' : 'wait')"></el-step>
+        </el-steps>
+      </div>
       <div slot="footer"><el-button @click="viewOpen = false">关 闭</el-button></div>
+    </el-dialog>
+
+    <!-- 审核进度弹窗 -->
+    <el-dialog title="审核进度" :visible.sync="progressOpen" width="650px" append-to-body class="modern-dialog">
+      <el-steps :active="progressStepActive" finish-status="success" direction="vertical" style="min-height:200px;">
+        <el-step title="教师提交" :description="progressAchievement.createTime ? parseTime(progressAchievement.createTime, '{y}-{m}-{d} {h}:{i}') : ''" status="finish"></el-step>
+        <el-step v-for="(record, i) in progressRecords" :key="i"
+          :title="record.auditLevel === '1' ? '院级审核' : '校级审核'"
+          :description="(record.auditorName || '') + ' · ' + (record.auditResult === '1' ? '通过' : '驳回') + (record.auditOpinion ? ' · ' + record.auditOpinion : '') + ' · ' + parseTime(record.createTime, '{y}-{m}-{d} {h}:{i}')"
+          :status="record.auditResult === '1' ? 'finish' : 'error'"
+        ></el-step>
+      </el-steps>
+      <div slot="footer"><el-button @click="progressOpen = false">关 闭</el-button></div>
+    </el-dialog>
+
+    <!-- PDF 预览弹窗 -->
+    <el-dialog title="PDF 预览" :visible.sync="pdfOpen" width="80%" append-to-body class="modern-dialog">
+      <iframe :src="pdfUrl" style="width:100%;height:70vh;border:none;border-radius:8px;"></iframe>
+      <div slot="footer"><el-button @click="pdfOpen = false">关 闭</el-button></div>
     </el-dialog>
 
     <!-- 修改弹窗 -->
@@ -154,7 +189,7 @@
       </el-form>
       <div slot="footer">
         <el-button @click="editOpen = false">取 消</el-button>
-        <el-button type="primary" @click="submitForm">保 存</el-button>
+        <el-button type="primary" @click="submitForm">{{ form.status === '4' ? '重新提交' : '保 存' }}</el-button>
       </div>
     </el-dialog>
   </div>
@@ -163,10 +198,13 @@
 <script>
 import {
   teacherListAchievement, teacherDelAchievement, teacherGetAchievement,
-  teacherAddAchievement, teacherUpdateAchievement, teacherListAllAchievement
+  teacherAddAchievement, teacherUpdateAchievement, teacherListAllAchievement,
+  teacherResubmit
 } from "@/api/achievement/achievement";
+import { getAuditProgress } from "@/api/achievement/audit";
 import { listDept } from "@/api/system/dept";
 import { parseTime } from "@/utils/ruoyi";
+import dict from "@/utils/dict";
 
 export default {
   name: "TeacherAchievement",
@@ -185,8 +223,14 @@ export default {
       achievementList: [],
       editOpen: false,
       viewOpen: false,
+      progressOpen: false,
+      pdfOpen: false,
+      pdfUrl: '',
       editTitle: "",
       form: {},
+      progressAchievement: {},
+      progressRecords: [],
+      progressStepActive: 0,
       queryParams: {
         pageNum: 1, pageSize: 10, title: undefined, category: undefined, status: undefined
       },
@@ -202,6 +246,7 @@ export default {
     this.getCollegeList();
   },
   methods: {
+    dict,
     parseTime,
     collegeFormat(row) {
       if (!row.collegeId) return '-';
@@ -255,10 +300,33 @@ export default {
         this.editTitle = "修改成果";
       });
     },
+    handleResubmit(row) {
+      this.reset();
+      teacherGetAchievement(row.achievementId).then(response => {
+        this.form = response.data;
+        this.editOpen = true;
+        this.editTitle = "重新提交成果";
+      });
+    },
+    handleProgress(row) {
+      this.progressAchievement = row;
+      this.progressRecords = [];
+      this.progressStepActive = 1;
+      getAuditProgress(row.achievementId).then(res => {
+        this.progressRecords = res.rows || [];
+        this.progressStepActive = 1 + this.progressRecords.length;
+        this.progressOpen = true;
+      });
+    },
     submitForm() {
       this.$refs["editForm"].validate(valid => {
         if (valid) {
-          if (this.form.achievementId != null) {
+          if (this.form.achievementId != null && this.form.status === '4') {
+            // 被驳回→重新提交
+            teacherResubmit(this.form).then(() => {
+              this.$modal.msgSuccess("重新提交成功，已进入院级审核"); this.editOpen = false; this.getList(); this.getAllList();
+            });
+          } else if (this.form.achievementId != null) {
             teacherUpdateAchievement(this.form).then(() => {
               this.$modal.msgSuccess("修改成功"); this.editOpen = false; this.getList(); this.getAllList();
             });
@@ -276,6 +344,36 @@ export default {
       }).then(() => {
         this.getList(); this.getAllList(); this.$modal.msgSuccess("删除成功");
       }).catch(() => {});
+    },
+    // 文件预览辅助
+    isImage(url) { return /\.(jpg|jpeg|png|gif|bmp|webp)$/i.test(url); },
+    isPdf(url) { return /\.pdf$/i.test(url); },
+    previewPdf(url) { this.pdfUrl = url; this.pdfOpen = true; },
+    // 审核进度辅助
+    getStepDesc(level) {
+      const r = this.progressRecords && this.progressRecords.find(r => r.auditLevel === level);
+      if (!r) return '等待中';
+      return (r.auditorName || '') + ' · ' + (r.auditResult === '1' ? '通过' : '驳回');
+    },
+    getStepStatus(level) {
+      const r = this.progressRecords && this.progressRecords.find(r => r.auditLevel === level);
+      if (!r) return 'wait';
+      return r.auditResult === '1' ? 'finish' : 'error';
+    }
+  },
+  computed: {
+    fileList() {
+      return (this.form.fileUrl || '').split(',').filter(u => u);
+    },
+    imageList() {
+      return this.fileList.filter(u => this.isImage(u));
+    },
+    stepActive() {
+      const s = this.form.status;
+      if (s === '1') return 1;
+      if (s === '2') return 2;
+      if (s === '3' || s === '4') return 3;
+      return 0;
     }
   }
 };

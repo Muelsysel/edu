@@ -153,4 +153,19 @@ public class EduAchievementServiceImpl implements IEduAchievementService
     public int countTotal() {
         return eduAchievementMapper.countTotal();
     }
+
+    @Override
+    public List<java.util.Map<String, Object>> countByStatusForTeacher(Long teacherId) {
+        return eduAchievementMapper.countByStatusForTeacher(teacherId);
+    }
+
+    @Override
+    public List<java.util.Map<String, Object>> countByCategoryForTeacher(Long teacherId) {
+        return eduAchievementMapper.countByCategoryForTeacher(teacherId);
+    }
+
+    @Override
+    public int countTotalForTeacher(Long teacherId) {
+        return eduAchievementMapper.countTotalForTeacher(teacherId);
+    }
 }

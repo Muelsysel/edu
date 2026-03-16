@@ -59,10 +59,20 @@ export function listAuditRecord(query) {
   })
 }
 
-// 首页统计数据
-export function getStatistics() {
+// 首页统计数据（可传 teacherId 进行教师维度过滤）
+export function getStatistics(query) {
   return request({
     url: '/achievement/audit/statistics',
-    method: 'get'
+    method: 'get',
+    params: query
+  })
+}
+
+// 获取成果的审核进度（审核记录列表）
+export function getAuditProgress(achievementId) {
+  return request({
+    url: '/achievement/audit/record/list',
+    method: 'get',
+    params: { achievementId: achievementId, pageSize: 100 }
   })
 }

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.edu.common.log.annotation.Log;
@@ -139,10 +140,6 @@ public class EduAuditRecordController extends BaseController
         if ("1".equals(auditRecord.getAuditResult())) {
             update.setStatus("2");
             resultText = "通过院级审核，已进入校级审核";
-        } else if ("3".equals(auditRecord.getAuditResult())) {
-            // 退回修改
-            update.setStatus("5");
-            resultText = "院级审核退回修改，请修改后重新提交";
         } else {
             update.setStatus("4");
             resultText = "院级审核未通过";
@@ -197,10 +194,6 @@ public class EduAuditRecordController extends BaseController
         if ("1".equals(auditRecord.getAuditResult())) {
             update.setStatus("3");
             resultText = "恭喜！您的成果已通过校级审核";
-        } else if ("3".equals(auditRecord.getAuditResult())) {
-            // 退回修改
-            update.setStatus("5");
-            resultText = "校级审核退回修改，请修改后重新提交";
         } else {
             update.setStatus("4");
             resultText = "校级审核未通过";
@@ -269,19 +262,33 @@ public class EduAuditRecordController extends BaseController
      * @return 统计数据 Map
      */
     @GetMapping("/statistics")
-    public AjaxResult statistics()
+    public AjaxResult statistics(@RequestParam(value = "teacherId", required = false) Long teacherId)
     {
-        int total = eduAchievementService.countTotal();
+        // 如果传了 teacherId，则只统计该教师的成果
+        List<Map<String, Object>> statusRows;
+        List<Map<String, Object>> categoryRows;
+        List<Map<String, Object>> collegeRows;
+        int total;
+        if (teacherId != null) {
+            statusRows = eduAchievementService.countByStatusForTeacher(teacherId);
+            categoryRows = eduAchievementService.countByCategoryForTeacher(teacherId);
+            collegeRows = java.util.Collections.emptyList();
+            total = eduAchievementService.countTotalForTeacher(teacherId);
+        } else {
+            statusRows = eduAchievementService.countByStatus();
+            categoryRows = eduAchievementService.countByCategory();
+            collegeRows = eduAchievementService.countByCollege();
+            total = eduAchievementService.countTotal();
+        }
 
-        // SQL 聚合：状态统计
+        // 状态统计
         Map<String, Long> statusMap = new HashMap<>();
         statusMap.put("draft", 0L);
         statusMap.put("collegeAudit", 0L);
         statusMap.put("schoolAudit", 0L);
         statusMap.put("passed", 0L);
         statusMap.put("rejected", 0L);
-        statusMap.put("returnRevision", 0L);
-        for (Map<String, Object> row : eduAchievementService.countByStatus()) {
+        for (Map<String, Object> row : statusRows) {
             String k = String.valueOf(row.get("k"));
             long v = ((Number) row.get("v")).longValue();
             switch (k) {
@@ -290,28 +297,20 @@ public class EduAuditRecordController extends BaseController
                 case "2": statusMap.put("schoolAudit", v); break;
                 case "3": statusMap.put("passed", v); break;
                 case "4": statusMap.put("rejected", v); break;
-                case "5": statusMap.put("returnRevision", v); break;
             }
         }
 
-        // SQL 聚合：类型统计
+        // 类型统计：直接用 category code 作为 key，前端用 dict 转中文
         Map<String, Long> categoryMap = new HashMap<>();
-        for (Map<String, Object> row : eduAchievementService.countByCategory()) {
+        for (Map<String, Object> row : categoryRows) {
             String k = String.valueOf(row.get("k"));
             long v = ((Number) row.get("v")).longValue();
-            String name = "";
-            switch (k) {
-                case "1": name = "论文"; break;
-                case "2": name = "教材"; break;
-                case "3": name = "竞赛"; break;
-                case "4": name = "教改"; break;
-            }
-            if (!name.isEmpty()) categoryMap.put(name, v);
+            categoryMap.put(k, v);
         }
 
-        // SQL 聚合：学院统计
+        // 学院统计
         Map<String, Long> collegeMap = new HashMap<>();
-        for (Map<String, Object> row : eduAchievementService.countByCollege()) {
+        for (Map<String, Object> row : collegeRows) {
             String k = String.valueOf(row.get("k"));
             long v = ((Number) row.get("v")).longValue();
             collegeMap.put(k, v);
@@ -345,8 +344,9 @@ public class EduAuditRecordController extends BaseController
                     + (opinion != null && !opinion.isEmpty() ? "\n审核意见：" + opinion : "");
 
             // 通过 MyBatis 直接插入 sys_notice 表
-            // 注意：如果跨库需调整为 Feign 调用
-            eduAuditRecordService.insertSysNotice(noticeTitle, noticeContent, String.valueOf(teacherId));
+            // 为避免后续查询（LIKE '%createBy%'）时，userId=1 误匹配 10,11,12 等角色，这里加上前后缀标识符 '[-ID-]'
+            String targetUser = "[-" + teacherId + "-]";
+            eduAuditRecordService.insertSysNotice(noticeTitle, noticeContent, targetUser);
         } catch (Exception e) {
             // 通知发送失败不影响主流程
             logger.error("发送审核通知失败", e);

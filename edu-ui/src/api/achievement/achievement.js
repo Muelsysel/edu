@@ -104,7 +104,21 @@ export function teacherListAllAchievement(query) {
   })
 }
 
+// 教师重新提交（被驳回后修改重提）
+export function teacherResubmit(data) {
+  return request({
+    url: '/achievement/achievement/teacherResubmit',
+    method: 'put',
+    data: data
+  })
+}
 
-
-
+// AI 查重（预留接口）
+export function checkPlagiarism(data) {
+  return request({
+    url: '/achievement/achievement/checkPlagiarism',
+    method: 'post',
+    data: data
+  })
+}
 

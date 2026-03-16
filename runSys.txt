@@ -16,8 +16,8 @@ admin admin123
 nacos nacos
 
 角色        账号            密码
-管理员  admin1
-教师   teacher          123456
+管理员   admin1
+教师     teacher         123456
 校审核   CollegeAudit    123456
 院审核   SchoolAudit     123456
 

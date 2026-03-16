@@ -42,7 +42,7 @@ public class EduAchievement extends BaseEntity
     private Long collegeId;
 
     /** 审核状态 (0:草稿 1:院级审核中 2:校级审核中 3:已通过 4:已驳回) */
-    @Excel(name = "审核状态", readConverterExp = "0=草稿,1=院级审核中,2=校级审核中,3=已通过,4=已驳回,5=退回修改")
+    @Excel(name = "审核状态", readConverterExp = "0=草稿,1=院级审核中,2=校级审核中,3=已通过,4=已驳回")
     private String status;
 
     /** 删除标志 (0:存在 2:已删除) */

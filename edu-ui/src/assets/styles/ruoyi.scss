@@ -467,3 +467,84 @@ body {
 .splitpanes.default-theme .splitpanes__pane {
   background-color: #fff!important;
 }
+
+/* ============================================
+   通知铃铛徽章
+   ============================================ */
+.notice-badge {
+  display: flex !important;
+  align-items: center !important;
+  .el-badge__content {
+    border: none !important;
+    font-size: 11px !important;
+  }
+}
+
+/* ============================================
+   审核进度条 el-steps 现代化
+   ============================================ */
+.el-steps {
+  .el-step__head.is-finish .el-step__icon {
+    border-color: #52c41a !important;
+    color: #52c41a !important;
+  }
+  .el-step__head.is-error .el-step__icon {
+    border-color: #ff4d4f !important;
+    color: #ff4d4f !important;
+  }
+  .el-step__title {
+    font-size: 14px !important;
+    font-weight: 500 !important;
+  }
+  .el-step__description {
+    font-size: 12px !important;
+    color: #909399 !important;
+    line-height: 1.6 !important;
+  }
+}
+
+/* ============================================
+   描述列表
+   ============================================ */
+.el-descriptions {
+  border-radius: var(--radius-md) !important;
+  overflow: hidden;
+}
+.el-descriptions-item__label {
+  font-weight: 500 !important;
+  color: #606266 !important;
+  background: #fafbfc !important;
+}
+
+/* ============================================
+   路由切换动画
+   ============================================ */
+.fade-transform-leave-active,
+.fade-transform-enter-active {
+  transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.fade-transform-enter {
+  opacity: 0;
+  transform: translateX(-16px);
+}
+.fade-transform-leave-to {
+  opacity: 0;
+  transform: translateX(16px);
+}
+
+/* ============================================
+   全屏按钮
+   ============================================ */
+.screenfull-svg {
+  width: 20px !important;
+  height: 20px !important;
+  fill: #5a5e66 !important;
+}
+
+/* 文件预览网格 */
+.file-preview-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}

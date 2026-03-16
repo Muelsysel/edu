@@ -242,4 +242,42 @@ public class EduAchievementController extends BaseController
 
         return ajax;
     }
+
+    /**
+     * 教师重新提交成果（被驳回后重新编辑提交）
+     * 校验成果必须属于当前教师且状态为已驳回(4)，然后重置为院审中(1)
+     */
+    @RequiresPermissions("achievement:achievement:teacherEdit")
+    @Log(title = "我的成果-重新提交", businessType = BusinessType.UPDATE)
+    @PutMapping("/teacherResubmit")
+    public AjaxResult teacherResubmit(@RequestBody EduAchievement eduAchievement)
+    {
+        EduAchievement existing = eduAchievementService.selectEduAchievementByAchievementId(eduAchievement.getAchievementId());
+        if (existing == null) {
+            return AjaxResult.error("成果不存在");
+        }
+        // 防越权：只能操作自己的成果
+        if (!existing.getTeacherId().equals(SecurityUtils.getUserId())) {
+            return AjaxResult.error("无权操作他人成果");
+        }
+        // 只有被驳回(4)的成果才能重新提交
+        if (!"4".equals(existing.getStatus())) {
+            return AjaxResult.error("当前状态不允许重新提交，仅已驳回的成果可重新提交");
+        }
+        // 更新内容
+        eduAchievement.setTeacherId(SecurityUtils.getUserId());
+        eduAchievement.setStatus("1"); // 重新进入院级审核
+        eduAchievement.setUpdateBy(SecurityUtils.getUsername());
+        return toAjax(eduAchievementService.updateEduAchievement(eduAchievement));
+    }
+
+    /**
+     * AI 查重/检测接口（预留，暂不实现）
+     * 之后可对接外部查重 API，当前返回 501
+     */
+    @PostMapping("/checkPlagiarism")
+    public AjaxResult checkPlagiarism(@RequestBody EduAchievement eduAchievement)
+    {
+        return AjaxResult.error(501, "AI 查重功能正在建设中，敬请期待");
+    }
 }
