@@ -9,12 +9,12 @@ usage() {
 
 # copy sql
 echo "begin copy sql "
-cp ../sql/ry_20250523.sql ./mysql/db
-cp ../sql/ry_config_20250902.sql ./mysql/db
+cp ../sql/data/*.sql ./mysql/db/
 
 # copy html
 echo "begin copy html "
-cp -r ../edu-ui/edu-admin/** ./nginx/html/dist
+mkdir -p ./nginx/html/dist
+cp -r ../edu-ui/edu-admin/* ./nginx/html/dist/
 
 # copy jar
 echo "begin copy edu-gateway "
@@ -24,7 +24,7 @@ echo "begin copy edu-auth "
 cp ../edu-auth/target/edu-auth.jar ./edu/auth/jar
 
 echo "begin copy edu-visual "
-cp ../edu-visual/edu-monitor/target/edu-visual-monitor.jar  ./edu/visual/monitor/jar
+cp ../edu-visual/edu-monitor/target/edu-monitor.jar  ./edu/visual/monitor/jar
 
 echo "begin copy edu-modules-system "
 cp ../edu-modules/edu-system/target/edu-modules-system.jar ./edu/modules/system/jar
@@ -37,3 +37,7 @@ cp ../edu-modules/edu-job/target/edu-modules-job.jar ./edu/modules/job/jar
 
 echo "begin copy edu-modules-gen "
 cp ../edu-modules/edu-gen/target/edu-modules-gen.jar ./edu/modules/gen/jar
+
+echo "begin copy edu-modules-achievement "
+cp ../edu-modules/edu-achievement/target/edu-modules-achievement.jar ./edu/modules/achievement/jar
+

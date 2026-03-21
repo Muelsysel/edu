@@ -21,27 +21,30 @@ port(){
 	firewall-cmd --add-port=9202/tcp --permanent
 	firewall-cmd --add-port=9203/tcp --permanent
 	firewall-cmd --add-port=9300/tcp --permanent
+	firewall-cmd --add-port=9205/tcp --permanent
+	firewall-cmd --add-port=9000/tcp --permanent
+	firewall-cmd --add-port=9001/tcp --permanent
 	service firewalld restart
 }
 
 # 启动基础环境（必须）
 base(){
-	docker-compose up -d edu-mysql edu-redis edu-nacos
+	docker compose up -d edu-mysql edu-redis edu-nacos edu-minio
 }
 
 # 启动程序模块（必须）
 modules(){
-	docker-compose up -d edu-nginx edu-gateway edu-auth edu-modules-system
+	docker compose up -d edu-nginx edu-gateway edu-auth edu-modules-system edu-modules-file edu-modules-achievement
 }
 
 # 关闭所有环境/模块
 stop(){
-	docker-compose stop
+	docker compose stop
 }
 
 # 删除所有环境/模块
 rm(){
-	docker-compose rm
+	docker compose rm
 }
 
 # 根据输入参数，选择执行对应方法，不输入则执行使用说明

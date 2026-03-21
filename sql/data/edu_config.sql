@@ -10,8 +10,11 @@ Target Server Type    : MYSQL
 Target Server Version : 80033
 File Encoding         : 65001
 
-Date: 2026-03-15 16:34:00
+Date: 2026-03-21 14:13:11
 */
+
+CREATE DATABASE IF NOT EXISTS `edu_config` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `edu_config`;
 
 SET FOREIGN_KEY_CHECKS=0;
 
