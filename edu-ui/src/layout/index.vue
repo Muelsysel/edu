@@ -85,8 +85,7 @@ export default {
 }
 
 .drawer-bg {
-  background: #000;
-  opacity: 0.3;
+  background: rgba(15, 23, 42, 0.5);
   width: 100%;
   top: 0;
   height: 100%;
@@ -102,14 +101,16 @@ export default {
   width: calc(100% - #{$base-sidebar-width});
   transition: width 0.28s;
 
-  /* 🌟 核心高级感：毛玻璃顶部导航条 */
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 1px 4px rgba(0, 21, 41, 0.03);
+  /* 学术风毛玻璃顶部导航 */
+  background: rgba(248, 250, 252, 0.88);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
 }
 
 .hideSidebar .fixed-header {
-  width: calc(100% - 64px); /* 配合我们之前修改的折叠宽度 64px */
+  width: calc(100% - 64px);
 }
 
 .sidebarHide .fixed-header {

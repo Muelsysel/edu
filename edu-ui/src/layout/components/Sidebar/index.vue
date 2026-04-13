@@ -57,6 +57,6 @@ export default {
 
 <style scoped>
 .modern-sidebar {
-  background-color: #ffffff;
+  background-color: #0f172a;
 }
 </style>

@@ -1,20 +1,23 @@
 <template>
-  <el-row :gutter="24" class="panel-group">
+  <el-row :gutter="20" class="panel-group">
     <el-col
       :xs="12" :sm="12" :lg="6"
       class="card-panel-col"
       v-for="(item, index) in panelList"
       :key="index"
     >
-      <div class="card-panel" :style="{'--hover-color': item.color}">
-        <div class="card-panel-icon-wrapper" :style="{ color: item.color, backgroundColor: item.color + '15' }">
-          <svg-icon :icon-class="item.icon" class-name="card-panel-icon" />
-        </div>
-        <div class="card-panel-description">
-          <div class="card-panel-text">
-            {{ item.title }}
+      <div class="card-panel" :style="{'--accent': item.color}">
+        <div class="card-panel-accent"></div>
+        <div class="card-panel-body">
+          <div class="card-panel-icon-wrapper" :style="{ color: item.color, backgroundColor: item.color + '12' }">
+            <svg-icon :icon-class="item.icon" class-name="card-panel-icon" />
           </div>
-          <count-to :start-val="0" :end-val="item.count" :duration="2000" class="card-panel-num" />
+          <div class="card-panel-description">
+            <div class="card-panel-text">
+              {{ item.title }}
+            </div>
+            <count-to :start-val="0" :end-val="item.count" :duration="2000" class="card-panel-num" />
+          </div>
         </div>
       </div>
     </el-col>
@@ -30,7 +33,6 @@ export default {
     CountTo
   },
   props: {
-    // 接收外部传来的面板数据
     panelList: {
       type: Array,
       default: () => []
@@ -44,63 +46,71 @@ export default {
   margin-top: 0;
 
   .card-panel-col {
-    margin-bottom: 24px;
+    margin-bottom: 20px;
   }
 
   .card-panel {
-    height: 120px;
+    height: 110px;
     cursor: pointer;
     font-size: 12px;
     position: relative;
     overflow: hidden;
     background: #fff;
-    border-radius: 12px; // 胶囊圆角体系
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-    transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
-    display: flex;
-    align-items: center;
-    padding: 0 24px;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
-    /* 悬浮时的阴影上浮动效 */
+    /* 顶部彩色装饰条 */
+    .card-panel-accent {
+      height: 3px;
+      background: var(--accent);
+      border-radius: 3px 3px 0 0;
+    }
+
+    .card-panel-body {
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      height: calc(100% - 3px);
+    }
+
     &:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.06);
-
-      .card-panel-icon-wrapper {
-        background-color: var(--hover-color) !important;
-        color: #fff !important;
-      }
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(15, 23, 42, 0.08);
+      border-color: transparent;
     }
 
     .card-panel-icon-wrapper {
-      padding: 16px;
+      padding: 14px;
       transition: all 0.3s ease-out;
-      border-radius: 12px;
+      border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
     .card-panel-icon {
-      font-size: 36px;
+      font-size: 32px;
     }
 
     .card-panel-description {
-      margin-left: 20px;
+      margin-left: 18px;
       flex: 1;
 
       .card-panel-text {
         line-height: 18px;
-        color: #8c8c8c;
-        font-size: 15px;
-        margin-bottom: 10px;
+        color: #64748b;
+        font-size: 13px;
+        margin-bottom: 8px;
         font-weight: 500;
       }
 
       .card-panel-num {
-        font-size: 26px;
-        font-weight: bold;
-        color: #1f2d3d;
+        font-size: 28px;
+        font-weight: 700;
+        color: #0f172a;
+        font-family: 'Noto Serif SC', serif;
       }
     }
   }
@@ -108,12 +118,14 @@ export default {
 
 @media (max-width:550px) {
   .card-panel {
-    padding: 0 15px !important;
+    .card-panel-body {
+      padding: 0 14px !important;
+    }
     .card-panel-icon-wrapper {
       padding: 10px !important;
     }
     .card-panel-icon {
-      font-size: 28px !important;
+      font-size: 24px !important;
     }
   }
 }

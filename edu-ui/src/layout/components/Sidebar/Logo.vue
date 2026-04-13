@@ -45,12 +45,13 @@ export default {
 
 .sidebar-logo-container {
   position: relative;
-  height: 60px; // 稍微增高一点显得大气
+  height: 60px;
   line-height: 60px;
-  background: transparent; // 背景透明，融入侧边栏
+  background: transparent;
   text-align: center;
   overflow: hidden;
-  border-bottom: 1px solid #f0f0f0; // 极简底部分割线
+  // 底部金色装饰线
+  border-bottom: 1px solid rgba(212, 168, 83, 0.15);
 
   & .sidebar-logo-link {
     height: 100%;
@@ -60,22 +61,23 @@ export default {
     justify-content: center;
 
     & .sidebar-logo {
-      width: 32px;
-      height: 32px;
+      width: 30px;
+      height: 30px;
       vertical-align: middle;
       margin-right: 10px;
-      border-radius: 4px; // 给Logo稍微加点圆角
+      border-radius: 6px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     }
 
     & .sidebar-title {
       display: inline-block;
       margin: 0;
-      color: #111827; // 高级深黑
+      color: #f1f5f9;
       font-weight: 700;
-      font-size: 16px; // 字体加大
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-size: 15px;
+      font-family: 'Noto Serif SC', 'Inter', sans-serif;
       vertical-align: middle;
-      letter-spacing: 1px;
+      letter-spacing: 1.5px;
     }
   }
 

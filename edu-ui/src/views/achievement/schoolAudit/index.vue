@@ -25,14 +25,19 @@
 
     <!-- 工作台头部 -->
     <div class="workbench-header">
-      <div class="wh-left">
-        <i class="el-icon-s-flag wh-icon"></i>
-        <div>
-          <h3>校级审核工作台</h3>
-          <p>全校待校级审核成果共 <strong>{{ total }}</strong> 条</p>
+      <div class="wh-accent"></div>
+      <div class="wh-body">
+        <div class="wh-left">
+          <div class="wh-icon-wrap">
+            <i class="el-icon-s-flag wh-icon"></i>
+          </div>
+          <div>
+            <h3>校级审核工作台</h3>
+            <p>全校待校级审核成果共 <strong>{{ total }}</strong> 条</p>
+          </div>
         </div>
+        <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
       </div>
-      <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </div>
 
     <!-- 数据表格 -->
@@ -62,7 +67,7 @@
         <el-table-column label="操作" align="center" width="160">
           <template slot-scope="scope">
             <el-button size="mini" type="text" icon="el-icon-view" @click="handleView(scope.row)">详情</el-button>
-            <el-button size="mini" type="text" icon="el-icon-s-check" @click="handleAudit(scope.row)" style="color:#67C23A; font-weight:600;">审核</el-button>
+            <el-button size="mini" type="text" icon="el-icon-s-check" @click="handleAudit(scope.row)" style="color:#10b981; font-weight:600;">审核</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -186,33 +191,70 @@ export default {
 </script>
 
 <style scoped>
-.search-card { background: #fff; padding: 20px 20px 4px; border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); margin-bottom: 16px; }
+.search-card {
+  background: #fff; padding: 20px 20px 4px; border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+  margin-bottom: 16px;
+}
 .workbench-header {
+  border-radius: 14px;
+  margin-bottom: 16px;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+}
+.wh-accent {
+  height: 3px;
+  background: linear-gradient(90deg, #d4a853 0%, #f59e0b 50%, #1e40af 100%);
+}
+.wh-body {
   display: flex; justify-content: space-between; align-items: center;
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-  border-radius: 14px; padding: 20px 24px; margin-bottom: 16px; color: #fff;
+  padding: 20px 24px;
 }
 .wh-left { display: flex; align-items: center; gap: 14px; }
-.wh-icon { font-size: 36px; opacity: 0.85; }
-.wh-left h3 { margin: 0 0 4px; font-size: 17px; }
-.wh-left p { margin: 0; font-size: 13px; opacity: 0.85; }
-.wh-left strong { font-size: 16px; }
-.table-card { background: #fff; padding: 16px; border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
-.table-card >>> .el-table th { background-color: #f5f7fa !important; font-weight: 600; }
-.link-text { color: #409EFF; cursor: pointer; }
+.wh-icon-wrap {
+  width: 44px; height: 44px;
+  background: rgba(212, 168, 83, 0.1);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+}
+.wh-icon { font-size: 22px; color: #d4a853; }
+.wh-left h3 {
+  margin: 0 0 4px; font-size: 16px; color: #0f172a;
+  font-family: 'Noto Serif SC', serif; font-weight: 700;
+}
+.wh-left p { margin: 0; font-size: 13px; color: #64748b; }
+.wh-left strong { font-size: 16px; color: #d4a853; }
+
+.table-card {
+  background: #fff; padding: 16px; border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+}
+.table-card >>> .el-table th { background-color: #f1f5f9 !important; font-weight: 600; }
+.link-text { color: #1e40af; cursor: pointer; font-weight: 500; }
 .link-text:hover { text-decoration: underline; }
 .status-tag { display: inline-block; padding: 2px 12px; border-radius: 20px; font-size: 12px; font-weight: 500; }
-.status-2 { background: #fef0f0; color: #f56c6c; }
+.status-2 { background: rgba(99, 102, 241, 0.08); color: #6366f1; }
 
+/* 弹窗 */
 .modern-dialog >>> .el-dialog { border-radius: 16px; overflow: hidden; }
-.modern-dialog >>> .el-dialog__header { background: #f8f9fc; padding: 18px 24px; border-bottom: 1px solid #ebeef5; }
-.modern-dialog >>> .el-dialog__title { font-weight: 600; }
+.modern-dialog >>> .el-dialog__header { background: #f8fafc; padding: 18px 24px; border-bottom: 1px solid #e2e8f0; }
+.modern-dialog >>> .el-dialog__title { font-weight: 600; font-family: 'Noto Serif SC', serif; color: #0f172a; }
 .modern-dialog >>> .el-dialog__body { padding: 24px; }
-.audit-target { background: #f0f5ff; border-radius: 10px; padding: 12px 16px; margin-bottom: 20px; font-size: 14px; color: #409EFF; font-weight: 500; display: flex; align-items: center; gap: 8px; }
+
+.audit-target {
+  background: rgba(30, 64, 175, 0.06); border-radius: 10px;
+  padding: 12px 16px; margin-bottom: 20px;
+  font-size: 14px; color: #1e40af; font-weight: 500;
+  display: flex; align-items: center; gap: 8px;
+}
 .audit-radio-group { display: flex; flex-direction: column; gap: 12px; }
 .audit-option { font-size: 14px; }
-.audit-option.pass { color: #67C23A; }
-.audit-option.reject { color: #F56C6C; }
-.editor-view { padding: 12px; border: 1px solid #EBEEF5; border-radius: 8px; max-height: 400px; overflow-y: auto; background: #fafafa; }
-.file-link { padding: 4px 10px; background: #f0f5ff; border-radius: 6px; margin-right: 8px; }
+.audit-option.pass { color: #10b981; }
+.audit-option.reject { color: #ef4444; }
+.editor-view { padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; max-height: 400px; overflow-y: auto; background: #fafbfc; }
+.file-link { padding: 4px 10px; background: rgba(30, 64, 175, 0.06); border-radius: 6px; margin-right: 8px; }
 </style>

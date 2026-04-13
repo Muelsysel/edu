@@ -2,21 +2,25 @@
   <div class="dashboard-container">
     <!-- 欢迎卡片 -->
     <div class="welcome-card">
-      <div class="welcome-left">
-        <img :src="avatar" class="user-avatar" alt="avatar" />
-        <div class="welcome-info">
-          <h2 class="greeting">{{ greeting }}，{{ nickName }}</h2>
-          <p class="weather">欢迎使用高校教学成果管理平台</p>
+      <div class="welcome-accent"></div>
+      <div class="welcome-body">
+        <div class="welcome-left">
+          <img :src="avatar" class="user-avatar" alt="avatar" />
+          <div class="welcome-info">
+            <h2 class="greeting">{{ greeting }}，{{ nickName }}</h2>
+            <p class="welcome-sub">欢迎使用高校教学成果管理平台</p>
+          </div>
         </div>
-      </div>
-      <div class="welcome-right">
-        <div class="stat-item">
-          <div class="stat-title">当前角色</div>
-          <div class="stat-val role-tag">{{ roleName }}</div>
-        </div>
-        <div class="stat-item">
-          <div class="stat-title">总成果数</div>
-          <div class="stat-val">{{ stats.total || 0 }}</div>
+        <div class="welcome-right">
+          <div class="stat-item">
+            <div class="stat-title">当前角色</div>
+            <div class="stat-val role-tag">{{ roleName }}</div>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <div class="stat-title">总成果数</div>
+            <div class="stat-val">{{ stats.total || 0 }}</div>
+          </div>
         </div>
       </div>
     </div>
@@ -27,39 +31,43 @@
     <!-- ECharts 图表区 -->
     <el-row :gutter="20" class="chart-wrapper">
       <el-col :xs="24" :sm="24" :lg="12">
-        <el-card shadow="hover" class="chart-card">
-          <div slot="header" class="chart-header">
+        <div class="chart-card">
+          <div class="chart-card-accent"></div>
+          <div class="chart-header">
             <span><i class="el-icon-s-data"></i> 成果类型分布</span>
           </div>
           <div ref="pieChart" class="chart-container"></div>
-        </el-card>
+        </div>
       </el-col>
       <el-col :xs="24" :sm="24" :lg="12">
-        <el-card shadow="hover" class="chart-card">
-          <div slot="header" class="chart-header">
+        <div class="chart-card">
+          <div class="chart-card-accent accent-emerald"></div>
+          <div class="chart-header">
             <span><i class="el-icon-data-analysis"></i> 审核状态分布</span>
           </div>
           <div ref="barChart" class="chart-container"></div>
-        </el-card>
+        </div>
       </el-col>
     </el-row>
 
     <el-row :gutter="20" class="chart-wrapper" style="margin-top: 20px;">
       <el-col :xs="24" :sm="24" :lg="12">
-        <el-card shadow="hover" class="chart-card">
-          <div slot="header" class="chart-header">
+        <div class="chart-card">
+          <div class="chart-card-accent accent-amber"></div>
+          <div class="chart-header">
             <span><i class="el-icon-pie-chart"></i> 审核通过率</span>
           </div>
           <div ref="rateChart" class="chart-container"></div>
-        </el-card>
+        </div>
       </el-col>
       <el-col :xs="24" :sm="24" :lg="12" v-if="!isTeacher">
-        <el-card shadow="hover" class="chart-card">
-          <div slot="header" class="chart-header">
+        <div class="chart-card">
+          <div class="chart-card-accent accent-indigo"></div>
+          <div class="chart-header">
             <span><i class="el-icon-office-building"></i> 各学院成果数量</span>
           </div>
           <div ref="collegeChart" class="chart-container"></div>
-        </el-card>
+        </div>
       </el-col>
     </el-row>
   </div>
@@ -80,7 +88,7 @@ export default {
     return {
       stats: {},
       deptMap: {},
-      dictMap: {}, // category code → label 映射
+      dictMap: {},
       charts: []
     };
   },
@@ -95,15 +103,12 @@ export default {
       return "晚上好";
     },
     isTeacher() {
-      // 没有任何审核和管理员角色的，即认为是教师
       return this.roles.includes("teacher") || (!this.isAdmin && !this.isAuditor);
     },
     isAdmin() {
-      // 匹配 admin 或 admin1 等管理角色
       return this.roles.includes("admin") || this.roles.includes("admin1");
     },
     isAuditor() {
-      // 匹配院级或校级审核角色
       return this.roles.includes("CollegeAudit") || this.roles.includes("SchoolAudit") || this.roles.includes("auditor");
     },
     roleName() {
@@ -115,24 +120,24 @@ export default {
       const s = this.stats.statusData || {};
       if (this.isAdmin) {
         return [
-          { title: "全校总成果", icon: "education", count: this.stats.total || 0, color: "#1890ff" },
-          { title: "已通过", icon: "validCode", count: s.passed || 0, color: "#52c41a" },
-          { title: "审核中", icon: "time-range", count: (s.collegeAudit || 0) + (s.schoolAudit || 0), color: "#faad14" },
-          { title: "已驳回", icon: "message", count: s.rejected || 0, color: "#ff4d4f" }
+          { title: "全校总成果", icon: "education", count: this.stats.total || 0, color: "#1e40af" },
+          { title: "已通过", icon: "validCode", count: s.passed || 0, color: "#10b981" },
+          { title: "审核中", icon: "time-range", count: (s.collegeAudit || 0) + (s.schoolAudit || 0), color: "#f59e0b" },
+          { title: "已驳回", icon: "message", count: s.rejected || 0, color: "#ef4444" }
         ];
       } else if (this.isAuditor) {
         return [
-          { title: "待我审核", icon: "peoples", count: (s.collegeAudit || 0) + (s.schoolAudit || 0), color: "#ff4d4f" },
-          { title: "本级已通过", icon: "validCode", count: s.passed || 0, color: "#52c41a" },
-          { title: "成果总数", icon: "form", count: this.stats.total || 0, color: "#722ed1" },
-          { title: "已驳回", icon: "message", count: s.rejected || 0, color: "#faad14" }
+          { title: "待我审核", icon: "peoples", count: (s.collegeAudit || 0) + (s.schoolAudit || 0), color: "#ef4444" },
+          { title: "本级已通过", icon: "validCode", count: s.passed || 0, color: "#10b981" },
+          { title: "成果总数", icon: "form", count: this.stats.total || 0, color: "#6366f1" },
+          { title: "已驳回", icon: "message", count: s.rejected || 0, color: "#f59e0b" }
         ];
       } else {
         return [
-          { title: "我的申报", icon: "form", count: this.stats.total || 0, color: "#1890ff" },
-          { title: "审核中", icon: "time-range", count: (s.collegeAudit || 0) + (s.schoolAudit || 0), color: "#faad14" },
-          { title: "已通过", icon: "validCode", count: s.passed || 0, color: "#52c41a" },
-          { title: "已被驳回", icon: "message", count: s.rejected || 0, color: "#ff4d4f" }
+          { title: "我的申报", icon: "form", count: this.stats.total || 0, color: "#1e40af" },
+          { title: "审核中", icon: "time-range", count: (s.collegeAudit || 0) + (s.schoolAudit || 0), color: "#f59e0b" },
+          { title: "已通过", icon: "validCode", count: s.passed || 0, color: "#10b981" },
+          { title: "已被驳回", icon: "message", count: s.rejected || 0, color: "#ef4444" }
         ];
       }
     }
@@ -152,23 +157,19 @@ export default {
       this.charts.forEach(c => c.resize());
     },
     async loadData() {
-      // 1. 加载字典（成果类型）
       try {
         const dictRes = await getDicts("edu_achievement_category");
         (dictRes.data || []).forEach(d => { this.dictMap[d.dictValue] = d.dictLabel; });
       } catch (e) { /* ignore */ }
 
-      // 2. 加载学院映射
       try {
         const deptRes = await listDept();
         (deptRes.data || []).forEach(d => { this.deptMap[d.deptId] = d.deptName; });
       } catch (e) { /* ignore */ }
 
-      // 3. 加载统计数据：教师角色传 teacherId
       try {
         const params = {};
         if (this.isTeacher) {
-          // Fix: use this.id mapped from vuex instead of undefined this.userId
           params.teacherId = this.id;
         }
         const res = await getStatistics(params);
@@ -188,21 +189,21 @@ export default {
       const chart = echarts.init(this.$refs.pieChart);
       this.charts.push(chart);
       const cat = this.stats.categoryData || {};
-      const pieColors = ['#5470C6', '#91CC75', '#FAC858', '#EE6666', '#73C0DE', '#FC8452'];
-      // 使用字典映射 category code → 中文标签
+      // 学术配色
+      const pieColors = ['#1e40af', '#10b981', '#d4a853', '#ef4444', '#6366f1', '#f59e0b'];
       const data = Object.keys(cat).map(k => ({
         value: cat[k],
         name: this.dictMap[k] || ('类型' + k)
       }));
       chart.setOption({
         tooltip: { trigger: 'item', formatter: '{b}: {c} ({d}%)' },
-        legend: { bottom: '5%', left: 'center' },
+        legend: { bottom: '5%', left: 'center', textStyle: { color: '#64748b', fontSize: 12 } },
         color: pieColors,
         series: [{
-          type: 'pie', radius: ['40%', '70%'], avoidLabelOverlap: false,
-          itemStyle: { borderRadius: 10, borderColor: '#fff', borderWidth: 2 },
+          type: 'pie', radius: ['42%', '72%'], avoidLabelOverlap: false,
+          itemStyle: { borderRadius: 8, borderColor: '#fff', borderWidth: 2 },
           label: { show: false, position: 'center' },
-          emphasis: { label: { show: true, fontSize: 18, fontWeight: 'bold' } },
+          emphasis: { label: { show: true, fontSize: 18, fontWeight: 'bold', color: '#0f172a' } },
           data: data
         }]
       });
@@ -211,12 +212,11 @@ export default {
       const chart = echarts.init(this.$refs.barChart);
       this.charts.push(chart);
       const s = this.stats.statusData || {};
-      
+
       let chartCategories = ['草稿', '院审中', '校审中', '已通过', '已驳回'];
       let chartData = [s.draft || 0, s.collegeAudit || 0, s.schoolAudit || 0, s.passed || 0, s.rejected || 0];
-      let chartColors = ['#909399', '#E6A23C', '#F56C6C', '#67C23A', '#F56C6C'];
-      
-      // 如果不是教师（即审核员或管理员），无需展示草稿状态
+      let chartColors = ['#94a3b8', '#f59e0b', '#6366f1', '#10b981', '#ef4444'];
+
       if (!this.isTeacher) {
         chartCategories = chartCategories.slice(1);
         chartData = chartData.slice(1);
@@ -227,10 +227,12 @@ export default {
         tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
         grid: { left: '3%', right: '6%', bottom: '3%', containLabel: true },
         xAxis: { type: 'category', data: chartCategories,
-          axisLine: { lineStyle: { color: '#ddd' } }, axisLabel: { color: '#666' } },
-        yAxis: { type: 'value', axisLine: { show: false }, splitLine: { lineStyle: { color: '#f0f0f0' } } },
+          axisLine: { lineStyle: { color: '#e2e8f0' } },
+          axisLabel: { color: '#64748b', fontSize: 12 } },
+        yAxis: { type: 'value', axisLine: { show: false },
+          splitLine: { lineStyle: { color: '#f1f5f9' } } },
         series: [{
-          type: 'bar', barWidth: '45%',
+          type: 'bar', barWidth: '42%',
           itemStyle: {
             borderRadius: [6, 6, 0, 0],
             color: function(params) {
@@ -252,16 +254,17 @@ export default {
         series: [{
           type: 'gauge', startAngle: 200, endAngle: -20,
           min: 0, max: 100,
-          pointer: { show: true, length: '60%', width: 6 },
+          pointer: { show: true, length: '60%', width: 6, itemStyle: { color: '#1e40af' } },
           progress: { show: true, width: 18, roundCap: true,
             itemStyle: { color: { type: 'linear', x: 0, y: 0, x2: 1, y2: 0,
-              colorStops: [{ offset: 0, color: '#58D9F9' }, { offset: 1, color: '#67C23A' }] } } },
-          axisLine: { lineStyle: { width: 18, color: [[1, '#f0f0f0']] } },
+              colorStops: [{ offset: 0, color: '#1e40af' }, { offset: 1, color: '#10b981' }] } } },
+          axisLine: { lineStyle: { width: 18, color: [[1, '#f1f5f9']] } },
           axisTick: { show: false }, splitLine: { show: false },
-          axisLabel: { distance: 25, color: '#999', fontSize: 12 },
-          detail: { valueAnimation: true, fontSize: 28, fontWeight: 'bold', color: '#333',
+          axisLabel: { distance: 25, color: '#94a3b8', fontSize: 12 },
+          detail: { valueAnimation: true, fontSize: 28, fontWeight: 'bold', color: '#0f172a',
+            fontFamily: 'Noto Serif SC',
             formatter: '{value}%', offsetCenter: [0, '70%'] },
-          title: { offsetCenter: [0, '90%'], fontSize: 14, color: '#999' },
+          title: { offsetCenter: [0, '90%'], fontSize: 14, color: '#94a3b8' },
           data: [{ value: rate, name: '通过率' }]
         }]
       });
@@ -280,14 +283,14 @@ export default {
       chart.setOption({
         tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
         grid: { left: '3%', right: '6%', bottom: '3%', containLabel: true },
-        xAxis: { type: 'value', splitLine: { lineStyle: { color: '#f0f0f0' } } },
-        yAxis: { type: 'category', data: names, axisLine: { lineStyle: { color: '#ddd' } },
-          axisLabel: { color: '#666' } },
+        xAxis: { type: 'value', splitLine: { lineStyle: { color: '#f1f5f9' } } },
+        yAxis: { type: 'category', data: names, axisLine: { lineStyle: { color: '#e2e8f0' } },
+          axisLabel: { color: '#64748b' } },
         series: [{
           type: 'bar', barWidth: '60%',
           itemStyle: { borderRadius: [0, 6, 6, 0],
             color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
-              { offset: 0, color: '#1890ff' }, { offset: 1, color: '#69c0ff' }
+              { offset: 0, color: '#1e40af' }, { offset: 1, color: '#6366f1' }
             ])
           },
           data: values
@@ -301,58 +304,127 @@ export default {
 <style lang="scss" scoped>
 .dashboard-container {
   padding: 24px;
-  background-color: #f5f7fa;
+  background-color: #f8fafc;
   min-height: calc(100vh - 84px);
 
   .welcome-card {
     background: #ffffff;
-    border-radius: 12px;
-    padding: 24px 32px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-    margin-bottom: 24px;
+    border-radius: 14px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+    margin-bottom: 20px;
+    overflow: hidden;
+
+    .welcome-accent {
+      height: 3px;
+      background: linear-gradient(90deg, #0f172a 0%, #1e40af 40%, #d4a853 100%);
+    }
+
+    .welcome-body {
+      padding: 24px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
     .welcome-left {
       display: flex;
       align-items: center;
       .user-avatar {
-        width: 64px; height: 64px; border-radius: 50%;
-        margin-right: 20px; border: 2px solid #e6f7ff;
+        width: 56px; height: 56px; border-radius: 50%;
+        margin-right: 18px; border: 2px solid #e2e8f0;
+        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.08);
       }
-      .greeting { margin: 0 0 8px; font-size: 22px; font-weight: 600; color: #1f2d3d; }
-      .weather { margin: 0; font-size: 14px; color: #909399; }
+      .greeting {
+        margin: 0 0 4px;
+        font-size: 20px;
+        font-weight: 700;
+        color: #0f172a;
+        font-family: 'Noto Serif SC', serif;
+      }
+      .welcome-sub { margin: 0; font-size: 13px; color: #94a3b8; }
     }
 
     .welcome-right {
-      display: flex; gap: 40px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+
+      .stat-divider {
+        width: 1px;
+        height: 36px;
+        background: #e2e8f0;
+      }
+
       .stat-item { text-align: right;
-        .stat-title { font-size: 13px; color: #909399; margin-bottom: 8px; }
-        .stat-val { font-size: 20px; font-weight: bold; color: #303133; }
-        .role-tag { color: #1890ff; background: #e6f7ff; padding: 2px 10px; border-radius: 4px; font-size: 14px; }
+        .stat-title { font-size: 12px; color: #94a3b8; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .stat-val { font-size: 20px; font-weight: 700; color: #0f172a; font-family: 'Noto Serif SC', serif; }
+        .role-tag {
+          color: #1e40af;
+          background: rgba(30, 64, 175, 0.08);
+          padding: 3px 12px;
+          border-radius: 6px;
+          font-size: 13px;
+          font-weight: 600;
+        }
       }
     }
   }
 
   .chart-wrapper {
-    margin-top: 24px;
+    margin-top: 20px;
+
     .chart-card {
-      border-radius: 12px; border: none;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-      .chart-header { font-weight: 600; color: #333; display: flex; align-items: center; gap: 6px;
-        i { color: #1890ff; }
+      background: #ffffff;
+      border-radius: 14px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+      overflow: hidden;
+      transition: box-shadow 0.25s ease;
+
+      &:hover {
+        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
       }
-      .chart-container { height: 320px; }
+
+      .chart-card-accent {
+        height: 3px;
+        background: linear-gradient(90deg, #1e40af, #6366f1);
+      }
+      .chart-card-accent.accent-emerald {
+        background: linear-gradient(90deg, #10b981, #34d399);
+      }
+      .chart-card-accent.accent-amber {
+        background: linear-gradient(90deg, #d4a853, #f59e0b);
+      }
+      .chart-card-accent.accent-indigo {
+        background: linear-gradient(90deg, #6366f1, #818cf8);
+      }
+
+      .chart-header {
+        padding: 16px 20px 0;
+        font-weight: 600;
+        font-size: 15px;
+        color: #0f172a;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-family: 'Noto Serif SC', serif;
+
+        i {
+          color: #1e40af;
+          font-size: 16px;
+        }
+      }
+      .chart-container { height: 320px; padding: 8px 12px; }
     }
   }
 }
 
 @media (max-width: 768px) {
-  .welcome-card {
+  .welcome-card .welcome-body {
     flex-direction: column !important;
     align-items: flex-start !important;
-    .welcome-right { margin-top: 20px; justify-content: flex-start; }
   }
+  .welcome-right { margin-top: 16px; justify-content: flex-start; }
 }
 </style>

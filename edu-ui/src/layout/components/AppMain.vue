@@ -46,11 +46,11 @@ export default {
 
 <style lang="scss" scoped>
 .app-main {
-  /* 50= navbar  50  */
   min-height: calc(100vh - 50px);
   width: 100%;
   position: relative;
   overflow: hidden;
+  background-color: #f8fafc;
 }
 
 .fixed-header + .app-main {
@@ -70,7 +70,6 @@ export default {
 
 .hasTagsView {
   .app-main {
-    /* 84 = navbar + tags-view = 50 + 34 */
     min-height: calc(100vh - 84px);
   }
 
@@ -116,17 +115,22 @@ export default {
 </style>
 
 <style lang="scss">
+/* 学术风滚动条 */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 
 ::-webkit-scrollbar-track {
-  background-color: #f1f1f1;
+  background-color: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #c0c0c0;
-  border-radius: 3px;
+  background-color: #cbd5e1;
+  border-radius: 4px;
+
+  &:hover {
+    background-color: #94a3b8;
+  }
 }
 </style>

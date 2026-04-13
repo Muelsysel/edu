@@ -15,36 +15,36 @@
 
         <el-popover
           placement="bottom-end"
-          width="320"
+          width="360"
           trigger="click"
           @show="loadNotices"
           popper-class="notice-popover"
         >
           <div class="notice-list-container">
             <div class="notice-list-header">
-              <span>消息通知</span>
+              <span class="notice-header-title">消息通知</span>
               <el-button type="text" size="mini" v-if="noticeList.length > 0" @click="confirmAllNotices">全部已读</el-button>
             </div>
             <div class="notice-scroll-wrap" v-loading="noticeLoading">
-              <div v-if="noticeList.length === 0" class="notice-empty" style="text-align: center; padding: 20px; color: #999;">
-                <i class="el-icon-bell notice-empty-icon" style="font-size: 32px; margin-bottom: 8px;"></i>
-                <p style="margin: 0; font-size: 13px;">暂无新消息</p>
+              <div v-if="noticeList.length === 0" class="notice-empty">
+                <i class="el-icon-bell notice-empty-icon"></i>
+                <p>暂无新消息</p>
               </div>
-              <div v-for="item in noticeList" :key="item.noticeId" class="notice-item" style="padding: 12px; border-bottom: 1px solid #ebeef5; transition: all 0.3s;" :style="{ opacity: item.isRead ? 0.3 : 1 }">
-                <div class="notice-item-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                  <span class="notice-title" style="font-weight: 500; font-size: 14px; color: #303133;">{{ item.noticeTitle }}</span>
-                  <span class="notice-time" style="font-size: 12px; color: #909399;">{{ parseTime(item.createTime, '{y}-{m}-{d} {h}:{i}') }}</span>
+              <div v-for="item in noticeList" :key="item.noticeId" class="notice-item" :class="{ 'notice-read': item.isRead }">
+                <div class="notice-item-header">
+                  <span class="notice-title">{{ item.noticeTitle }}</span>
+                  <span class="notice-time">{{ parseTime(item.createTime, '{y}-{m}-{d} {h}:{i}') }}</span>
                 </div>
-                <div class="notice-content" v-html="stripHtml(item.noticeContent)" style="font-size: 13px; color: #606266; line-height: 1.5; margin-bottom: 8px;"></div>
-                <div class="notice-action" style="text-align: right;">
-                  <span v-if="item.isRead" style="font-size: 12px; color: #909399; margin-right: 8px;">已读</span>
+                <div class="notice-content" v-html="stripHtml(item.noticeContent)"></div>
+                <div class="notice-action">
+                  <span v-if="item.isRead" class="notice-read-label">已读</span>
                   <el-button v-else size="mini" type="primary" plain round @click="confirmNotice(item)">我知道了</el-button>
                 </div>
               </div>
             </div>
           </div>
           <el-badge slot="reference" :value="noticeCount" :hidden="noticeCount === 0" :max="99" class="right-menu-item hover-effect notice-badge">
-            <i class="el-icon-bell" style="font-size: 20px; cursor: pointer;"></i>
+            <i class="el-icon-bell" style="font-size: 18px; cursor: pointer;"></i>
           </el-badge>
         </el-popover>
 
@@ -110,7 +110,7 @@ export default {
       'avatar',
       'device',
       'nickName',
-      'name' // User name/id usually mapped here
+      'name'
     ]),
     setting: {
       get() {
@@ -128,9 +128,6 @@ export default {
       }
     },
     userId() {
-      // In RuoYi, id or name in getters might represent the userId or username.
-      // Often, the backend `sendAuditNotice` uses `String.valueOf(teacherId)`.
-      // We will obtain it from the store state.user.id. Since we need to access getters safely:
       return this.$store.state.user.id || this.name;
     }
   },
@@ -154,7 +151,6 @@ export default {
       }).catch(() => {})
     },
     fetchNoticeCount() {
-      // 修改：为避免 LIKE 模糊匹配（如userId=1匹配到10,11等），后端在写入时给 userId 穿上包裹符 [-ID-]
       request({ url: '/system/notice/list', method: 'get', params: { pageNum: 1, pageSize: 1, status: '0', createBy: '[-' + this.userId + '-]' } })
         .then(res => { this.noticeCount = res.total || 0; })
         .catch(() => {});
@@ -172,12 +168,9 @@ export default {
         });
     },
     confirmNotice(item) {
-      // 视觉上先隐藏或变成已读
       this.$set(item, 'isRead', true);
-      // 将通知设为关闭状态 (status = 1) 代表已读或已确认
       const data = { ...item, status: '1' };
       updateNotice(data).then(() => {
-        // 延迟移除，给一点动画时间
         setTimeout(() => {
           this.noticeList = this.noticeList.filter(n => n.noticeId !== item.noticeId);
           this.noticeCount = Math.max(0, this.noticeCount - 1);
@@ -203,7 +196,6 @@ export default {
       let tmp = document.createElement("DIV");
       tmp.innerHTML = html;
       let text = tmp.textContent || tmp.innerText || "";
-      // 截取前100个字符
       return text.length > 50 ? text.substring(0, 50) + '...' : text;
     }
   },
@@ -225,26 +217,27 @@ export default {
 }
 
 .navbar {
-  height: 60px; // 稍微增高顶部导航，增加大气感
+  height: 56px;
   overflow: hidden;
   position: relative;
-  background: transparent; // 配合外层的毛玻璃
+  background: transparent;
   display: flex;
   align-items: center;
   box-sizing: border-box;
 
   .hamburger-container {
-    line-height: 60px;
+    line-height: 56px;
     height: 100%;
     cursor: pointer;
     transition: background .3s;
     -webkit-tap-highlight-color: transparent;
     display: flex;
     align-items: center;
-    padding: 0 15px;
+    padding: 0 14px;
 
     &:hover {
-      background: rgba(0, 0, 0, .03);
+      background: rgba(15, 23, 42, 0.04);
+      border-radius: 8px;
     }
   }
 
@@ -271,7 +264,7 @@ export default {
     display: flex;
     align-items: center;
     margin-left: auto;
-    padding-right: 15px;
+    padding-right: 16px;
 
     &:focus {
       outline: none;
@@ -279,27 +272,27 @@ export default {
 
     .right-menu-item {
       display: inline-block;
-      padding: 0 12px;
+      padding: 0 10px;
       height: 100%;
       font-size: 18px;
-      color: #5a5e66;
+      color: #475569;
       display: flex;
       align-items: center;
 
       &.hover-effect {
         cursor: pointer;
-        transition: background .3s;
-        border-radius: 8px; // 给右侧按钮增加点击悬浮的圆角
-        height: 44px;
+        transition: all .25s ease;
+        border-radius: 8px;
+        height: 40px;
 
         &:hover {
-          background: rgba(0, 0, 0, .04);
+          background: rgba(15, 23, 42, 0.05);
         }
       }
     }
 
     .avatar-container {
-      margin-left: 10px;
+      margin-left: 8px;
 
       .avatar-wrapper {
         display: flex;
@@ -307,34 +300,120 @@ export default {
         position: relative;
 
         .user-avatar {
-          width: 32px;
-          height: 32px;
+          width: 30px;
+          height: 30px;
           border-radius: 50%;
-          border: 1px solid #f0f0f0;
+          border: 2px solid #e2e8f0;
         }
 
         .user-nickname {
-          margin-left: 10px;
-          font-size: 14px;
+          margin-left: 8px;
+          font-size: 13px;
           font-weight: 500;
-          color: #333;
+          color: #334155;
         }
 
         .el-icon-arrow-down {
-          margin-left: 5px;
-          font-size: 12px;
-          color: #999;
+          margin-left: 4px;
+          font-size: 11px;
+          color: #94a3b8;
         }
       }
     }
   }
 }
 
-// 修改下拉菜单弹出框的圆角和颜色
+// 通知弹窗样式
+.notice-list-container {
+  max-height: 400px;
+  overflow: hidden;
+}
+
+.notice-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid #e2e8f0;
+
+  .notice-header-title {
+    font-weight: 600;
+    font-size: 14px;
+    color: #0f172a;
+  }
+}
+
+.notice-scroll-wrap {
+  max-height: 340px;
+  overflow-y: auto;
+}
+
+.notice-empty {
+  text-align: center;
+  padding: 32px 20px;
+  color: #94a3b8;
+
+  .notice-empty-icon {
+    font-size: 36px;
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  p {
+    margin: 0;
+    font-size: 13px;
+  }
+}
+
+.notice-item {
+  padding: 14px 16px;
+  border-bottom: 1px solid #f1f5f9;
+  transition: all 0.3s;
+
+  &.notice-read {
+    opacity: 0.35;
+  }
+
+  .notice-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+
+  .notice-title {
+    font-weight: 500;
+    font-size: 14px;
+    color: #0f172a;
+  }
+
+  .notice-time {
+    font-size: 11px;
+    color: #94a3b8;
+  }
+
+  .notice-content {
+    font-size: 13px;
+    color: #64748b;
+    line-height: 1.5;
+    margin-bottom: 8px;
+  }
+
+  .notice-action {
+    text-align: right;
+
+    .notice-read-label {
+      font-size: 12px;
+      color: #94a3b8;
+    }
+  }
+}
+
+// 下拉菜单
 ::v-deep .el-dropdown-menu.user-dropdown {
-  border-radius: 8px;
+  border-radius: 10px;
   .logout-btn {
-    color: #ff4d4f;
+    color: #ef4444;
   }
 }
 </style>

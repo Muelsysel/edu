@@ -1,27 +1,46 @@
 <template>
   <div class="login-wrapper">
-    <div class="login-overlay"></div>
+    <div class="login-bg-pattern"></div>
 
     <div class="login-card">
+      <!-- 左侧学术品牌区 -->
       <div class="login-left">
-        <div class="left-header">
-          <img src="../assets/logo/logo1.png" alt="logo" class="logo" v-if="false" /> <span class="brand-name">H.E.A.M.S</span>
-        </div>
-        <div class="left-body">
+        <div class="left-content">
+          <div class="brand-badge">
+            <span class="brand-icon">🎓</span>
+          </div>
           <h1 class="sys-title">{{ title }}</h1>
-          <p class="sys-desc">高校信息化转型时代下的成果申报、多级审核与数字化管理平台。</p>
+          <p class="sys-desc">高校信息化转型时代下的成果申报、多级审核与数字化管理平台</p>
+          <div class="feature-list">
+            <div class="feature-item">
+              <i class="el-icon-document-checked"></i>
+              <span>成果申报与管理</span>
+            </div>
+            <div class="feature-item">
+              <i class="el-icon-s-check"></i>
+              <span>多级审核流程</span>
+            </div>
+            <div class="feature-item">
+              <i class="el-icon-data-analysis"></i>
+              <span>数据可视化分析</span>
+            </div>
+          </div>
         </div>
         <div class="left-footer">
           <span>郑州轻工业大学 · 软件工程</span>
         </div>
-        <div class="circle-light top-light"></div>
-        <div class="circle-light bottom-light"></div>
+        <!-- 几何装饰 -->
+        <div class="geo-line geo-1"></div>
+        <div class="geo-line geo-2"></div>
+        <div class="geo-dot geo-dot-1"></div>
+        <div class="geo-dot geo-dot-2"></div>
       </div>
 
+      <!-- 右侧表单区 -->
       <div class="login-right">
         <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form">
           <h2 class="form-title">欢迎登录</h2>
-          <p class="form-subtitle">请输入您的账号和密码</p>
+          <p class="form-subtitle">请输入您的账号和密码以访问系统</p>
 
           <el-form-item prop="username">
             <el-input
@@ -70,7 +89,7 @@
             <router-link v-if="register" class="register-link" :to="'/register'">无账号？去注册</router-link>
           </div>
 
-          <el-form-item style="width:100%; margin-top: 10px;">
+          <el-form-item style="width:100%; margin-top: 8px;">
             <el-button
               :loading="loading"
               size="medium"
@@ -93,7 +112,6 @@
 </template>
 
 <script>
-// ---------- 这里的 Script 逻辑一字未改，保证功能 100% 正常运行 ----------
 import { getCodeImg } from "@/api/login"
 import Cookies from "js-cookie"
 import { encrypt, decrypt } from '@/utils/jsencrypt'
@@ -185,27 +203,31 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-/* 全屏容器 */
+/* 全屏容器 — 深蓝学术底 */
 .login-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-image: url("../assets/images/login-background.jpg");
-  background-size: cover;
-  background-position: center;
+  background: #0f172a;
   position: relative;
+  overflow: hidden;
 }
 
-/* 深色半透明遮罩，提升高级感 */
-.login-overlay {
+/* 几何纹路背景 */
+.login-bg-pattern {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.45);
-  backdrop-filter: blur(3px); /* 轻微毛玻璃背景 */
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image:
+    radial-gradient(circle at 20% 50%, rgba(30, 64, 175, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(212, 168, 83, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 60% 80%, rgba(99, 102, 241, 0.06) 0%, transparent 40%);
+  animation: bgFloat 20s ease-in-out infinite;
+}
+
+@keyframes bgFloat {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(-10px, 10px); }
 }
 
 /* 核心登录卡片 */
@@ -213,19 +235,21 @@ export default {
   position: relative;
   z-index: 10;
   display: flex;
-  width: 900px;
-  height: 500px;
+  width: 960px;
+  min-height: 540px;
   background: #ffffff;
   border-radius: 20px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+  box-shadow:
+    0 25px 60px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.05);
   overflow: hidden;
 }
 
 /* --- 左侧品牌区 --- */
 .login-left {
   flex: 5;
-  background: linear-gradient(135deg, #1f426e 0%, #1890ff 100%);
-  padding: 40px;
+  background: linear-gradient(160deg, #0f172a 0%, #1e3a5f 50%, #1e40af 100%);
+  padding: 44px 40px;
   color: #ffffff;
   display: flex;
   flex-direction: column;
@@ -233,74 +257,119 @@ export default {
   position: relative;
   overflow: hidden;
 
-  .left-header {
-    font-size: 18px;
-    font-weight: bold;
-    letter-spacing: 2px;
+  .left-content {
     z-index: 2;
+    position: relative;
   }
 
-  .left-body {
-    z-index: 2;
-    .sys-title {
-      font-size: 36px;
-      font-weight: 600;
-      margin-bottom: 15px;
-      line-height: 1.2;
+  .brand-badge {
+   width: 52px; height: 52px;
+    background: rgba(212, 168, 83, 0.15);
+    border: 1px solid rgba(212, 168, 83, 0.3);
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 28px;
+
+    .brand-icon {
+      font-size: 26px;
     }
-    .sys-desc {
-      font-size: 15px;
-      line-height: 1.8;
-      color: rgba(255, 255, 255, 0.85);
+  }
+
+  .sys-title {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    line-height: 1.3;
+    letter-spacing: 1px;
+    color: #f1f5f9;
+  }
+
+  .sys-desc {
+    font-size: 14px;
+    line-height: 1.8;
+    color: rgba(203, 213, 225, 0.8);
+    margin-bottom: 32px;
+  }
+
+  .feature-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+
+    .feature-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      color: rgba(203, 213, 225, 0.7);
+
+      i {
+        color: #d4a853;
+        font-size: 16px;
+        width: 28px; height: 28px;
+        background: rgba(212, 168, 83, 0.1);
+        border-radius: 6px;
+        display: flex; align-items: center; justify-content: center;
+      }
     }
   }
 
   .left-footer {
     z-index: 2;
-    font-size: 13px;
-    color: rgba(255, 255, 255, 0.6);
+    position: relative;
+    font-size: 12px;
+    color: rgba(148, 163, 184, 0.5);
+    letter-spacing: 1px;
   }
 
-  /* 极简风的几何光晕装饰 */
-  .circle-light {
+  /* 几何线条装饰 */
+  .geo-line {
     position: absolute;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(212, 168, 83, 0.06);
     z-index: 1;
   }
-  .top-light {
-    width: 300px;
-    height: 300px;
-    top: -100px;
-    right: -100px;
+  .geo-1 {
+    width: 200px; height: 1px;
+    top: 40%; right: -40px;
+    transform: rotate(-30deg);
   }
-  .bottom-light {
-    width: 400px;
-    height: 400px;
-    bottom: -150px;
-    left: -150px;
+  .geo-2 {
+    width: 300px; height: 1px;
+    bottom: 30%; left: -60px;
+    transform: rotate(20deg);
   }
+  .geo-dot {
+    position: absolute;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: rgba(212, 168, 83, 0.2);
+    z-index: 1;
+  }
+  .geo-dot-1 { top: 20%; right: 20%; }
+  .geo-dot-2 { bottom: 25%; left: 15%; }
 }
 
 /* --- 右侧表单区 --- */
 .login-right {
   flex: 4;
-  padding: 50px 50px;
+  padding: 52px 48px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   background: #ffffff;
 
   .form-title {
-    font-size: 28px;
-    color: #333;
+    font-family: 'Noto Serif SC', serif;
+    font-size: 26px;
+    color: #0f172a;
     margin: 0;
-    font-weight: 600;
+    font-weight: 700;
   }
   .form-subtitle {
-    font-size: 14px;
-    color: #888;
-    margin: 10px 0 35px 0;
+    font-size: 13px;
+    color: #94a3b8;
+    margin: 10px 0 32px 0;
   }
 }
 
@@ -308,21 +377,22 @@ export default {
   width: 100%;
 }
 
-/* 现代化输入框样式覆盖 */
+/* 输入框 */
 ::v-deep .modern-input {
   .el-input__inner {
-    height: 48px;
-    line-height: 48px;
-    border-radius: 8px;
-    background-color: #f7f9fc;
-    border: 1px solid transparent;
+    height: 46px;
+    line-height: 46px;
+    border-radius: 10px;
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
     padding-left: 38px;
-    transition: all 0.3s;
+    font-size: 14px;
+    transition: all 0.25s ease;
 
     &:focus {
       background-color: #fff;
-      border-color: #1890ff;
-      box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.1);
+      border-color: #1e40af;
+      box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.08);
     }
   }
   .el-input__prefix {
@@ -331,27 +401,27 @@ export default {
 }
 
 .input-icon {
-  height: 48px;
+  height: 46px;
   width: 16px;
-  color: #a0a0a0;
+  color: #94a3b8;
 }
 
-/* 验证码 Flex 布局 */
+/* 验证码 */
 .captcha-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 15px;
+  gap: 12px;
 
   .captcha-input {
     flex: 1;
   }
   .login-code {
     width: 110px;
-    height: 48px;
-    border-radius: 8px;
+    height: 46px;
+    border-radius: 10px;
     overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    border: 1px solid #e2e8f0;
     .login-code-img {
       width: 100%;
       height: 100%;
@@ -365,45 +435,47 @@ export default {
   }
 }
 
-/* 记住我与注册区 */
+/* 记住我与注册 */
 .form-actions {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 25px;
+  margin-bottom: 20px;
 
   .remember-me {
     margin: 0;
   }
   .register-link {
-    font-size: 14px;
-    color: #1890ff;
+    font-size: 13px;
+    color: #1e40af;
     text-decoration: none;
-    transition: color 0.3s;
+    font-weight: 500;
+    transition: color 0.25s;
     &:hover {
-      color: #40a9ff;
+      color: #d4a853;
     }
   }
 }
 
-/* 登录大按钮 */
+/* 登录按钮 */
 .login-btn {
-  height: 48px;
-  font-size: 16px;
-  border-radius: 8px;
-  font-weight: 500;
-  letter-spacing: 2px;
-  background: linear-gradient(to right, #1890ff, #3e98f7);
-  border: none;
-  transition: all 0.3s;
+  height: 46px;
+  font-size: 15px;
+  border-radius: 10px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  background: linear-gradient(135deg, #1e40af 0%, #1e3a5f 100%) !important;
+  border: none !important;
+  transition: all 0.3s ease;
+  width: 100%;
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(24, 144, 255, 0.3);
+    box-shadow: 0 8px 25px rgba(30, 64, 175, 0.35);
   }
 }
 
-/* 最底部通用脚部 */
+/* 底部 */
 .el-login-footer {
   height: 40px;
   line-height: 40px;
@@ -411,8 +483,8 @@ export default {
   bottom: 0;
   width: 100%;
   text-align: center;
-  color: rgba(255,255,255,0.7);
-  font-size: 13px;
+  color: rgba(148, 163, 184, 0.4);
+  font-size: 12px;
   letter-spacing: 1px;
 }
 </style>

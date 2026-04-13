@@ -1,4 +1,8 @@
-// base color
+// ============================================
+// 高校教学成果管理系统 — 学术深邃风 设计令牌
+// ============================================
+
+// 兼容旧版 btn.scss 引用的颜色变量
 $blue:#324157;
 $light-blue:#3A71A8;
 $red:#C03639;
@@ -8,21 +12,45 @@ $tiffany: #4AB7BD;
 $yellow:#FEC171;
 $panGreen: #30B08F;
 
-// 现代纯白悬浮风 (Light Minimalist)
-$base-menu-color: #4b5563;             // 默认文字颜色 (高级灰)
-$base-menu-color-active: #1890ff;      // 激活文字颜色 (科技蓝)
-$base-menu-background: #ffffff;        // 侧边栏背景色 (纯白)
-$base-logo-title-color: #111827;       // Logo文字颜色 (深灰黑)
+// 品牌主色
+$academic-navy:   #0f172a;   // 深海军蓝 — 侧栏底色
+$academic-blue:   #1e40af;   // 学术蓝   — 主要 CTA
+$academic-gold:   #d4a853;   // 琥珀金   — 强调色
+$academic-slate:  #1e293b;   // 暗石板   — 侧栏悬浮底
 
-$base-menu-light-color: #4b5563;
-$base-menu-light-background: #ffffff;
-$base-logo-light-title-color: #111827;
+// 功能色
+$success: #10b981;
+$warning: #f59e0b;
+$danger:  #ef4444;
+$info:    #6366f1;
 
-$base-sub-menu-background: #ffffff;    // 子菜单背景同样纯白
-$base-sub-menu-hover: #f3f4f6;         // 悬浮时的底色 (极浅灰)
-$base-menu-item-active-bg: #e6f7ff;    // 激活时的胶囊底色 (极浅蓝)
+// 中性色阶
+$gray-50:  #f8fafc;
+$gray-100: #f1f5f9;
+$gray-200: #e2e8f0;
+$gray-300: #cbd5e1;
+$gray-400: #94a3b8;
+$gray-500: #64748b;
+$gray-600: #475569;
+$gray-700: #334155;
+$gray-800: #1e293b;
+$gray-900: #0f172a;
 
-$base-sidebar-width: 220px;            // 稍微加宽，增加留白呼吸感
+// ---------- 侧边栏变量 ----------
+$base-menu-color:          rgba(203, 213, 225, 0.85);  // 菜单文字（浅灰白）
+$base-menu-color-active:   $academic-gold;               // 激活文字（金色）
+$base-menu-background:     $academic-navy;               // 侧栏底色
+$base-logo-title-color:    #ffffff;                      // Logo 文字
+
+$base-menu-light-color:          $gray-600;
+$base-menu-light-background:     #ffffff;
+$base-logo-light-title-color:    $gray-900;
+
+$base-sub-menu-background:       $academic-navy;          // 子菜单底色
+$base-sub-menu-hover:            $academic-slate;         // 菜单悬浮底
+$base-menu-item-active-bg:       rgba(212, 168, 83, 0.12); // 激活底色（金色半透明）
+
+$base-sidebar-width: 230px;
 
 // the :export directive is the magic sauce for webpack
 :export {

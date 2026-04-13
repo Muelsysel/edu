@@ -169,13 +169,14 @@ export default {
 <style scoped>
 .form-card {
   background: #fff;
-  border-radius: 16px;
+  border-radius: 14px;
   padding: 0;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
   overflow: hidden;
 }
 .form-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #0f172a 0%, #1e40af 100%);
   padding: 28px 32px;
   display: flex;
   align-items: center;
@@ -183,18 +184,23 @@ export default {
 }
 .form-header-icon {
   width: 48px; height: 48px;
-  background: rgba(255,255,255,0.2);
+  background: rgba(212, 168, 83, 0.15);
+  border: 1px solid rgba(212, 168, 83, 0.3);
   border-radius: 12px;
   display: flex; align-items: center; justify-content: center;
-  font-size: 24px; color: #fff;
+  font-size: 22px; color: #d4a853;
 }
-.form-header-text h3 { color: #fff; margin: 0 0 4px; font-size: 18px; }
-.form-header-text p { color: rgba(255,255,255,0.8); margin: 0; font-size: 13px; }
+.form-header-text h3 {
+  color: #f1f5f9; margin: 0 0 4px; font-size: 18px;
+  font-family: 'Noto Serif SC', serif; font-weight: 700;
+}
+.form-header-text p { color: rgba(203, 213, 225, 0.7); margin: 0; font-size: 13px; }
 .modern-form { padding: 28px 32px; }
 
-/* 审核进度展示 */
+/* 审核进度 */
 .status-display {
-  background: #f8f9fc;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
   border-radius: 12px;
   padding: 20px 24px;
   margin-bottom: 20px;
@@ -203,23 +209,23 @@ export default {
 .step { display: flex; flex-direction: column; align-items: center; gap: 6px; }
 .step-dot {
   width: 14px; height: 14px; border-radius: 50%;
-  background: #dcdfe6; transition: all .3s;
+  background: #cbd5e1; transition: all .3s;
 }
-.step span { font-size: 12px; color: #909399; }
-.step-active .step-dot { background: #409EFF; box-shadow: 0 0 0 4px rgba(64,158,255,0.15); }
-.step-active span { color: #409EFF; font-weight: 600; }
-.step-success .step-dot { background: #67C23A; box-shadow: 0 0 0 4px rgba(103,194,58,0.15); }
-.step-success span { color: #67C23A; }
-.step-error .step-dot { background: #F56C6C; box-shadow: 0 0 0 4px rgba(245,108,108,0.15); }
-.step-error span { color: #F56C6C; }
-.step-line { width: 60px; height: 2px; background: #dcdfe6; margin: 0 8px; margin-bottom: 20px; }
-.line-active { background: #409EFF; }
+.step span { font-size: 12px; color: #94a3b8; }
+.step-active .step-dot { background: #1e40af; box-shadow: 0 0 0 4px rgba(30, 64, 175, 0.12); }
+.step-active span { color: #1e40af; font-weight: 600; }
+.step-success .step-dot { background: #10b981; box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.12); }
+.step-success span { color: #10b981; }
+.step-error .step-dot { background: #ef4444; box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.12); }
+.step-error span { color: #ef4444; }
+.step-line { width: 60px; height: 2px; background: #e2e8f0; margin: 0 8px; margin-bottom: 20px; }
+.line-active { background: #1e40af; }
 
-/* 附件预览 */
+/* 附件 */
 .file-preview { display: flex; gap: 12px; flex-wrap: wrap; }
 .file-link {
   padding: 6px 14px;
-  background: #f0f5ff;
+  background: rgba(30, 64, 175, 0.06);
   border-radius: 8px;
   font-size: 13px;
 }

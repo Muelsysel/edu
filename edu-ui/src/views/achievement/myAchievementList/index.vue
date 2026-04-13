@@ -4,37 +4,49 @@
     <el-row :gutter="16" class="stat-row">
       <el-col :span="6">
         <div class="stat-card stat-total">
-          <div class="stat-icon"><i class="el-icon-files"></i></div>
-          <div class="stat-info">
-            <div class="stat-value">{{ totalCount }}</div>
-            <div class="stat-label">全部记录</div>
+          <div class="stat-accent"></div>
+          <div class="stat-body">
+            <div class="stat-icon"><i class="el-icon-files"></i></div>
+            <div class="stat-info">
+              <div class="stat-value">{{ totalCount }}</div>
+              <div class="stat-label">全部记录</div>
+            </div>
           </div>
         </div>
       </el-col>
       <el-col :span="6">
         <div class="stat-card stat-pass">
-          <div class="stat-icon"><i class="el-icon-circle-check"></i></div>
-          <div class="stat-info">
-            <div class="stat-value">{{ passCount }}</div>
-            <div class="stat-label">已通过</div>
+          <div class="stat-accent accent-success"></div>
+          <div class="stat-body">
+            <div class="stat-icon"><i class="el-icon-circle-check"></i></div>
+            <div class="stat-info">
+              <div class="stat-value">{{ passCount }}</div>
+              <div class="stat-label">已通过</div>
+            </div>
           </div>
         </div>
       </el-col>
       <el-col :span="6">
         <div class="stat-card stat-audit">
-          <div class="stat-icon"><i class="el-icon-time"></i></div>
-          <div class="stat-info">
-            <div class="stat-value">{{ auditCount }}</div>
-            <div class="stat-label">审核中</div>
+          <div class="stat-accent accent-warning"></div>
+          <div class="stat-body">
+            <div class="stat-icon"><i class="el-icon-time"></i></div>
+            <div class="stat-info">
+              <div class="stat-value">{{ auditCount }}</div>
+              <div class="stat-label">审核中</div>
+            </div>
           </div>
         </div>
       </el-col>
       <el-col :span="6">
         <div class="stat-card stat-reject">
-          <div class="stat-icon"><i class="el-icon-circle-close"></i></div>
-          <div class="stat-info">
-            <div class="stat-value">{{ rejectCount }}</div>
-            <div class="stat-label">被驳回</div>
+          <div class="stat-accent accent-danger"></div>
+          <div class="stat-body">
+            <div class="stat-icon"><i class="el-icon-circle-close"></i></div>
+            <div class="stat-info">
+              <div class="stat-value">{{ rejectCount }}</div>
+              <div class="stat-label">被驳回</div>
+            </div>
           </div>
         </div>
       </el-col>
@@ -93,16 +105,16 @@
         <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="240">
           <template slot-scope="scope">
             <el-button size="mini" type="text" icon="el-icon-view" @click="handleView(scope.row)">详情</el-button>
-            <el-button size="mini" type="text" icon="el-icon-s-order" @click="handleProgress(scope.row)" style="color:#722ed1;">进度</el-button>
+            <el-button size="mini" type="text" icon="el-icon-s-order" @click="handleProgress(scope.row)" style="color:#6366f1;">进度</el-button>
             <el-button v-if="scope.row.status === '0'"
               size="mini" type="text" icon="el-icon-edit" @click="handleUpdate(scope.row)"
               v-hasPermi="['achievement:achievement:teacherUpdate']">修改</el-button>
             <el-button v-if="scope.row.status === '4'"
               size="mini" type="text" icon="el-icon-refresh-right" @click="handleResubmit(scope.row)"
-              style="color:#1890ff; font-weight:600;">重新提交</el-button>
+              style="color:#1e40af; font-weight:600;">重新提交</el-button>
             <el-button v-if="scope.row.status === '0' || scope.row.status === '4'"
               size="mini" type="text" icon="el-icon-delete" @click="handleDelete(scope.row)"
-              v-hasPermi="['achievement:achievement:teacherDel']" style="color: #F56C6C;">删除</el-button>
+              v-hasPermi="['achievement:achievement:teacherDel']" style="color: #ef4444;">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -133,7 +145,7 @@
       </el-descriptions>
       <!-- 审核进度条 -->
       <div v-if="form.status && form.status !== '0'" style="margin-top:16px;">
-        <h4 style="margin-bottom:12px;">审核进度</h4>
+        <h4 style="margin-bottom:12px; font-family: 'Noto Serif SC', serif; color: #0f172a;">审核进度</h4>
         <el-steps :active="stepActive" finish-status="success" align-center>
           <el-step title="已提交" :description="parseTime(form.createTime, '{y}-{m}-{d}')"></el-step>
           <el-step title="院级审核" :description="getStepDesc('1')" :status="getStepStatus('1')"></el-step>
@@ -322,7 +334,6 @@ export default {
       this.$refs["editForm"].validate(valid => {
         if (valid) {
           if (this.form.achievementId != null && this.form.status === '4') {
-            // 被驳回→重新提交
             teacherResubmit(this.form).then(() => {
               this.$modal.msgSuccess("重新提交成功，已进入院级审核"); this.editOpen = false; this.getList(); this.getAllList();
             });
@@ -345,11 +356,9 @@ export default {
         this.getList(); this.getAllList(); this.$modal.msgSuccess("删除成功");
       }).catch(() => {});
     },
-    // 文件预览辅助
     isImage(url) { return /\.(jpg|jpeg|png|gif|bmp|webp)$/i.test(url); },
     isPdf(url) { return /\.pdf$/i.test(url); },
     previewPdf(url) { this.pdfUrl = url; this.pdfOpen = true; },
-    // 审核进度辅助
     getStepDesc(level) {
       const r = this.progressRecords && this.progressRecords.find(r => r.auditLevel === level);
       if (!r) return '等待中';
@@ -382,40 +391,62 @@ export default {
 <style scoped>
 .stat-row { margin-bottom: 16px; }
 .stat-card {
-  display: flex; align-items: center; gap: 16px;
-  padding: 20px 24px; border-radius: 14px; color: #fff;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+  overflow: hidden;
+  transition: all 0.25s ease;
 }
-.stat-total { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-.stat-pass { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); color: #065f46; }
-.stat-audit { background: linear-gradient(135deg, #f6d365 0%, #fda085 100%); color: #78350f; }
-.stat-reject { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
-.stat-icon { font-size: 32px; opacity: 0.85; }
-.stat-value { font-size: 28px; font-weight: 700; line-height: 1.2; }
-.stat-label { font-size: 13px; opacity: 0.85; margin-top: 2px; }
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.06);
+}
+
+.stat-accent {
+  height: 3px;
+  background: linear-gradient(90deg, #1e40af, #6366f1);
+}
+.stat-accent.accent-success { background: linear-gradient(90deg, #10b981, #34d399); }
+.stat-accent.accent-warning { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+.stat-accent.accent-danger { background: linear-gradient(90deg, #ef4444, #f87171); }
+
+.stat-body {
+  display: flex; align-items: center; gap: 16px;
+  padding: 18px 20px;
+}
+.stat-icon {
+  font-size: 28px; color: #64748b; opacity: 0.6;
+}
+.stat-value {
+  font-size: 26px; font-weight: 700; color: #0f172a; line-height: 1.2;
+  font-family: 'Noto Serif SC', serif;
+}
+.stat-label { font-size: 12px; color: #94a3b8; margin-top: 2px; }
 
 .list-card {
   background: #fff; border-radius: 14px; padding: 20px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
 }
 .modern-tabs >>> .el-tabs__header { margin-bottom: 16px; }
 .search-inline { margin-bottom: 12px; }
-.link-text { color: #409EFF; cursor: pointer; }
+.link-text { color: #1e40af; cursor: pointer; font-weight: 500; }
 .link-text:hover { text-decoration: underline; }
 
-/* 胶囊状态标签 */
+/* 状态标签 */
 .status-tag { display: inline-block; padding: 2px 12px; border-radius: 20px; font-size: 12px; font-weight: 500; }
-.status-0 { background: #f4f4f5; color: #909399; }
-.status-1 { background: #fdf6ec; color: #e6a23c; }
-.status-2 { background: #fef0f0; color: #f56c6c; }
-.status-3 { background: #f0f9eb; color: #67c23a; }
-.status-4 { background: #fef0f0; color: #f56c6c; }
+.status-0 { background: #f1f5f9; color: #94a3b8; }
+.status-1 { background: rgba(245, 158, 11, 0.08); color: #f59e0b; }
+.status-2 { background: rgba(99, 102, 241, 0.08); color: #6366f1; }
+.status-3 { background: rgba(16, 185, 129, 0.08); color: #10b981; }
+.status-4 { background: rgba(239, 68, 68, 0.08); color: #ef4444; }
 
-/* 弹窗 + 详情 */
+/* 弹窗 */
 .modern-dialog >>> .el-dialog { border-radius: 16px; overflow: hidden; }
-.modern-dialog >>> .el-dialog__header { background: #f8f9fc; padding: 18px 24px; border-bottom: 1px solid #ebeef5; }
-.modern-dialog >>> .el-dialog__title { font-weight: 600; }
+.modern-dialog >>> .el-dialog__header { background: #f8fafc; padding: 18px 24px; border-bottom: 1px solid #e2e8f0; }
+.modern-dialog >>> .el-dialog__title { font-weight: 600; font-family: 'Noto Serif SC', serif; color: #0f172a; }
 .modern-dialog >>> .el-dialog__body { padding: 24px; }
-.editor-view { padding: 12px; border: 1px solid #EBEEF5; border-radius: 8px; max-height: 400px; overflow-y: auto; background-color: #fafafa; }
-.file-link { padding: 4px 10px; background: #f0f5ff; border-radius: 6px; margin-right: 8px; }
+.editor-view { padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; max-height: 400px; overflow-y: auto; background-color: #fafbfc; }
+.file-link { padding: 4px 10px; background: rgba(30, 64, 175, 0.06); border-radius: 6px; margin-right: 8px; }
 </style>

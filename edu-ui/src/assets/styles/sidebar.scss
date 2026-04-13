@@ -5,7 +5,7 @@
     transition: margin-left .28s;
     margin-left: $base-sidebar-width;
     position: relative;
-    background-color: #f5f7fa; // 让右侧内容区带一点点灰，反衬左侧侧边栏的纯白
+    background-color: $gray-50;
   }
 
   .sidebarHide {
@@ -25,9 +25,9 @@
     left: 0;
     z-index: 1001;
     overflow: hidden;
-    // 现代感的轻柔阴影与极细分割线
-    box-shadow: 2px 0 8px 0 rgba(29, 35, 41, 0.05);
-    border-right: 1px solid #f0f0f0;
+    // 深色侧边栏 — 右侧极细光线分割
+    box-shadow: 1px 0 0 0 rgba(255, 255, 255, 0.04);
+    border-right: none;
 
     // reset element-ui css
     .horizontal-collapse-transition {
@@ -48,7 +48,7 @@
 
     &.has-logo {
       .el-scrollbar {
-        height: calc(100% - 50px);
+        height: calc(100% - 60px);
       }
     }
 
@@ -63,8 +63,10 @@
     }
 
     .svg-icon {
-      margin-right: 12px !important;
-      font-size: 16px;
+      margin-right: 14px !important;
+      font-size: 17px;
+      opacity: 0.7;
+      transition: opacity 0.3s;
     }
 
     .el-menu {
@@ -74,32 +76,44 @@
       background: transparent !important;
     }
 
-    /* 🌟 核心：飞书/Notion 风格胶囊菜单 */
+    /* 🎓 学术深邃风菜单项 */
     .el-menu-item, .el-submenu__title {
-      margin: 4px 12px; // 四周留白
-      border-radius: 8px; // 胶囊圆角
+      margin: 2px 10px;
+      border-radius: 8px;
       height: 44px !important;
       line-height: 44px !important;
-      width: calc(100% - 24px) !important;
+      width: calc(100% - 20px) !important;
       color: $base-menu-color !important;
-      transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+      font-size: 14px;
+      font-weight: 400;
+      letter-spacing: 0.3px;
+      transition: all 0.25s ease;
       overflow: hidden !important;
       text-overflow: ellipsis !important;
       white-space: nowrap !important;
 
       &:hover {
         background-color: $base-sub-menu-hover !important;
-        color: $base-menu-color-active !important;
+        color: rgba(255, 255, 255, 0.95) !important;
+
+        .svg-icon {
+          opacity: 1;
+        }
       }
     }
 
-    /* 激活状态样式 */
+    /* 激活状态 — 金色左侧指示条 */
     .is-active > .el-submenu__title,
     .el-menu-item.is-active {
-      color: $base-menu-color-active !important;
-      background-color: #e6f7ff !important;
+      color: $academic-gold !important;
+      background-color: $base-menu-item-active-bg !important;
       font-weight: 600;
       position: relative;
+
+      .svg-icon {
+        opacity: 1;
+        color: $academic-gold;
+      }
 
       &::before {
         content: '';
@@ -108,16 +122,16 @@
         top: 50%;
         transform: translateY(-50%);
         width: 3px;
-        height: 60%;
+        height: 55%;
         border-radius: 0 3px 3px 0;
-        background: linear-gradient(180deg, #1890ff 0%, #69c0ff 100%);
+        background: linear-gradient(180deg, $academic-gold 0%, darken($academic-gold, 10%) 100%);
       }
     }
 
-    /* 重置子菜单样式 */
+    /* 子菜单 */
     .nest-menu .el-submenu>.el-submenu__title,
     .el-submenu .el-menu-item {
-      min-width: calc(#{$base-sidebar-width} - 24px) !important;
+      min-width: calc(#{$base-sidebar-width} - 20px) !important;
       background-color: transparent !important;
 
       &:hover {
@@ -126,10 +140,10 @@
     }
   }
 
-  // 折叠侧边栏样式微调
+  // 折叠侧边栏
   .hideSidebar {
     .sidebar-container {
-      width: 64px !important; // 稍微加宽一点点折叠状态，不然圆角放不下
+      width: 64px !important;
     }
 
     .main-container {
@@ -137,8 +151,8 @@
     }
 
     .el-menu-item, .el-submenu__title {
-      margin: 4px 8px !important;
-      width: calc(100% - 16px) !important;
+      margin: 2px 6px !important;
+      width: calc(100% - 12px) !important;
       padding: 0 16px !important;
     }
 
@@ -198,7 +212,7 @@
   }
 }
 
-// 弹出式子菜单悬浮样式
+// 弹出式子菜单（深色风格）
 .el-menu--vertical {
   &>.el-menu {
     .svg-icon {
@@ -212,29 +226,30 @@
     margin: 2px 8px;
     &:hover {
       background-color: $base-sub-menu-hover !important;
-      color: $base-menu-color-active !important;
+      color: #ffffff !important;
     }
   }
   .el-menu-item.is-active {
-    background-color: #e6f7ff !important;
-    color: $base-menu-color-active !important;
+    background-color: $base-menu-item-active-bg !important;
+    color: $academic-gold !important;
   }
 
   >.el-menu--popup {
     max-height: 100vh;
     overflow-y: auto;
-    border-radius: 10px; // 弹出的菜单也加圆角
-    box-shadow: 0 6px 16px 0 rgba(0,0,0,0.08);
-    border: 1px solid #f0f0f0;
+    border-radius: 12px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+    border: 1px solid $gray-200;
+    background: $academic-navy;
 
     &::-webkit-scrollbar-track-piece {
-      background: #f5f7fa;
+      background: $academic-slate;
     }
     &::-webkit-scrollbar {
       width: 6px;
     }
     &::-webkit-scrollbar-thumb {
-      background: #c0c4cc;
+      background: $gray-500;
       border-radius: 20px;
     }
   }
