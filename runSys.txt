@@ -24,3 +24,19 @@ nacos nacos
 //设置网络
 set HTTP_PROXY=http://127.0.0.1:2026
 set HTTPS_PROXY=http://127.0.0.1:2026
+
+# 只启动 Redis / Nacos / MinIO / 后端
+.\bin\start-all.cmd
+
+# 连前端一起启动
+.\bin\start-all.cmd -StartUi
+
+换电脑时，主要只要改一个文件就行：
+dev-config.ps1
+需要把里面这些路径改成新电脑的实际位置：
+$ProjectRoot
+$RedisExe
+$RedisConfig
+$NacosStartup
+$MinioExe
+$MinioDataDir
