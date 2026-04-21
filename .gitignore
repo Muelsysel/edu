@@ -44,3 +44,15 @@ nbdist/
 !*/build/*.java
 !*/build/*.html
 !*/build/*.xml
+
+######################################################################
+# Frontend (Vue/Node)
+node_modules/
+dist/
+dev-dist/
+
+# 如果你的编译产物直接生成在 static 目录下，添加以下：
+**/static/js/*.js
+**/static/css/*.css
+**/static/img/*.gz
+**/static/js/*.gz
