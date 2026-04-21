@@ -52,7 +52,9 @@ dist/
 dev-dist/
 
 # 如果你的编译产物直接生成在 static 目录下，添加以下：
+**/node_modules/
+**/dist/
 **/static/js/*.js
-**/static/css/*.css
-**/static/img/*.gz
 **/static/js/*.gz
+**/static/css/*.css
+**/static/css/*.css.gz
