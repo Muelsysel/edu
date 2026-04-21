@@ -303,7 +303,26 @@ export default {
       this.form = { achievementId: null, title: null, category: null, fileUrl: null, content: null, status: "1" };
       this.resetForm("editForm");
     },
-    handleView(row) { this.form = { ...row }; this.viewOpen = true; },
+    loadProgress(achievementId) {
+      this.progressRecords = [];
+      this.progressStepActive = 1;
+      return getAuditProgress(achievementId).then(res => {
+        this.progressRecords = res.rows || [];
+        this.progressStepActive = 1 + this.progressRecords.length;
+      });
+    },
+    handleView(row) {
+      this.form = { ...row };
+      if (row.status && row.status !== '0') {
+        this.loadProgress(row.achievementId).finally(() => {
+          this.viewOpen = true;
+        });
+        return;
+      }
+      this.progressRecords = [];
+      this.progressStepActive = 0;
+      this.viewOpen = true;
+    },
     handleUpdate(row) {
       this.reset();
       teacherGetAchievement(row.achievementId).then(response => {
@@ -322,11 +341,7 @@ export default {
     },
     handleProgress(row) {
       this.progressAchievement = row;
-      this.progressRecords = [];
-      this.progressStepActive = 1;
-      getAuditProgress(row.achievementId).then(res => {
-        this.progressRecords = res.rows || [];
-        this.progressStepActive = 1 + this.progressRecords.length;
+      this.loadProgress(row.achievementId).then(() => {
         this.progressOpen = true;
       });
     },

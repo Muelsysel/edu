@@ -39,6 +39,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="status != null  and status != ''"> and a.status = #{status}</if>
             <if test="category != null  and category != ''"> and a.category = #{category}</if>
         </where>
+        order by a.create_time desc, a.achievement_id desc
     </select>
     
     <select id="selectEduAchievementByAchievementId" parameterType="Long" resultMap="EduAchievementResult">
