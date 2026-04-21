@@ -51,10 +51,16 @@ node_modules/
 dist/
 dev-dist/
 
-# 如果你的编译产物直接生成在 static 目录下，添加以下：
-**/node_modules/
-**/dist/
-**/static/js/*.js
-**/static/js/*.gz
-**/static/css/*.css
-**/static/css/*.css.gz
+######################################################################
+# docker
+# docker build artifacts
+docker/**/jar/*.jar
+docker/**/jar/*.war
+docker/nginx/html/dist/
+
+# optional runtime data
+docker/mysql/data/
+docker/redis/data/
+docker/nacos/logs/
+docker/nginx/logs/
+docker/minio/data/

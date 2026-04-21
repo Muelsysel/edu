@@ -1,0 +1,1226 @@
+/*
+Navicat MySQL Data Transfer
+
+Source Server         : BS
+Source Server Version : 80033
+Source Host           : localhost:3306
+Source Database       : edu_system
+
+Target Server Type    : MYSQL
+Target Server Version : 80033
+File Encoding         : 65001
+
+Date: 2026-03-21 14:13:17
+*/
+
+CREATE DATABASE IF NOT EXISTS `edu_system` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `edu_system`;
+
+SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for edu_achievement
+-- ----------------------------
+DROP TABLE IF EXISTS `edu_achievement`;
+CREATE TABLE `edu_achievement` (
+  `achievement_id` bigint NOT NULL AUTO_INCREMENT COMMENT '成果 ID',
+  `title` varchar(200) NOT NULL COMMENT '成果标题',
+  `content` text COMMENT '成果内容',
+  `file_url` varchar(1500) DEFAULT NULL COMMENT '证明材料(最多5个)',
+  `teacher_id` bigint NOT NULL COMMENT '教师 ID(关联 sys_user 表)',
+  `college_id` bigint NOT NULL COMMENT '学院 ID(关联 sys_dept 表)',
+  `status` char(1) DEFAULT '0' COMMENT '状态 (0:草稿 1:院级审核中 2:校级审核中 3:已通过 4:已驳回)',
+  `create_by` varchar(64) DEFAULT '' COMMENT '创建者',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `del_flag` char(1) DEFAULT '0' COMMENT '删除标志 (0 代表存在 2 代表删除)',
+  `category` char(1) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT '1' COMMENT '成果类型（关联类型字典）',
+  PRIMARY KEY (`achievement_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb3 COMMENT='教学成果主表';
+
+-- ----------------------------
+-- Records of edu_achievement
+-- ----------------------------
+INSERT INTO `edu_achievement` VALUES ('3', '成果二 （1）11', '成果二', 'http://127.0.0.1:9000/edu-achievement/2026/03/03/张鹏展简历_20260303155917A005.docx,http://127.0.0.1:9000/edu-achievement/2026/03/03/张鹏展简历_20260303155920A006.pdf', '1', '100', '1', 'admin', '2026-03-03 15:59:37', 'admin', '2026-03-10 17:50:36', '0', '1');
+INSERT INTO `edu_achievement` VALUES ('4', '全国大学生竞赛三等奖', '获奖', 'http://127.0.0.1:9000/edu-achievement/2026/03/03/张鹏展简历_20260303161514A007.pdf', '1', '100', '3', 'admin', '2026-03-03 16:15:19', 'admin', '2026-03-03 18:24:35', '0', '3');
+INSERT INTO `edu_achievement` VALUES ('5', '竞赛奖', '测试', 'http://127.0.0.1:9000/edu-achievement/2026/03/03/职位证明参考模板_20260303162353A010.docx', '100', '101', '3', 'teacher', '2026-03-03 16:24:01', 'schoolAudit', '2026-03-16 15:29:43', '0', '3');
+INSERT INTO `edu_achievement` VALUES ('7', '2', '333', null, '1', '100', '2', 'admin', '2026-03-03 17:57:11', 'admin', '2026-03-03 18:24:43', '0', '2');
+INSERT INTO `edu_achievement` VALUES ('8', '4', '2232', null, '1', '101', '2', 'admin', '2026-03-03 17:57:18', 'admin', '2026-03-03 18:24:29', '0', '1');
+INSERT INTO `edu_achievement` VALUES ('9', '1', '3', null, '100', '101', '1', 'teacher', '2026-03-03 17:58:59', 'admin', '2026-03-03 18:24:50', '0', '1');
+INSERT INTO `edu_achievement` VALUES ('10', '4', '123', null, '100', '102', '1', 'teacher', '2026-03-03 17:59:05', 'admin', '2026-03-03 18:24:24', '0', '2');
+INSERT INTO `edu_achievement` VALUES ('11', '123', '123', null, '100', '100', '1', 'teacher', '2026-03-03 18:05:07', '', null, '0', '4');
+INSERT INTO `edu_achievement` VALUES ('13', '123', '1', null, '100', '100', '1', 'teacher', '2026-03-03 19:54:16', 'teacher', '2026-03-03 19:55:19', '0', '2');
+INSERT INTO `edu_achievement` VALUES ('14', '竞赛', '111', 'http://127.0.0.1:9000/edu-achievement/2026/03/03/张鹏展简历_20260303200108A012.pdf', '100', '100', '1', 'teacher', '2026-03-03 20:01:11', '', null, '0', '3');
+INSERT INTO `edu_achievement` VALUES ('15', '123', '123', null, '1', '100', '1', '', '2026-03-10 15:57:45', '', null, '0', '1');
+INSERT INTO `edu_achievement` VALUES ('16', '1345', 'wqe', 'http://127.0.0.1:9000/edu-achievement/2026/03/10/meme_20260310164041A004.txt', '1', '100', '1', '', '2026-03-10 16:40:45', 'admin', '2026-03-10 16:42:01', '0', '1');
+INSERT INTO `edu_achievement` VALUES ('18', '123', '123', null, '1', '100', '1', '', '2026-03-10 16:57:05', '', null, '0', '2');
+INSERT INTO `edu_achievement` VALUES ('19', '26315t', '1231', null, '1', '103', '4', '', '2026-03-15 16:45:45', 'admin', '2026-03-15 17:22:04', '0', '6');
+INSERT INTO `edu_achievement` VALUES ('20', '3151932', 'wda123', null, '100', '103', '1', 'teacher', '2026-03-15 19:32:14', 'teacher', '2026-03-16 16:05:50', '0', '2');
+INSERT INTO `edu_achievement` VALUES ('21', '31615', '123', null, '100', '103', '2', 'teacher', '2026-03-16 15:28:23', 'collegeAudit', '2026-03-16 15:30:28', '0', '4');
+
+-- ----------------------------
+-- Table structure for edu_audit_record
+-- ----------------------------
+DROP TABLE IF EXISTS `edu_audit_record`;
+CREATE TABLE `edu_audit_record` (
+  `record_id` bigint NOT NULL AUTO_INCREMENT COMMENT '审核记录 ID',
+  `achievement_id` bigint NOT NULL COMMENT '关联成果 ID',
+  `audit_level` char(1) NOT NULL COMMENT '审核级别 (1:院级审核 2:校级审核)',
+  `audit_result` char(1) NOT NULL COMMENT '审核结果 (1:通过 2:驳回)',
+  `audit_opinion` varchar(500) DEFAULT '' COMMENT '审核意见',
+  `auditor_id` bigint NOT NULL COMMENT '审核人 ID (关联 sys_user 表)',
+  `auditor_name` varchar(64) DEFAULT '' COMMENT '审核人姓名',
+  `create_time` datetime DEFAULT NULL COMMENT '审核时间',
+  PRIMARY KEY (`record_id`),
+  KEY `idx_achievement_id` (`achievement_id`),
+  KEY `idx_auditor_id` (`auditor_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb3 COMMENT='审核记录表';
+
+-- ----------------------------
+-- Records of edu_audit_record
+-- ----------------------------
+INSERT INTO `edu_audit_record` VALUES ('1', '19', '1', '1', '可以', '1', 'admin', '2026-03-15 17:21:46');
+INSERT INTO `edu_audit_record` VALUES ('2', '19', '2', '2', '不行', '1', 'admin', '2026-03-15 17:22:04');
+INSERT INTO `edu_audit_record` VALUES ('3', '20', '1', '1', '123', '102', 'collegeAudit', '2026-03-15 19:49:10');
+INSERT INTO `edu_audit_record` VALUES ('4', '5', '2', '1', '123', '103', 'schoolAudit', '2026-03-16 15:29:43');
+INSERT INTO `edu_audit_record` VALUES ('5', '20', '2', '2', '', '103', 'schoolAudit', '2026-03-16 15:29:50');
+INSERT INTO `edu_audit_record` VALUES ('6', '21', '1', '1', '', '102', 'collegeAudit', '2026-03-16 15:30:28');
+
+-- ----------------------------
+-- Table structure for gen_table
+-- ----------------------------
+DROP TABLE IF EXISTS `gen_table`;
+CREATE TABLE `gen_table` (
+  `table_id` bigint NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `table_name` varchar(200) DEFAULT '' COMMENT '表名称',
+  `table_comment` varchar(500) DEFAULT '' COMMENT '表描述',
+  `sub_table_name` varchar(64) DEFAULT NULL COMMENT '关联子表的表名',
+  `sub_table_fk_name` varchar(64) DEFAULT NULL COMMENT '子表关联的外键名',
+  `class_name` varchar(100) DEFAULT '' COMMENT '实体类名称',
+  `tpl_category` varchar(200) DEFAULT 'crud' COMMENT '使用的模板（crud单表操作 tree树表操作）',
+  `tpl_web_type` varchar(30) DEFAULT '' COMMENT '前端模板类型（element-ui模版 element-plus模版）',
+  `package_name` varchar(100) DEFAULT NULL COMMENT '生成包路径',
+  `module_name` varchar(30) DEFAULT NULL COMMENT '生成模块名',
+  `business_name` varchar(30) DEFAULT NULL COMMENT '生成业务名',
+  `function_name` varchar(50) DEFAULT NULL COMMENT '生成功能名',
+  `function_author` varchar(50) DEFAULT NULL COMMENT '生成功能作者',
+  `gen_type` char(1) DEFAULT '0' COMMENT '生成代码方式（0zip压缩包 1自定义路径）',
+  `gen_path` varchar(200) DEFAULT '/' COMMENT '生成路径（不填默认项目路径）',
+  `options` varchar(1000) DEFAULT NULL COMMENT '其它生成选项',
+  `create_by` varchar(64) DEFAULT '' COMMENT '创建者',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `remark` varchar(500) DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`table_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3 COMMENT='代码生成业务表';
+
+-- ----------------------------
+-- Records of gen_table
+-- ----------------------------
+INSERT INTO `gen_table` VALUES ('1', 'edu_achievement', '教学成果主表', null, null, 'EduAchievement', 'crud', 'element-ui', 'com.edu.achievement', 'achievement', 'achievement', '教学成果管理', 'zpz', '0', '/', '{}', 'admin', '2026-03-03 13:38:34', '', '2026-03-03 13:51:59', null);
+INSERT INTO `gen_table` VALUES ('2', 'edu_achievement_audit_log', '教学成果审核记录表', null, null, 'EduAchievementAuditLog', 'crud', 'element-ui', 'com.edu.achievement', 'achievementAudit', 'achievement_audit', '教学成果审核记录', 'zpz', '0', '/', '{\"parentMenuId\":0}', 'admin', '2026-03-03 13:38:34', '', '2026-03-03 14:07:04', null);
+
+-- ----------------------------
+-- Table structure for gen_table_column
+-- ----------------------------
+DROP TABLE IF EXISTS `gen_table_column`;
+CREATE TABLE `gen_table_column` (
+  `column_id` bigint NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `table_id` bigint DEFAULT NULL COMMENT '归属表编号',
+  `column_name` varchar(200) DEFAULT NULL COMMENT '列名称',
+  `column_comment` varchar(500) DEFAULT NULL COMMENT '列描述',
+  `column_type` varchar(100) DEFAULT NULL COMMENT '列类型',
+  `java_type` varchar(500) DEFAULT NULL COMMENT 'JAVA类型',
+  `java_field` varchar(200) DEFAULT NULL COMMENT 'JAVA字段名',
+  `is_pk` char(1) DEFAULT NULL COMMENT '是否主键（1是）',
+  `is_increment` char(1) DEFAULT NULL COMMENT '是否自增（1是）',
+  `is_required` char(1) DEFAULT NULL COMMENT '是否必填（1是）',
+  `is_insert` char(1) DEFAULT NULL COMMENT '是否为插入字段（1是）',
+  `is_edit` char(1) DEFAULT NULL COMMENT '是否编辑字段（1是）',
+  `is_list` char(1) DEFAULT NULL COMMENT '是否列表字段（1是）',
+  `is_query` char(1) DEFAULT NULL COMMENT '是否查询字段（1是）',
+  `query_type` varchar(200) DEFAULT 'EQ' COMMENT '查询方式（等于、不等于、大于、小于、范围）',
+  `html_type` varchar(200) DEFAULT NULL COMMENT '显示类型（文本框、文本域、下拉框、复选框、单选框、日期控件）',
+  `dict_type` varchar(200) DEFAULT '' COMMENT '字典类型',
+  `sort` int DEFAULT NULL COMMENT '排序',
+  `create_by` varchar(64) DEFAULT '' COMMENT '创建者',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`column_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb3 COMMENT='代码生成业务表字段';
+
+-- ----------------------------
+-- Records of gen_table_column
+-- ----------------------------
+INSERT INTO `gen_table_column` VALUES ('1', '1', 'achievement_id', '成果 ID', 'bigint', 'Long', 'achievementId', '1', '1', '1', '1', null, '1', null, 'EQ', 'input', '', '1', 'admin', '2026-03-03 13:38:34', '', '2026-03-03 13:51:59');
+INSERT INTO `gen_table_column` VALUES ('2', '1', 'title', '成果标题', 'varchar(200)', 'String', 'title', '0', '0', '1', '1', '1', '1', '1', 'LIKE', 'input', '', '2', 'admin', '2026-03-03 13:38:34', '', '2026-03-03 13:51:59');
+INSERT INTO `gen_table_column` VALUES ('3', '1', 'content', '成果内容', 'text', 'String', 'content', '0', '0', '1', '1', '1', '0', '0', 'EQ', 'editor', '', '3', 'admin', '2026-03-03 13:38:34', '', '2026-03-03 13:51:59');
+INSERT INTO `gen_table_column` VALUES ('4', '1', 'file_url', '文件存储路径 (MinIO 路径)', 'varchar(500)', 'String', 'fileUrl', '0', '0', null, '1', '1', '0', '0', 'EQ', 'fileUpload', '', '4', 'admin', '2026-03-03 13:38:34', '', '2026-03-03 13:51:59');
+INSERT INTO `gen_table_column` VALUES ('5', '1', 'teacher_id', '教师 ID(关联 sys_user 表)', 'bigint', 'Long', 'teacherId', '0', '0', '1', '1', '1', '1', '1', 'EQ', 'input', '', '5', 'admin', '2026-03-03 13:38:34', '', '2026-03-03 13:51:59');
+INSERT INTO `gen_table_column` VALUES ('6', '1', 'college_id', '学院 ID(关联 sys_dept 表)', 'bigint', 'Long', 'collegeId', '0', '0', '1', '1', '1', '1', '1', 'EQ', 'input', '', '6', 'admin', '2026-03-03 13:38:34', '', '2026-03-03 13:51:59');
+INSERT INTO `gen_table_column` VALUES ('7', '1', 'status', '状态 (0:草稿 1:院级审核中 2:校级审核中 3:已通过 4:已驳回)', 'char(1)', 'String', 'status', '0', '0', null, '1', '1', '1', '1', 'EQ', 'select', '', '7', 'admin', '2026-03-03 13:38:34', '', '2026-03-03 13:51:59');
+INSERT INTO `gen_table_column` VALUES ('8', '1', 'create_by', '创建者', 'varchar(64)', 'String', 'createBy', '0', '0', null, '1', null, null, null, 'EQ', 'input', '', '8', 'admin', '2026-03-03 13:38:34', '', '2026-03-03 13:51:59');
+INSERT INTO `gen_table_column` VALUES ('9', '1', 'create_time', '创建时间', 'datetime', 'Date', 'createTime', '0', '0', null, '1', null, null, null, 'EQ', 'datetime', '', '9', 'admin', '2026-03-03 13:38:34', '', '2026-03-03 13:51:59');
+INSERT INTO `gen_table_column` VALUES ('10', '1', 'update_by', '更新者', 'varchar(64)', 'String', 'updateBy', '0', '0', null, '1', '1', null, null, 'EQ', 'input', '', '10', 'admin', '2026-03-03 13:38:34', '', '2026-03-03 13:51:59');
+INSERT INTO `gen_table_column` VALUES ('11', '1', 'update_time', '更新时间', 'datetime', 'Date', 'updateTime', '0', '0', null, '1', '1', null, null, 'EQ', 'datetime', '', '11', 'admin', '2026-03-03 13:38:34', '', '2026-03-03 13:51:59');
+INSERT INTO `gen_table_column` VALUES ('12', '1', 'del_flag', '删除标志 (0 代表存在 2 代表删除)', 'char(1)', 'String', 'delFlag', '0', '0', null, '1', null, null, null, 'EQ', 'input', '', '12', 'admin', '2026-03-03 13:38:34', '', '2026-03-03 13:51:59');
+INSERT INTO `gen_table_column` VALUES ('13', '2', 'id', '审核记录 ID', 'bigint', 'Long', 'id', '1', '1', null, '1', null, null, null, 'EQ', 'input', '', '1', 'admin', '2026-03-03 13:38:34', '', '2026-03-03 14:07:04');
+INSERT INTO `gen_table_column` VALUES ('14', '2', 'achievement_id', '成果 ID(关联 edu_achievement 表)', 'bigint', 'Long', 'achievementId', '0', '0', '1', '1', '1', '1', '1', 'EQ', 'input', '', '2', 'admin', '2026-03-03 13:38:34', '', '2026-03-03 14:07:04');
+INSERT INTO `gen_table_column` VALUES ('15', '2', 'auditor_id', '审核人 ID(关联 sys_user 表)', 'bigint', 'Long', 'auditorId', '0', '0', '1', '1', '1', '1', '1', 'EQ', 'input', '', '3', 'admin', '2026-03-03 13:38:34', '', '2026-03-03 14:07:04');
+INSERT INTO `gen_table_column` VALUES ('16', '2', 'audit_time', '审核时间', 'datetime', 'Date', 'auditTime', '0', '0', null, '1', '1', '1', '1', 'EQ', 'datetime', '', '4', 'admin', '2026-03-03 13:38:34', '', '2026-03-03 14:07:04');
+INSERT INTO `gen_table_column` VALUES ('17', '2', 'audit_opinion', '审核意见', 'varchar(500)', 'String', 'auditOpinion', '0', '0', null, '1', '1', '1', '1', 'EQ', 'textarea', '', '5', 'admin', '2026-03-03 13:38:34', '', '2026-03-03 14:07:04');
+INSERT INTO `gen_table_column` VALUES ('18', '2', 'audit_result', '审核结果 (0:通过 1:驳回)', 'char(1)', 'String', 'auditResult', '0', '0', '1', '1', '1', '1', '1', 'EQ', 'input', '', '6', 'admin', '2026-03-03 13:38:34', '', '2026-03-03 14:07:04');
+INSERT INTO `gen_table_column` VALUES ('19', '2', 'previous_status', '审核前状态', 'char(1)', 'String', 'previousStatus', '0', '0', '1', '1', '1', '1', '1', 'EQ', 'radio', '', '7', 'admin', '2026-03-03 13:38:34', '', '2026-03-03 14:07:04');
+INSERT INTO `gen_table_column` VALUES ('20', '2', 'current_status', '审核后状态', 'char(1)', 'String', 'currentStatus', '0', '0', '1', '1', '1', '1', '1', 'EQ', 'radio', '', '8', 'admin', '2026-03-03 13:38:34', '', '2026-03-03 14:07:04');
+INSERT INTO `gen_table_column` VALUES ('21', '2', 'create_by', '创建者', 'varchar(64)', 'String', 'createBy', '0', '0', null, '1', null, null, null, 'EQ', 'input', '', '9', 'admin', '2026-03-03 13:38:34', '', '2026-03-03 14:07:04');
+INSERT INTO `gen_table_column` VALUES ('22', '2', 'create_time', '创建时间', 'datetime', 'Date', 'createTime', '0', '0', null, '1', null, null, null, 'EQ', 'datetime', '', '10', 'admin', '2026-03-03 13:38:34', '', '2026-03-03 14:07:04');
+INSERT INTO `gen_table_column` VALUES ('23', '2', 'update_by', '更新者', 'varchar(64)', 'String', 'updateBy', '0', '0', null, '1', '1', null, null, 'EQ', 'input', '', '11', 'admin', '2026-03-03 13:38:34', '', '2026-03-03 14:07:04');
+INSERT INTO `gen_table_column` VALUES ('24', '2', 'update_time', '更新时间', 'datetime', 'Date', 'updateTime', '0', '0', null, '1', '1', null, null, 'EQ', 'datetime', '', '12', 'admin', '2026-03-03 13:38:34', '', '2026-03-03 14:07:04');
+INSERT INTO `gen_table_column` VALUES ('25', '2', 'del_flag', '删除标志 (0 代表存在 2 代表删除)', 'char(1)', 'String', 'delFlag', '0', '0', null, '1', null, null, null, 'EQ', 'input', '', '13', 'admin', '2026-03-03 13:38:34', '', '2026-03-03 14:07:04');
+
+-- ----------------------------
+-- Table structure for sys_config
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_config`;
+CREATE TABLE `sys_config` (
+  `config_id` int NOT NULL AUTO_INCREMENT COMMENT '参数主键',
+  `config_name` varchar(100) DEFAULT '' COMMENT '参数名称',
+  `config_key` varchar(100) DEFAULT '' COMMENT '参数键名',
+  `config_value` varchar(500) DEFAULT '' COMMENT '参数键值',
+  `config_type` char(1) DEFAULT 'N' COMMENT '系统内置（Y是 N否）',
+  `create_by` varchar(64) DEFAULT '' COMMENT '创建者',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `remark` varchar(500) DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`config_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8mb3 COMMENT='参数配置表';
+
+-- ----------------------------
+-- Records of sys_config
+-- ----------------------------
+INSERT INTO `sys_config` VALUES ('1', '主框架页-默认皮肤样式名称', 'sys.index.skinName', 'skin-yellow', 'Y', 'admin', '2026-03-02 22:42:18', 'admin', '2026-03-03 13:10:52', '蓝色 skin-blue、绿色 skin-green、紫色 skin-purple、红色 skin-red、黄色 skin-yellow');
+INSERT INTO `sys_config` VALUES ('2', '用户管理-账号初始密码', 'sys.user.initPassword', '123456', 'Y', 'admin', '2026-03-02 22:42:18', '', null, '初始化密码 123456');
+INSERT INTO `sys_config` VALUES ('3', '主框架页-侧边栏主题', 'sys.index.sideTheme', 'theme-dark', 'Y', 'admin', '2026-03-02 22:42:18', '', null, '深色主题theme-dark，浅色主题theme-light');
+INSERT INTO `sys_config` VALUES ('4', '账号自助-是否开启用户注册功能', 'sys.account.registerUser', 'true', 'Y', 'admin', '2026-03-02 22:42:18', 'admin', '2026-03-03 20:07:32', '是否开启注册用户功能（true开启，false关闭）');
+INSERT INTO `sys_config` VALUES ('5', '用户登录-黑名单列表', 'sys.login.blackIPList', '', 'Y', 'admin', '2026-03-02 22:42:18', '', null, '设置登录IP黑名单限制，多个匹配项以;分隔，支持匹配（*通配、网段）');
+INSERT INTO `sys_config` VALUES ('6', '用户管理-初始密码修改策略', 'sys.account.initPasswordModify', '0', 'Y', 'admin', '2026-03-02 22:42:18', 'admin', '2026-03-03 20:07:23', '0：初始密码修改策略关闭，没有任何提示，1：提醒用户，如果未修改初始密码，则在登录时就会提醒修改密码对话框');
+INSERT INTO `sys_config` VALUES ('7', '用户管理-账号密码更新周期', 'sys.account.passwordValidateDays', '0', 'Y', 'admin', '2026-03-02 22:42:18', '', null, '密码更新周期（填写数字，数据初始化值为0不限制，若修改必须为大于0小于365的正整数），如果超过这个周期登录系统时，则在登录时就会提醒修改密码对话框');
+
+-- ----------------------------
+-- Table structure for sys_dept
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_dept`;
+CREATE TABLE `sys_dept` (
+  `dept_id` bigint NOT NULL AUTO_INCREMENT COMMENT '部门id',
+  `parent_id` bigint DEFAULT '0' COMMENT '父部门id',
+  `ancestors` varchar(50) DEFAULT '' COMMENT '祖级列表',
+  `dept_name` varchar(30) DEFAULT '' COMMENT '部门名称',
+  `order_num` int DEFAULT '0' COMMENT '显示顺序',
+  `leader` varchar(20) DEFAULT NULL COMMENT '负责人',
+  `phone` varchar(11) DEFAULT NULL COMMENT '联系电话',
+  `email` varchar(50) DEFAULT NULL COMMENT '邮箱',
+  `status` char(1) DEFAULT '0' COMMENT '部门状态（0正常 1停用）',
+  `del_flag` char(1) DEFAULT '0' COMMENT '删除标志（0代表存在 2代表删除）',
+  `create_by` varchar(64) DEFAULT '' COMMENT '创建者',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`dept_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=200 DEFAULT CHARSET=utf8mb3 COMMENT='部门表';
+
+-- ----------------------------
+-- Records of sys_dept
+-- ----------------------------
+INSERT INTO `sys_dept` VALUES ('100', '0', '0', '郑州轻工业大学', '0', 'zpz', '13733732086', '2426481498@qq.com', '0', '0', 'admin', '2026-03-02 22:42:14', 'admin', '2026-03-03 16:17:22');
+INSERT INTO `sys_dept` VALUES ('101', '100', '0,100', '计算机学院', '1', '若依', '15888888888', 'ry@qq.com', '0', '0', 'admin', '2026-03-02 22:42:14', 'admin', '2026-03-03 16:19:32');
+INSERT INTO `sys_dept` VALUES ('102', '100', '0,100', '化学学院', '2', '若依', '15888888888', 'ry@qq.com', '0', '0', 'admin', '2026-03-02 22:42:14', 'admin', '2026-03-03 16:19:52');
+INSERT INTO `sys_dept` VALUES ('103', '100', '0,100', '成果管理院', '0', '1', '13733732086', '2426481498@qq.com', '0', '0', 'admin', '2026-03-02 22:42:14', 'admin', '2026-03-10 13:14:18');
+INSERT INTO `sys_dept` VALUES ('104', '101', '0,100,101', '市场部门', '2', '若依', '15888888888', 'ry@qq.com', '0', '2', 'admin', '2026-03-02 22:42:14', '', null);
+INSERT INTO `sys_dept` VALUES ('105', '100', '0,100', '软件学院', '3', '若依', '15888888888', 'ry@qq.com', '0', '0', 'admin', '2026-03-02 22:42:14', 'admin', '2026-03-03 16:19:38');
+INSERT INTO `sys_dept` VALUES ('106', '101', '0,100,101', '财务部门', '4', '若依', '15888888888', 'ry@qq.com', '0', '2', 'admin', '2026-03-02 22:42:14', '', null);
+INSERT INTO `sys_dept` VALUES ('107', '101', '0,100,101', '运维部门', '5', '若依', '15888888888', 'ry@qq.com', '0', '2', 'admin', '2026-03-02 22:42:14', '', null);
+INSERT INTO `sys_dept` VALUES ('108', '102', '0,100,102', '市场部门', '1', '若依', '15888888888', 'ry@qq.com', '0', '2', 'admin', '2026-03-02 22:42:14', '', null);
+INSERT INTO `sys_dept` VALUES ('109', '102', '0,100,102', '财务部门', '2', '若依', '15888888888', 'ry@qq.com', '0', '2', 'admin', '2026-03-02 22:42:14', '', null);
+
+-- ----------------------------
+-- Table structure for sys_dict_data
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_dict_data`;
+CREATE TABLE `sys_dict_data` (
+  `dict_code` bigint NOT NULL AUTO_INCREMENT COMMENT '字典编码',
+  `dict_sort` int DEFAULT '0' COMMENT '字典排序',
+  `dict_label` varchar(100) DEFAULT '' COMMENT '字典标签',
+  `dict_value` varchar(100) DEFAULT '' COMMENT '字典键值',
+  `dict_type` varchar(100) DEFAULT '' COMMENT '字典类型',
+  `css_class` varchar(100) DEFAULT NULL COMMENT '样式属性（其他样式扩展）',
+  `list_class` varchar(100) DEFAULT NULL COMMENT '表格回显样式',
+  `is_default` char(1) DEFAULT 'N' COMMENT '是否默认（Y是 N否）',
+  `status` char(1) DEFAULT '0' COMMENT '状态（0正常 1停用）',
+  `create_by` varchar(64) DEFAULT '' COMMENT '创建者',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `remark` varchar(500) DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`dict_code`)
+) ENGINE=InnoDB AUTO_INCREMENT=113 DEFAULT CHARSET=utf8mb3 COMMENT='字典数据表';
+
+-- ----------------------------
+-- Records of sys_dict_data
+-- ----------------------------
+INSERT INTO `sys_dict_data` VALUES ('1', '1', '男', '0', 'sys_user_sex', '', '', 'Y', '0', 'admin', '2026-03-02 22:42:17', '', null, '性别男');
+INSERT INTO `sys_dict_data` VALUES ('2', '2', '女', '1', 'sys_user_sex', '', '', 'N', '0', 'admin', '2026-03-02 22:42:17', '', null, '性别女');
+INSERT INTO `sys_dict_data` VALUES ('3', '3', '未知', '2', 'sys_user_sex', '', '', 'N', '0', 'admin', '2026-03-02 22:42:17', '', null, '性别未知');
+INSERT INTO `sys_dict_data` VALUES ('4', '1', '显示', '0', 'sys_show_hide', '', 'primary', 'Y', '0', 'admin', '2026-03-02 22:42:17', '', null, '显示菜单');
+INSERT INTO `sys_dict_data` VALUES ('5', '2', '隐藏', '1', 'sys_show_hide', '', 'danger', 'N', '0', 'admin', '2026-03-02 22:42:17', '', null, '隐藏菜单');
+INSERT INTO `sys_dict_data` VALUES ('6', '1', '正常', '0', 'sys_normal_disable', '', 'primary', 'Y', '0', 'admin', '2026-03-02 22:42:17', '', null, '正常状态');
+INSERT INTO `sys_dict_data` VALUES ('7', '2', '停用', '1', 'sys_normal_disable', '', 'danger', 'N', '0', 'admin', '2026-03-02 22:42:17', '', null, '停用状态');
+INSERT INTO `sys_dict_data` VALUES ('8', '1', '正常', '0', 'sys_job_status', '', 'primary', 'Y', '0', 'admin', '2026-03-02 22:42:17', '', null, '正常状态');
+INSERT INTO `sys_dict_data` VALUES ('9', '2', '暂停', '1', 'sys_job_status', '', 'danger', 'N', '0', 'admin', '2026-03-02 22:42:17', '', null, '停用状态');
+INSERT INTO `sys_dict_data` VALUES ('10', '1', '默认', 'DEFAULT', 'sys_job_group', '', '', 'Y', '0', 'admin', '2026-03-02 22:42:17', '', null, '默认分组');
+INSERT INTO `sys_dict_data` VALUES ('11', '2', '系统', 'SYSTEM', 'sys_job_group', '', '', 'N', '0', 'admin', '2026-03-02 22:42:17', '', null, '系统分组');
+INSERT INTO `sys_dict_data` VALUES ('12', '1', '是', 'Y', 'sys_yes_no', '', 'primary', 'Y', '0', 'admin', '2026-03-02 22:42:18', '', null, '系统默认是');
+INSERT INTO `sys_dict_data` VALUES ('13', '2', '否', 'N', 'sys_yes_no', '', 'danger', 'N', '0', 'admin', '2026-03-02 22:42:18', '', null, '系统默认否');
+INSERT INTO `sys_dict_data` VALUES ('14', '1', '通知', '1', 'sys_notice_type', '', 'warning', 'Y', '0', 'admin', '2026-03-02 22:42:18', '', null, '通知');
+INSERT INTO `sys_dict_data` VALUES ('15', '2', '公告', '2', 'sys_notice_type', '', 'success', 'N', '0', 'admin', '2026-03-02 22:42:18', '', null, '公告');
+INSERT INTO `sys_dict_data` VALUES ('16', '1', '正常', '0', 'sys_notice_status', '', 'primary', 'Y', '0', 'admin', '2026-03-02 22:42:18', '', null, '正常状态');
+INSERT INTO `sys_dict_data` VALUES ('17', '2', '关闭', '1', 'sys_notice_status', '', 'danger', 'N', '0', 'admin', '2026-03-02 22:42:18', '', null, '关闭状态');
+INSERT INTO `sys_dict_data` VALUES ('18', '99', '其他', '0', 'sys_oper_type', '', 'info', 'N', '0', 'admin', '2026-03-02 22:42:18', '', null, '其他操作');
+INSERT INTO `sys_dict_data` VALUES ('19', '1', '新增', '1', 'sys_oper_type', '', 'info', 'N', '0', 'admin', '2026-03-02 22:42:18', '', null, '新增操作');
+INSERT INTO `sys_dict_data` VALUES ('20', '2', '修改', '2', 'sys_oper_type', '', 'info', 'N', '0', 'admin', '2026-03-02 22:42:18', '', null, '修改操作');
+INSERT INTO `sys_dict_data` VALUES ('21', '3', '删除', '3', 'sys_oper_type', '', 'danger', 'N', '0', 'admin', '2026-03-02 22:42:18', '', null, '删除操作');
+INSERT INTO `sys_dict_data` VALUES ('22', '4', '授权', '4', 'sys_oper_type', '', 'primary', 'N', '0', 'admin', '2026-03-02 22:42:18', '', null, '授权操作');
+INSERT INTO `sys_dict_data` VALUES ('23', '5', '导出', '5', 'sys_oper_type', '', 'warning', 'N', '0', 'admin', '2026-03-02 22:42:18', '', null, '导出操作');
+INSERT INTO `sys_dict_data` VALUES ('24', '6', '导入', '6', 'sys_oper_type', '', 'warning', 'N', '0', 'admin', '2026-03-02 22:42:18', '', null, '导入操作');
+INSERT INTO `sys_dict_data` VALUES ('25', '7', '强退', '7', 'sys_oper_type', '', 'danger', 'N', '0', 'admin', '2026-03-02 22:42:18', '', null, '强退操作');
+INSERT INTO `sys_dict_data` VALUES ('26', '8', '生成代码', '8', 'sys_oper_type', '', 'warning', 'N', '0', 'admin', '2026-03-02 22:42:18', '', null, '生成操作');
+INSERT INTO `sys_dict_data` VALUES ('27', '9', '清空数据', '9', 'sys_oper_type', '', 'danger', 'N', '0', 'admin', '2026-03-02 22:42:18', '', null, '清空操作');
+INSERT INTO `sys_dict_data` VALUES ('28', '1', '成功', '0', 'sys_common_status', '', 'primary', 'N', '0', 'admin', '2026-03-02 22:42:18', '', null, '正常状态');
+INSERT INTO `sys_dict_data` VALUES ('29', '2', '失败', '1', 'sys_common_status', '', 'danger', 'N', '0', 'admin', '2026-03-02 22:42:18', '', null, '停用状态');
+INSERT INTO `sys_dict_data` VALUES ('100', '1', '草稿', '0', 'achievement_status', 'default', 'default', 'N', '0', 'admin', '2026-03-03 13:46:36', '', null, null);
+INSERT INTO `sys_dict_data` VALUES ('101', '2', '院级审核中', '1', 'achievement_status', 'warning', 'default', 'N', '0', 'admin', '2026-03-03 13:47:00', '', null, null);
+INSERT INTO `sys_dict_data` VALUES ('102', '3', '校级审核中', '2', 'achievement_status', 'info', 'default', 'N', '0', 'admin', '2026-03-03 13:47:22', '', null, null);
+INSERT INTO `sys_dict_data` VALUES ('103', '4', '已通过', '3', 'achievement_status', 'success', 'default', 'N', '0', 'admin', '2026-03-03 13:47:38', '', null, null);
+INSERT INTO `sys_dict_data` VALUES ('104', '5', '已驳回', '4', 'achievement_status', 'danger', 'default', 'N', '0', 'admin', '2026-03-03 13:47:49', '', null, null);
+INSERT INTO `sys_dict_data` VALUES ('105', '1', '通过', '0', 'audit_result', 'success', 'default', 'N', '0', 'admin', '2026-03-03 13:48:11', '', null, null);
+INSERT INTO `sys_dict_data` VALUES ('106', '2', '驳回', '1', 'audit_result', 'danger', 'default', 'N', '0', 'admin', '2026-03-03 13:48:26', '', null, null);
+INSERT INTO `sys_dict_data` VALUES ('107', '1', '科研指导', '1', 'edu_achievement_category', null, 'default', 'N', '0', 'admin', '2026-03-03 16:08:13', 'admin', '2026-03-10 16:12:30', '期刊论文、专著等');
+INSERT INTO `sys_dict_data` VALUES ('108', '2', '教材建设', '2', 'edu_achievement_category', null, 'default', 'N', '0', 'admin', '2026-03-03 16:08:35', '', null, '规划教材、校本教材');
+INSERT INTO `sys_dict_data` VALUES ('109', '3', '竞赛指导', '3', 'edu_achievement_category', null, 'default', 'N', '0', 'admin', '2026-03-03 16:08:48', 'admin', '2026-03-10 16:12:41', '指导学生获奖或教师比赛');
+INSERT INTO `sys_dict_data` VALUES ('110', '4', '教学改革', '4', 'edu_achievement_category', null, 'default', 'N', '0', 'admin', '2026-03-03 16:09:00', 'admin', '2026-03-10 16:13:05', '各级教学改革研究项目');
+INSERT INTO `sys_dict_data` VALUES ('111', '5', '教学评估', '5', 'edu_achievement_category', null, 'default', 'N', '0', 'admin', '2026-03-03 19:21:57', 'admin', '2026-03-10 16:13:14', '教学评估，质量检测，监控工作等\n');
+INSERT INTO `sys_dict_data` VALUES ('112', '6', '优秀课程', '6', 'edu_achievement_category', null, 'default', 'N', '0', 'admin', '2026-03-03 19:23:46', '', null, null);
+
+-- ----------------------------
+-- Table structure for sys_dict_type
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_dict_type`;
+CREATE TABLE `sys_dict_type` (
+  `dict_id` bigint NOT NULL AUTO_INCREMENT COMMENT '字典主键',
+  `dict_name` varchar(100) DEFAULT '' COMMENT '字典名称',
+  `dict_type` varchar(100) DEFAULT '' COMMENT '字典类型',
+  `status` char(1) DEFAULT '0' COMMENT '状态（0正常 1停用）',
+  `create_by` varchar(64) DEFAULT '' COMMENT '创建者',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `remark` varchar(500) DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`dict_id`),
+  UNIQUE KEY `dict_type` (`dict_type`)
+) ENGINE=InnoDB AUTO_INCREMENT=104 DEFAULT CHARSET=utf8mb3 COMMENT='字典类型表';
+
+-- ----------------------------
+-- Records of sys_dict_type
+-- ----------------------------
+INSERT INTO `sys_dict_type` VALUES ('1', '用户性别', 'sys_user_sex', '0', 'admin', '2026-03-02 22:42:17', '', null, '用户性别列表');
+INSERT INTO `sys_dict_type` VALUES ('2', '菜单状态', 'sys_show_hide', '0', 'admin', '2026-03-02 22:42:17', '', null, '菜单状态列表');
+INSERT INTO `sys_dict_type` VALUES ('3', '系统开关', 'sys_normal_disable', '0', 'admin', '2026-03-02 22:42:17', '', null, '系统开关列表');
+INSERT INTO `sys_dict_type` VALUES ('4', '任务状态', 'sys_job_status', '0', 'admin', '2026-03-02 22:42:17', '', null, '任务状态列表');
+INSERT INTO `sys_dict_type` VALUES ('5', '任务分组', 'sys_job_group', '0', 'admin', '2026-03-02 22:42:17', '', null, '任务分组列表');
+INSERT INTO `sys_dict_type` VALUES ('6', '系统是否', 'sys_yes_no', '0', 'admin', '2026-03-02 22:42:17', '', null, '系统是否列表');
+INSERT INTO `sys_dict_type` VALUES ('7', '通知类型', 'sys_notice_type', '0', 'admin', '2026-03-02 22:42:17', '', null, '通知类型列表');
+INSERT INTO `sys_dict_type` VALUES ('8', '通知状态', 'sys_notice_status', '0', 'admin', '2026-03-02 22:42:17', '', null, '通知状态列表');
+INSERT INTO `sys_dict_type` VALUES ('9', '操作类型', 'sys_oper_type', '0', 'admin', '2026-03-02 22:42:17', '', null, '操作类型列表');
+INSERT INTO `sys_dict_type` VALUES ('10', '系统状态', 'sys_common_status', '0', 'admin', '2026-03-02 22:42:17', '', null, '登录状态列表');
+INSERT INTO `sys_dict_type` VALUES ('100', '教学成果状态', 'achievement_status', '0', 'admin', '2026-03-03 13:45:12', '', null, '审核状态');
+INSERT INTO `sys_dict_type` VALUES ('101', '审核结果', 'audit_result', '0', 'admin', '2026-03-03 13:45:41', '', null, '审核通过/驳回');
+INSERT INTO `sys_dict_type` VALUES ('102', '学院', 'college', '0', 'admin', '2026-03-03 13:53:29', '', null, null);
+INSERT INTO `sys_dict_type` VALUES ('103', '成果类型', 'edu_achievement_category', '0', 'admin', '2026-03-03 16:07:17', '', null, null);
+
+-- ----------------------------
+-- Table structure for sys_job
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_job`;
+CREATE TABLE `sys_job` (
+  `job_id` bigint NOT NULL AUTO_INCREMENT COMMENT '任务ID',
+  `job_name` varchar(64) NOT NULL DEFAULT '' COMMENT '任务名称',
+  `job_group` varchar(64) NOT NULL DEFAULT 'DEFAULT' COMMENT '任务组名',
+  `invoke_target` varchar(500) NOT NULL COMMENT '调用目标字符串',
+  `cron_expression` varchar(255) DEFAULT '' COMMENT 'cron执行表达式',
+  `misfire_policy` varchar(20) DEFAULT '3' COMMENT '计划执行错误策略（1立即执行 2执行一次 3放弃执行）',
+  `concurrent` char(1) DEFAULT '1' COMMENT '是否并发执行（0允许 1禁止）',
+  `status` char(1) DEFAULT '0' COMMENT '状态（0正常 1暂停）',
+  `create_by` varchar(64) DEFAULT '' COMMENT '创建者',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `remark` varchar(500) DEFAULT '' COMMENT '备注信息',
+  PRIMARY KEY (`job_id`,`job_name`,`job_group`)
+) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8mb3 COMMENT='定时任务调度表';
+
+-- ----------------------------
+-- Records of sys_job
+-- ----------------------------
+INSERT INTO `sys_job` VALUES ('1', '系统默认（无参）', 'DEFAULT', 'ryTask.ryNoParams', '0/10 * * * * ?', '3', '1', '1', 'admin', '2026-03-02 22:42:18', '', null, '');
+INSERT INTO `sys_job` VALUES ('2', '系统默认（有参）', 'DEFAULT', 'ryTask.ryParams(\'ry\')', '0/15 * * * * ?', '3', '1', '1', 'admin', '2026-03-02 22:42:18', '', null, '');
+INSERT INTO `sys_job` VALUES ('3', '系统默认（多参）', 'DEFAULT', 'ryTask.ryMultipleParams(\'ry\', true, 2000L, 316.50D, 100)', '0/20 * * * * ?', '3', '1', '1', 'admin', '2026-03-02 22:42:18', '', null, '');
+
+-- ----------------------------
+-- Table structure for sys_job_log
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_job_log`;
+CREATE TABLE `sys_job_log` (
+  `job_log_id` bigint NOT NULL AUTO_INCREMENT COMMENT '任务日志ID',
+  `job_name` varchar(64) NOT NULL COMMENT '任务名称',
+  `job_group` varchar(64) NOT NULL COMMENT '任务组名',
+  `invoke_target` varchar(500) NOT NULL COMMENT '调用目标字符串',
+  `job_message` varchar(500) DEFAULT NULL COMMENT '日志信息',
+  `status` char(1) DEFAULT '0' COMMENT '执行状态（0正常 1失败）',
+  `exception_info` varchar(2000) DEFAULT '' COMMENT '异常信息',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`job_log_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='定时任务调度日志表';
+
+-- ----------------------------
+-- Records of sys_job_log
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for sys_logininfor
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_logininfor`;
+CREATE TABLE `sys_logininfor` (
+  `info_id` bigint NOT NULL AUTO_INCREMENT COMMENT '访问ID',
+  `user_name` varchar(50) DEFAULT '' COMMENT '用户账号',
+  `ipaddr` varchar(128) DEFAULT '' COMMENT '登录IP地址',
+  `status` char(1) DEFAULT '0' COMMENT '登录状态（0成功 1失败）',
+  `msg` varchar(255) DEFAULT '' COMMENT '提示信息',
+  `access_time` datetime DEFAULT NULL COMMENT '访问时间',
+  PRIMARY KEY (`info_id`),
+  KEY `idx_sys_logininfor_s` (`status`),
+  KEY `idx_sys_logininfor_lt` (`access_time`)
+) ENGINE=InnoDB AUTO_INCREMENT=184 DEFAULT CHARSET=utf8mb3 COMMENT='系统访问记录';
+
+-- ----------------------------
+-- Records of sys_logininfor
+-- ----------------------------
+INSERT INTO `sys_logininfor` VALUES ('100', 'admin', '127.0.0.1', '0', '退出成功', '2026-03-03 13:09:39');
+INSERT INTO `sys_logininfor` VALUES ('101', 'admin', '127.0.0.1', '0', '登录成功', '2026-03-03 13:09:44');
+INSERT INTO `sys_logininfor` VALUES ('102', 'admin', '127.0.0.1', '0', '退出成功', '2026-03-03 15:41:41');
+INSERT INTO `sys_logininfor` VALUES ('103', 'teacher', '127.0.0.1', '0', '登录成功', '2026-03-03 15:41:49');
+INSERT INTO `sys_logininfor` VALUES ('104', 'teacher', '127.0.0.1', '0', '退出成功', '2026-03-03 15:44:38');
+INSERT INTO `sys_logininfor` VALUES ('105', 'admin', '127.0.0.1', '0', '登录成功', '2026-03-03 15:44:48');
+INSERT INTO `sys_logininfor` VALUES ('106', 'admin', '127.0.0.1', '0', '退出成功', '2026-03-03 15:47:29');
+INSERT INTO `sys_logininfor` VALUES ('107', 'teacher', '127.0.0.1', '0', '登录成功', '2026-03-03 15:47:37');
+INSERT INTO `sys_logininfor` VALUES ('108', 'teacher', '127.0.0.1', '0', '退出成功', '2026-03-03 15:49:06');
+INSERT INTO `sys_logininfor` VALUES ('109', 'admin', '127.0.0.1', '0', '登录成功', '2026-03-03 15:49:17');
+INSERT INTO `sys_logininfor` VALUES ('110', 'admin', '127.0.0.1', '0', '退出成功', '2026-03-03 16:21:52');
+INSERT INTO `sys_logininfor` VALUES ('111', 'teacher', '127.0.0.1', '0', '登录成功', '2026-03-03 16:22:06');
+INSERT INTO `sys_logininfor` VALUES ('112', 'teacher', '127.0.0.1', '0', '退出成功', '2026-03-03 16:40:15');
+INSERT INTO `sys_logininfor` VALUES ('113', 'admin', '127.0.0.1', '1', '密码输入错误1次', '2026-03-03 16:40:23');
+INSERT INTO `sys_logininfor` VALUES ('114', 'admin', '127.0.0.1', '0', '登录成功', '2026-03-03 16:40:26');
+INSERT INTO `sys_logininfor` VALUES ('115', 'admin', '127.0.0.1', '0', '退出成功', '2026-03-03 17:58:43');
+INSERT INTO `sys_logininfor` VALUES ('116', 'teacher', '127.0.0.1', '0', '登录成功', '2026-03-03 17:58:52');
+INSERT INTO `sys_logininfor` VALUES ('117', 'teacher', '127.0.0.1', '0', '退出成功', '2026-03-03 18:13:16');
+INSERT INTO `sys_logininfor` VALUES ('118', 'admin', '127.0.0.1', '0', '登录成功', '2026-03-03 18:13:25');
+INSERT INTO `sys_logininfor` VALUES ('119', 'admin', '127.0.0.1', '0', '退出成功', '2026-03-03 19:39:35');
+INSERT INTO `sys_logininfor` VALUES ('120', 'teacher', '127.0.0.1', '0', '登录成功', '2026-03-03 19:39:47');
+INSERT INTO `sys_logininfor` VALUES ('121', 'teacher', '127.0.0.1', '0', '退出成功', '2026-03-03 19:40:37');
+INSERT INTO `sys_logininfor` VALUES ('122', 'admin', '127.0.0.1', '0', '登录成功', '2026-03-03 19:40:47');
+INSERT INTO `sys_logininfor` VALUES ('123', 'admin', '127.0.0.1', '0', '退出成功', '2026-03-03 19:42:13');
+INSERT INTO `sys_logininfor` VALUES ('124', 'teacher', '127.0.0.1', '0', '登录成功', '2026-03-03 19:42:22');
+INSERT INTO `sys_logininfor` VALUES ('125', 'teacher', '127.0.0.1', '0', '退出成功', '2026-03-03 19:45:20');
+INSERT INTO `sys_logininfor` VALUES ('126', 'admin', '127.0.0.1', '0', '登录成功', '2026-03-03 19:45:29');
+INSERT INTO `sys_logininfor` VALUES ('127', 'admin', '127.0.0.1', '0', '退出成功', '2026-03-03 19:53:41');
+INSERT INTO `sys_logininfor` VALUES ('128', 'teacher', '127.0.0.1', '0', '登录成功', '2026-03-03 19:53:54');
+INSERT INTO `sys_logininfor` VALUES ('129', 'teacher', '127.0.0.1', '0', '退出成功', '2026-03-03 20:02:30');
+INSERT INTO `sys_logininfor` VALUES ('130', 'admin', '127.0.0.1', '0', '登录成功', '2026-03-03 20:02:42');
+INSERT INTO `sys_logininfor` VALUES ('131', 'admin', '127.0.0.1', '0', '退出成功', '2026-03-03 20:04:51');
+INSERT INTO `sys_logininfor` VALUES ('132', 'zpz', '127.0.0.1', '0', '登录成功', '2026-03-03 20:04:58');
+INSERT INTO `sys_logininfor` VALUES ('133', 'zpz', '127.0.0.1', '0', '退出成功', '2026-03-03 20:06:24');
+INSERT INTO `sys_logininfor` VALUES ('134', 'admin', '127.0.0.1', '0', '登录成功', '2026-03-03 20:06:33');
+INSERT INTO `sys_logininfor` VALUES ('135', 'admin', '127.0.0.1', '0', '退出成功', '2026-03-03 20:07:41');
+INSERT INTO `sys_logininfor` VALUES ('136', 'admin', '127.0.0.1', '0', '登录成功', '2026-03-03 20:07:45');
+INSERT INTO `sys_logininfor` VALUES ('137', 'admin', '127.0.0.1', '0', '退出成功', '2026-03-03 20:09:12');
+INSERT INTO `sys_logininfor` VALUES ('138', 'admin', '127.0.0.1', '0', '登录成功', '2026-03-03 20:09:29');
+INSERT INTO `sys_logininfor` VALUES ('139', 'admin', '127.0.0.1', '0', '登录成功', '2026-03-04 11:16:26');
+INSERT INTO `sys_logininfor` VALUES ('140', 'admin', '127.0.0.1', '0', '登录成功', '2026-03-10 13:12:22');
+INSERT INTO `sys_logininfor` VALUES ('141', 'admin', '127.0.0.1', '0', '退出成功', '2026-03-10 18:47:28');
+INSERT INTO `sys_logininfor` VALUES ('142', 'admin', '127.0.0.1', '0', '登录成功', '2026-03-10 18:47:42');
+INSERT INTO `sys_logininfor` VALUES ('143', 'admin', '127.0.0.1', '0', '退出成功', '2026-03-10 18:47:52');
+INSERT INTO `sys_logininfor` VALUES ('144', 'admin', '127.0.0.1', '0', '登录成功', '2026-03-10 18:47:57');
+INSERT INTO `sys_logininfor` VALUES ('145', 'admin', '127.0.0.1', '0', '登录成功', '2026-03-15 16:45:17');
+INSERT INTO `sys_logininfor` VALUES ('146', 'admin', '127.0.0.1', '0', '退出成功', '2026-03-15 19:10:34');
+INSERT INTO `sys_logininfor` VALUES ('147', 'schoolAudit', '127.0.0.1', '0', '登录成功', '2026-03-15 19:10:58');
+INSERT INTO `sys_logininfor` VALUES ('148', 'schoolAudit', '127.0.0.1', '0', '退出成功', '2026-03-15 19:11:27');
+INSERT INTO `sys_logininfor` VALUES ('149', 'admin', '127.0.0.1', '0', '登录成功', '2026-03-15 19:11:36');
+INSERT INTO `sys_logininfor` VALUES ('150', 'admin', '127.0.0.1', '0', '退出成功', '2026-03-15 19:30:57');
+INSERT INTO `sys_logininfor` VALUES ('151', 'teacher', '127.0.0.1', '0', '登录成功', '2026-03-15 19:31:08');
+INSERT INTO `sys_logininfor` VALUES ('152', 'teacher', '127.0.0.1', '0', '退出成功', '2026-03-15 19:32:24');
+INSERT INTO `sys_logininfor` VALUES ('153', 'CollegeAudit', '127.0.0.1', '0', '登录成功', '2026-03-15 19:32:34');
+INSERT INTO `sys_logininfor` VALUES ('154', 'collegeAudit', '127.0.0.1', '0', '退出成功', '2026-03-15 19:33:20');
+INSERT INTO `sys_logininfor` VALUES ('155', 'SchoolAudit', '127.0.0.1', '0', '登录成功', '2026-03-15 19:33:30');
+INSERT INTO `sys_logininfor` VALUES ('156', 'schoolAudit', '127.0.0.1', '0', '退出成功', '2026-03-15 19:34:05');
+INSERT INTO `sys_logininfor` VALUES ('157', 'admin', '127.0.0.1', '0', '登录成功', '2026-03-15 19:34:22');
+INSERT INTO `sys_logininfor` VALUES ('158', 'admin', '127.0.0.1', '0', '退出成功', '2026-03-15 19:39:34');
+INSERT INTO `sys_logininfor` VALUES ('159', 'CollegeAudit', '127.0.0.1', '0', '登录成功', '2026-03-15 19:39:50');
+INSERT INTO `sys_logininfor` VALUES ('160', 'collegeAudit', '127.0.0.1', '0', '退出成功', '2026-03-15 19:41:28');
+INSERT INTO `sys_logininfor` VALUES ('161', 'admin', '127.0.0.1', '1', '密码输入错误1次', '2026-03-15 19:41:39');
+INSERT INTO `sys_logininfor` VALUES ('162', 'admin', '127.0.0.1', '0', '登录成功', '2026-03-15 19:41:53');
+INSERT INTO `sys_logininfor` VALUES ('163', 'admin', '127.0.0.1', '0', '退出成功', '2026-03-15 19:46:18');
+INSERT INTO `sys_logininfor` VALUES ('164', 'CollegeAudit', '127.0.0.1', '0', '登录成功', '2026-03-15 19:47:11');
+INSERT INTO `sys_logininfor` VALUES ('165', 'collegeAudit', '127.0.0.1', '0', '退出成功', '2026-03-15 19:50:33');
+INSERT INTO `sys_logininfor` VALUES ('166', 'admin', '127.0.0.1', '0', '登录成功', '2026-03-15 19:50:43');
+INSERT INTO `sys_logininfor` VALUES ('167', 'admin', '127.0.0.1', '0', '登录成功', '2026-03-16 14:52:10');
+INSERT INTO `sys_logininfor` VALUES ('168', 'admin', '127.0.0.1', '0', '退出成功', '2026-03-16 15:27:45');
+INSERT INTO `sys_logininfor` VALUES ('169', 'teacher', '127.0.0.1', '0', '登录成功', '2026-03-16 15:27:54');
+INSERT INTO `sys_logininfor` VALUES ('170', 'teacher', '127.0.0.1', '0', '退出成功', '2026-03-16 15:28:49');
+INSERT INTO `sys_logininfor` VALUES ('171', 'SchoolAudit', '127.0.0.1', '0', '登录成功', '2026-03-16 15:29:00');
+INSERT INTO `sys_logininfor` VALUES ('172', 'schoolAudit', '127.0.0.1', '0', '退出成功', '2026-03-16 15:30:04');
+INSERT INTO `sys_logininfor` VALUES ('173', 'CollegeAudit', '127.0.0.1', '0', '登录成功', '2026-03-16 15:30:16');
+INSERT INTO `sys_logininfor` VALUES ('174', 'collegeAudit', '127.0.0.1', '0', '退出成功', '2026-03-16 15:30:38');
+INSERT INTO `sys_logininfor` VALUES ('175', 'admin', '127.0.0.1', '0', '登录成功', '2026-03-16 15:30:52');
+INSERT INTO `sys_logininfor` VALUES ('176', 'admin', '127.0.0.1', '0', '退出成功', '2026-03-16 16:05:14');
+INSERT INTO `sys_logininfor` VALUES ('177', 'teacher', '127.0.0.1', '0', '登录成功', '2026-03-16 16:05:32');
+INSERT INTO `sys_logininfor` VALUES ('178', 'teacher', '127.0.0.1', '0', '退出成功', '2026-03-16 16:13:10');
+INSERT INTO `sys_logininfor` VALUES ('179', 'CollegeAudit', '127.0.0.1', '0', '登录成功', '2026-03-16 16:13:42');
+INSERT INTO `sys_logininfor` VALUES ('180', 'collegeAudit', '127.0.0.1', '0', '退出成功', '2026-03-16 16:14:36');
+INSERT INTO `sys_logininfor` VALUES ('181', 'admin', '127.0.0.1', '0', '登录成功', '2026-03-16 16:14:45');
+INSERT INTO `sys_logininfor` VALUES ('182', 'admin', '127.0.0.1', '0', '退出成功', '2026-03-16 16:16:16');
+INSERT INTO `sys_logininfor` VALUES ('183', 'teacher', '127.0.0.1', '0', '登录成功', '2026-03-16 16:16:33');
+
+-- ----------------------------
+-- Table structure for sys_menu
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_menu`;
+CREATE TABLE `sys_menu` (
+  `menu_id` bigint NOT NULL AUTO_INCREMENT COMMENT '菜单ID',
+  `menu_name` varchar(50) NOT NULL COMMENT '菜单名称',
+  `parent_id` bigint DEFAULT '0' COMMENT '父菜单ID',
+  `order_num` int DEFAULT '0' COMMENT '显示顺序',
+  `path` varchar(200) DEFAULT '' COMMENT '路由地址',
+  `component` varchar(255) DEFAULT NULL COMMENT '组件路径',
+  `query` varchar(255) DEFAULT NULL COMMENT '路由参数',
+  `route_name` varchar(50) DEFAULT '' COMMENT '路由名称',
+  `is_frame` int DEFAULT '1' COMMENT '是否为外链（0是 1否）',
+  `is_cache` int DEFAULT '0' COMMENT '是否缓存（0缓存 1不缓存）',
+  `menu_type` char(1) DEFAULT '' COMMENT '菜单类型（M目录 C菜单 F按钮）',
+  `visible` char(1) DEFAULT '0' COMMENT '菜单状态（0显示 1隐藏）',
+  `status` char(1) DEFAULT '0' COMMENT '菜单状态（0正常 1停用）',
+  `perms` varchar(100) DEFAULT NULL COMMENT '权限标识',
+  `icon` varchar(100) DEFAULT '#' COMMENT '菜单图标',
+  `create_by` varchar(64) DEFAULT '' COMMENT '创建者',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `remark` varchar(500) DEFAULT '' COMMENT '备注',
+  PRIMARY KEY (`menu_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3070 DEFAULT CHARSET=utf8mb3 COMMENT='菜单权限表';
+
+-- ----------------------------
+-- Records of sys_menu
+-- ----------------------------
+INSERT INTO `sys_menu` VALUES ('1', '系统管理', '0', '9', 'system', null, '', '', '1', '0', 'M', '0', '0', '', 'system', 'admin', '2026-03-02 22:42:14', 'admin', '2026-03-03 16:44:48', '系统管理目录');
+INSERT INTO `sys_menu` VALUES ('2', '系统监控', '0', '10', 'monitor', null, '', '', '1', '0', 'M', '0', '0', '', 'monitor', 'admin', '2026-03-02 22:42:14', 'admin', '2026-03-03 16:44:31', '系统监控目录');
+INSERT INTO `sys_menu` VALUES ('3', '系统工具', '0', '10', 'tool', null, '', '', '1', '0', 'M', '0', '0', '', 'tool', 'admin', '2026-03-02 22:42:14', 'admin', '2026-03-03 16:44:27', '系统工具目录');
+INSERT INTO `sys_menu` VALUES ('100', '用户管理', '1', '1', 'user', 'system/user/index', '', '', '1', '0', 'C', '0', '0', 'system:user:list', 'user', 'admin', '2026-03-02 22:42:14', '', null, '用户管理菜单');
+INSERT INTO `sys_menu` VALUES ('101', '角色管理', '1', '2', 'role', 'system/role/index', '', '', '1', '0', 'C', '0', '0', 'system:role:list', 'peoples', 'admin', '2026-03-02 22:42:14', '', null, '角色管理菜单');
+INSERT INTO `sys_menu` VALUES ('102', '菜单管理', '1', '3', 'menu', 'system/menu/index', '', '', '1', '0', 'C', '0', '0', 'system:menu:list', 'tree-table', 'admin', '2026-03-02 22:42:14', '', null, '菜单管理菜单');
+INSERT INTO `sys_menu` VALUES ('103', '部门管理', '1', '4', 'dept', 'system/dept/index', '', '', '1', '0', 'C', '0', '0', 'system:dept:list', 'tree', 'admin', '2026-03-02 22:42:14', '', null, '部门管理菜单');
+INSERT INTO `sys_menu` VALUES ('104', '岗位管理', '1', '5', 'post', 'system/post/index', '', '', '1', '0', 'C', '0', '0', 'system:post:list', 'post', 'admin', '2026-03-02 22:42:14', '', null, '岗位管理菜单');
+INSERT INTO `sys_menu` VALUES ('105', '字典管理', '1', '6', 'dict', 'system/dict/index', '', '', '1', '0', 'C', '0', '0', 'system:dict:list', 'dict', 'admin', '2026-03-02 22:42:14', '', null, '字典管理菜单');
+INSERT INTO `sys_menu` VALUES ('106', '参数设置', '1', '7', 'config', 'system/config/index', '', '', '1', '0', 'C', '0', '0', 'system:config:list', 'edit', 'admin', '2026-03-02 22:42:14', '', null, '参数设置菜单');
+INSERT INTO `sys_menu` VALUES ('107', '通知公告', '1', '8', 'notice', 'system/notice/index', '', '', '1', '0', 'C', '0', '0', 'system:notice:list', 'message', 'admin', '2026-03-02 22:42:14', 'admin', '2026-03-16 15:01:13', '通知公告菜单');
+INSERT INTO `sys_menu` VALUES ('108', '日志管理', '1', '9', 'log', '', '', '', '1', '0', 'M', '0', '0', '', 'log', 'admin', '2026-03-02 22:42:14', '', null, '日志管理菜单');
+INSERT INTO `sys_menu` VALUES ('109', '在线用户', '2', '1', 'online', 'monitor/online/index', '', '', '1', '0', 'C', '0', '0', 'monitor:online:list', 'online', 'admin', '2026-03-02 22:42:14', '', null, '在线用户菜单');
+INSERT INTO `sys_menu` VALUES ('110', '定时任务', '2', '2', 'job', 'monitor/job/index', '', '', '1', '0', 'C', '0', '0', 'monitor:job:list', 'job', 'admin', '2026-03-02 22:42:14', '', null, '定时任务菜单');
+INSERT INTO `sys_menu` VALUES ('111', 'Sentinel控制台', '2', '3', 'http://localhost:8718', '', '', '', '0', '0', 'C', '0', '0', 'monitor:sentinel:list', 'sentinel', 'admin', '2026-03-02 22:42:14', '', null, '流量控制菜单');
+INSERT INTO `sys_menu` VALUES ('112', 'Nacos控制台', '2', '4', 'http://localhost:8848/nacos', '', '', '', '0', '0', 'C', '0', '0', 'monitor:nacos:list', 'nacos', 'admin', '2026-03-02 22:42:14', '', null, '服务治理菜单');
+INSERT INTO `sys_menu` VALUES ('113', 'Admin控制台', '2', '5', 'http://localhost:9100/login', '', '', '', '0', '0', 'C', '0', '0', 'monitor:server:list', 'server', 'admin', '2026-03-02 22:42:14', '', null, '服务监控菜单');
+INSERT INTO `sys_menu` VALUES ('114', '表单构建', '3', '1', 'build', 'tool/build/index', '', '', '1', '0', 'C', '0', '0', 'tool:build:list', 'build', 'admin', '2026-03-02 22:42:14', '', null, '表单构建菜单');
+INSERT INTO `sys_menu` VALUES ('115', '代码生成', '3', '2', 'gen', 'tool/gen/index', '', '', '1', '0', 'C', '0', '0', 'tool:gen:list', 'code', 'admin', '2026-03-02 22:42:14', '', null, '代码生成菜单');
+INSERT INTO `sys_menu` VALUES ('116', '系统接口', '3', '3', 'http://localhost:8080/swagger-ui/index.html', '', '', '', '0', '0', 'C', '0', '0', 'tool:swagger:list', 'swagger', 'admin', '2026-03-02 22:42:14', '', null, '系统接口菜单');
+INSERT INTO `sys_menu` VALUES ('500', '操作日志', '108', '1', 'operlog', 'system/operlog/index', '', '', '1', '0', 'C', '0', '0', 'system:operlog:list', 'form', 'admin', '2026-03-02 22:42:14', '', null, '操作日志菜单');
+INSERT INTO `sys_menu` VALUES ('501', '登录日志', '108', '2', 'logininfor', 'system/logininfor/index', '', '', '1', '0', 'C', '0', '0', 'system:logininfor:list', 'logininfor', 'admin', '2026-03-02 22:42:15', '', null, '登录日志菜单');
+INSERT INTO `sys_menu` VALUES ('1000', '用户查询', '100', '1', '', '', '', '', '1', '0', 'F', '0', '0', 'system:user:query', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('1001', '用户新增', '100', '2', '', '', '', '', '1', '0', 'F', '0', '0', 'system:user:add', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('1002', '用户修改', '100', '3', '', '', '', '', '1', '0', 'F', '0', '0', 'system:user:edit', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('1003', '用户删除', '100', '4', '', '', '', '', '1', '0', 'F', '0', '0', 'system:user:remove', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('1004', '用户导出', '100', '5', '', '', '', '', '1', '0', 'F', '0', '0', 'system:user:export', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('1005', '用户导入', '100', '6', '', '', '', '', '1', '0', 'F', '0', '0', 'system:user:import', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('1006', '重置密码', '100', '7', '', '', '', '', '1', '0', 'F', '0', '0', 'system:user:resetPwd', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('1007', '角色查询', '101', '1', '', '', '', '', '1', '0', 'F', '0', '0', 'system:role:query', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('1008', '角色新增', '101', '2', '', '', '', '', '1', '0', 'F', '0', '0', 'system:role:add', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('1009', '角色修改', '101', '3', '', '', '', '', '1', '0', 'F', '0', '0', 'system:role:edit', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('1010', '角色删除', '101', '4', '', '', '', '', '1', '0', 'F', '0', '0', 'system:role:remove', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('1011', '角色导出', '101', '5', '', '', '', '', '1', '0', 'F', '0', '0', 'system:role:export', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('1012', '菜单查询', '102', '1', '', '', '', '', '1', '0', 'F', '0', '0', 'system:menu:query', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('1013', '菜单新增', '102', '2', '', '', '', '', '1', '0', 'F', '0', '0', 'system:menu:add', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('1014', '菜单修改', '102', '3', '', '', '', '', '1', '0', 'F', '0', '0', 'system:menu:edit', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('1015', '菜单删除', '102', '4', '', '', '', '', '1', '0', 'F', '0', '0', 'system:menu:remove', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('1016', '部门查询', '103', '1', '', '', '', '', '1', '0', 'F', '0', '0', 'system:dept:query', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('1017', '部门新增', '103', '2', '', '', '', '', '1', '0', 'F', '0', '0', 'system:dept:add', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('1018', '部门修改', '103', '3', '', '', '', '', '1', '0', 'F', '0', '0', 'system:dept:edit', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('1019', '部门删除', '103', '4', '', '', '', '', '1', '0', 'F', '0', '0', 'system:dept:remove', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('1020', '岗位查询', '104', '1', '', '', '', '', '1', '0', 'F', '0', '0', 'system:post:query', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('1021', '岗位新增', '104', '2', '', '', '', '', '1', '0', 'F', '0', '0', 'system:post:add', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('1022', '岗位修改', '104', '3', '', '', '', '', '1', '0', 'F', '0', '0', 'system:post:edit', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('1023', '岗位删除', '104', '4', '', '', '', '', '1', '0', 'F', '0', '0', 'system:post:remove', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('1024', '岗位导出', '104', '5', '', '', '', '', '1', '0', 'F', '0', '0', 'system:post:export', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('1025', '字典查询', '105', '1', '#', '', '', '', '1', '0', 'F', '0', '0', 'system:dict:query', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('1026', '字典新增', '105', '2', '#', '', '', '', '1', '0', 'F', '0', '0', 'system:dict:add', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('1027', '字典修改', '105', '3', '#', '', '', '', '1', '0', 'F', '0', '0', 'system:dict:edit', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('1028', '字典删除', '105', '4', '#', '', '', '', '1', '0', 'F', '0', '0', 'system:dict:remove', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('1029', '字典导出', '105', '5', '#', '', '', '', '1', '0', 'F', '0', '0', 'system:dict:export', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('1030', '参数查询', '106', '1', '#', '', '', '', '1', '0', 'F', '0', '0', 'system:config:query', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('1031', '参数新增', '106', '2', '#', '', '', '', '1', '0', 'F', '0', '0', 'system:config:add', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('1032', '参数修改', '106', '3', '#', '', '', '', '1', '0', 'F', '0', '0', 'system:config:edit', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('1033', '参数删除', '106', '4', '#', '', '', '', '1', '0', 'F', '0', '0', 'system:config:remove', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('1034', '参数导出', '106', '5', '#', '', '', '', '1', '0', 'F', '0', '0', 'system:config:export', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('1035', '公告查询', '107', '1', '#', '', '', '', '1', '0', 'F', '0', '0', 'system:notice:query', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('1036', '公告新增', '107', '2', '#', '', '', '', '1', '0', 'F', '0', '0', 'system:notice:add', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('1037', '公告修改', '107', '3', '#', '', '', '', '1', '0', 'F', '0', '0', 'system:notice:edit', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('1038', '公告删除', '107', '4', '#', '', '', '', '1', '0', 'F', '0', '0', 'system:notice:remove', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('1039', '操作查询', '500', '1', '#', '', '', '', '1', '0', 'F', '0', '0', 'system:operlog:query', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('1040', '操作删除', '500', '2', '#', '', '', '', '1', '0', 'F', '0', '0', 'system:operlog:remove', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('1041', '日志导出', '500', '3', '#', '', '', '', '1', '0', 'F', '0', '0', 'system:operlog:export', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('1042', '登录查询', '501', '1', '#', '', '', '', '1', '0', 'F', '0', '0', 'system:logininfor:query', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('1043', '登录删除', '501', '2', '#', '', '', '', '1', '0', 'F', '0', '0', 'system:logininfor:remove', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('1044', '日志导出', '501', '3', '#', '', '', '', '1', '0', 'F', '0', '0', 'system:logininfor:export', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('1045', '账户解锁', '501', '4', '#', '', '', '', '1', '0', 'F', '0', '0', 'system:logininfor:unlock', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('1046', '在线查询', '109', '1', '#', '', '', '', '1', '0', 'F', '0', '0', 'monitor:online:query', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('1047', '批量强退', '109', '2', '#', '', '', '', '1', '0', 'F', '0', '0', 'monitor:online:batchLogout', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('1048', '单条强退', '109', '3', '#', '', '', '', '1', '0', 'F', '0', '0', 'monitor:online:forceLogout', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('1049', '任务查询', '110', '1', '#', '', '', '', '1', '0', 'F', '0', '0', 'monitor:job:query', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('1050', '任务新增', '110', '2', '#', '', '', '', '1', '0', 'F', '0', '0', 'monitor:job:add', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('1051', '任务修改', '110', '3', '#', '', '', '', '1', '0', 'F', '0', '0', 'monitor:job:edit', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('1052', '任务删除', '110', '4', '#', '', '', '', '1', '0', 'F', '0', '0', 'monitor:job:remove', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('1053', '状态修改', '110', '5', '#', '', '', '', '1', '0', 'F', '0', '0', 'monitor:job:changeStatus', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('1054', '任务导出', '110', '6', '#', '', '', '', '1', '0', 'F', '0', '0', 'monitor:job:export', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('1055', '生成查询', '115', '1', '#', '', '', '', '1', '0', 'F', '0', '0', 'tool:gen:query', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('1056', '生成修改', '115', '2', '#', '', '', '', '1', '0', 'F', '0', '0', 'tool:gen:edit', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('1057', '生成删除', '115', '3', '#', '', '', '', '1', '0', 'F', '0', '0', 'tool:gen:remove', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('1058', '导入代码', '115', '2', '#', '', '', '', '1', '0', 'F', '0', '0', 'tool:gen:import', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('1059', '预览代码', '115', '4', '#', '', '', '', '1', '0', 'F', '0', '0', 'tool:gen:preview', '#', 'admin', '2026-03-02 22:42:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('1060', '生成代码', '115', '5', '#', '', '', '', '1', '0', 'F', '0', '0', 'tool:gen:code', '#', 'admin', '2026-03-02 22:42:16', '', null, '');
+INSERT INTO `sys_menu` VALUES ('3028', '教学成果管理', '0', '1', 'achievement', 'achievement/achievement/index', null, '', '1', '0', 'C', '0', '0', 'achievement:achievement:list', 'system', 'admin', '2026-03-03 14:08:45', 'admin', '2026-03-03 15:45:34', '教学成果管理菜单');
+INSERT INTO `sys_menu` VALUES ('3029', '教学成果管理查询', '3028', '1', '#', '', null, '', '1', '0', 'F', '0', '0', 'achievement:achievement:query', '#', 'admin', '2026-03-03 14:08:45', '', null, '');
+INSERT INTO `sys_menu` VALUES ('3030', '教学成果管理新增', '3028', '2', '#', '', null, '', '1', '0', 'F', '0', '0', 'achievement:achievement:add', '#', 'admin', '2026-03-03 14:08:45', '', null, '');
+INSERT INTO `sys_menu` VALUES ('3031', '教学成果管理修改', '3028', '3', '#', '', null, '', '1', '0', 'F', '0', '0', 'achievement:achievement:edit', '#', 'admin', '2026-03-03 14:08:45', '', null, '');
+INSERT INTO `sys_menu` VALUES ('3032', '教学成果管理删除', '3028', '4', '#', '', null, '', '1', '0', 'F', '0', '0', 'achievement:achievement:remove', '#', 'admin', '2026-03-03 14:08:45', '', null, '');
+INSERT INTO `sys_menu` VALUES ('3033', '教学成果管理导出', '3028', '5', '#', '', null, '', '1', '0', 'F', '0', '0', 'achievement:achievement:export', '#', 'admin', '2026-03-03 14:08:45', '', null, '');
+INSERT INTO `sys_menu` VALUES ('3034', '成果申报', '0', '1', 'myAchievement', 'achievement/myAchievement/index', null, 'MyAchievement', '1', '0', 'C', '0', '0', '', 'upload', 'admin', '2026-03-03 14:55:04', 'admin', '2026-03-03 15:46:35', '');
+INSERT INTO `sys_menu` VALUES ('3035', '教师新增', '3034', '1', '', null, null, '', '1', '0', 'F', '0', '0', 'achievement:achievement:teacherAdd', '#', 'admin', '2026-03-03 15:25:57', 'admin', '2026-03-10 15:32:12', '');
+INSERT INTO `sys_menu` VALUES ('3037', '成果管理', '0', '2', 'myAchievementList', 'achievement/myAchievementList/index', null, 'teacherListAchievement', '1', '0', 'C', '0', '0', 'achievement:achievement:teacherList', 'education', 'admin', '2026-03-03 16:43:36', 'admin', '2026-03-10 15:47:28', '');
+INSERT INTO `sys_menu` VALUES ('3041', '教师修改', '3037', '1', '', null, null, '', '1', '0', 'F', '0', '0', 'achievement:achievement:teacherEdit', '#', 'admin', '2026-03-10 14:47:02', 'admin', '2026-03-10 15:32:46', '');
+INSERT INTO `sys_menu` VALUES ('3042', '教师查询', '3037', '2', '', null, null, '', '1', '0', 'F', '0', '0', 'achievement:achievement:teacherQuery', '#', 'admin', '2026-03-10 14:47:42', 'admin', '2026-03-10 15:33:11', '');
+INSERT INTO `sys_menu` VALUES ('3043', '教师删除', '3037', '3', '', null, null, '', '1', '0', 'F', '0', '0', 'achievement:achievement:teacherRemove', '#', 'admin', '2026-03-10 15:51:44', 'admin', '2026-03-10 15:52:08', '');
+INSERT INTO `sys_menu` VALUES ('3044', '教师成果详情', '3037', '4', '', null, null, '', '1', '0', 'F', '0', '0', 'achievement:achievement:teacherGet', '#', 'admin', '2026-03-10 15:53:06', '', null, '');
+INSERT INTO `sys_menu` VALUES ('3045', '院级审核工作台', '0', '2', 'collegeAudit', 'achievement/collegeAudit/index', null, 'collegeAudit', '1', '0', 'C', '0', '0', 'achievement:audit:college', 'form', 'admin', '2026-03-15 17:15:16', 'admin', '2026-03-15 19:20:26', '');
+INSERT INTO `sys_menu` VALUES ('3046', '校级审核工作台', '0', '2', 'schoolAudit', 'achievement/schoolAudit/index', null, 'schoolAudit', '1', '0', 'C', '0', '0', 'achievement:audit:school', 'form', 'admin', '2026-03-15 17:15:47', 'admin', '2026-03-15 19:35:17', '');
+INSERT INTO `sys_menu` VALUES ('3047', '审核记录', '0', '3', 'auditRecord', 'achievement/auditRecord/index', null, 'auditRecord', '1', '0', 'C', '0', '0', null, 'log', 'admin', '2026-03-15 17:17:41', '', null, '');
+INSERT INTO `sys_menu` VALUES ('3048', '获取详细信息', '3046', '2', '', null, null, '', '1', '0', 'F', '0', '0', 'achievement:audit:query', '#', 'admin', '2026-03-15 19:17:34', '', null, '');
+INSERT INTO `sys_menu` VALUES ('3049', '审核记录', '3047', '3', '', null, null, '', '1', '0', 'F', '0', '0', 'achievement:audit:recordList', '#', 'admin', '2026-03-15 19:18:42', '', null, '');
+INSERT INTO `sys_menu` VALUES ('3050', '导出审核记录', '3047', '4', '', null, null, '', '1', '0', 'F', '0', '0', 'achievement:audit:export', '#', 'admin', '2026-03-15 19:19:03', 'admin', '2026-03-15 19:36:16', '');
+INSERT INTO `sys_menu` VALUES ('3051', '获取详细信息', '3045', '1', '', null, null, '', '1', '0', 'F', '0', '0', 'achievement:audit:query', '#', 'admin', '2026-03-15 19:21:51', 'admin', '2026-03-15 19:22:02', '');
+INSERT INTO `sys_menu` VALUES ('3056', '通用权限', '0', '10', 'power', null, null, '', '1', '0', 'C', '1', '0', null, '404', 'admin', '2026-03-16 15:21:42', '', null, '');
+INSERT INTO `sys_menu` VALUES ('3057', '读取消息', '3056', '1', '', null, null, '', '1', '0', 'F', '0', '0', 'system:notice:list', '#', 'admin', '2026-03-16 15:25:55', '', null, '');
+INSERT INTO `sys_menu` VALUES ('3058', '显示审核进度', '3056', '2', '', null, null, '', '1', '0', 'F', '0', '0', 'achievement:audit:recordList', '#', 'admin', '2026-03-16 15:36:30', '', null, '');
+INSERT INTO `sys_menu` VALUES ('3059', '信息更新', '3056', '3', '', null, null, '', '1', '0', 'F', '0', '0', 'system:notice:edit', '#', 'admin', '2026-03-16 15:46:39', 'admin', '2026-03-16 15:46:51', '');
+INSERT INTO `sys_menu` VALUES ('3060', '查询字典', '3056', '4', '', null, null, '', '1', '0', 'F', '0', '0', 'system:dict:list', '#', 'admin', '2026-03-16 15:47:18', '', null, '');
+INSERT INTO `sys_menu` VALUES ('3061', '导出审核记录', '3056', '5', '', null, null, '', '1', '0', 'F', '0', '0', 'achievement:audit:export', '#', 'admin', '2026-03-16 15:48:15', '', null, '');
+INSERT INTO `sys_menu` VALUES ('3062', '部门查询', '3056', '4', '', null, null, '', '1', '0', 'F', '0', '0', 'system:dict:dept', '#', 'admin', '2026-03-16 15:51:13', '', null, '');
+INSERT INTO `sys_menu` VALUES ('3063', '管理员权限', '0', '10', 'adminPower', null, null, '', '1', '0', 'C', '1', '0', null, '404', 'admin', '2026-03-16 15:56:28', '', null, '');
+INSERT INTO `sys_menu` VALUES ('3064', 'achievement:achievement:list', '3063', '1', '', null, null, '', '1', '0', 'F', '0', '0', 'achievement:achievement:list', '#', 'admin', '2026-03-16 15:56:47', '', null, '');
+INSERT INTO `sys_menu` VALUES ('3065', 'achievement:achievement:add/edit/remove', '3063', '2', 'achievement:achievement:add/edit/remove', null, null, '', '1', '0', 'F', '0', '0', 'achievement:achievement:add/edit/remove', '#', 'admin', '2026-03-16 15:57:00', '', null, '');
+INSERT INTO `sys_menu` VALUES ('3066', 'achievement:audit:recordList', '3063', '3', '', null, null, '', '1', '0', 'F', '0', '0', 'achievement:audit:recordList', '#', 'admin', '2026-03-16 15:57:09', '', null, '');
+INSERT INTO `sys_menu` VALUES ('3068', 'achievement:audit:export', '3063', '4', '', null, null, '', '1', '0', 'F', '0', '0', 'achievement:audit:export', '#', 'admin', '2026-03-16 15:57:49', '', null, '');
+INSERT INTO `sys_menu` VALUES ('3069', '部门查询1', '3056', '4', '', null, null, '', '1', '0', 'F', '0', '0', 'system:dept:list', '#', 'admin', '2026-03-16 16:15:19', '', null, '');
+
+-- ----------------------------
+-- Table structure for sys_notice
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_notice`;
+CREATE TABLE `sys_notice` (
+  `notice_id` int NOT NULL AUTO_INCREMENT COMMENT '公告ID',
+  `notice_title` varchar(50) NOT NULL COMMENT '公告标题',
+  `notice_type` char(1) NOT NULL COMMENT '公告类型（1通知 2公告）',
+  `notice_content` longblob COMMENT '公告内容',
+  `status` char(1) DEFAULT '0' COMMENT '公告状态（0正常 1关闭）',
+  `create_by` varchar(64) DEFAULT '' COMMENT '创建者',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `remark` varchar(255) DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`notice_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb3 COMMENT='通知公告表';
+
+-- ----------------------------
+-- Records of sys_notice
+-- ----------------------------
+INSERT INTO `sys_notice` VALUES ('10', '高校教学成果管理系统', '1', 0x3C703EE9AB98E6A0A1E69599E5ADA6E68890E69E9CE7AEA1E79086E7B3BBE7BB9F3C2F703E, '0', 'admin', '2026-03-15 19:25:25', '', null, null);
+INSERT INTO `sys_notice` VALUES ('11', '您的教学成果审核结果通知', '1', 0xE682A8E794B3E68AA5E79A84E68890E69E9CE3808C33313531393332E3808DE9809AE8BF87E999A2E7BAA7E5AEA1E6A0B8EFBC8CE5B7B2E8BF9BE585A5E6A0A1E7BAA7E5AEA1E6A0B8E380820AE5AEA1E6A0B8E6848FE8A781EFBC9A313233, '1', '100', '2026-03-15 19:49:10', 'admin', '2026-03-16 15:51:34', null);
+INSERT INTO `sys_notice` VALUES ('12', '您的教学成果审核结果通知', '1', 0xE682A8E794B3E68AA5E79A84E68890E69E9CE3808CE7AB9EE8B59BE5A596E3808DE681ADE5969CEFBC81E682A8E79A84E68890E69E9CE5B7B2E9809AE8BF87E6A0A1E7BAA7E5AEA1E6A0B8E380820AE5AEA1E6A0B8E6848FE8A781EFBC9A313233, '1', '100', '2026-03-16 15:29:43', 'admin', '2026-03-16 15:51:33', null);
+INSERT INTO `sys_notice` VALUES ('13', '您的教学成果审核结果通知', '1', 0xE682A8E794B3E68AA5E79A84E68890E69E9CE3808C33313531393332E3808DE6A0A1E7BAA7E5AEA1E6A0B8E69CAAE9809AE8BF87E38082, '1', '100', '2026-03-16 15:29:49', 'admin', '2026-03-16 15:51:32', null);
+INSERT INTO `sys_notice` VALUES ('14', '您的教学成果审核结果通知', '1', 0xE682A8E794B3E68AA5E79A84E68890E69E9CE3808C3331363135E3808DE9809AE8BF87E999A2E7BAA7E5AEA1E6A0B8EFBC8CE5B7B2E8BF9BE585A5E6A0A1E7BAA7E5AEA1E6A0B8E38082, '1', '100', '2026-03-16 15:30:27', 'admin', '2026-03-16 15:51:32', null);
+
+-- ----------------------------
+-- Table structure for sys_oper_log
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_oper_log`;
+CREATE TABLE `sys_oper_log` (
+  `oper_id` bigint NOT NULL AUTO_INCREMENT COMMENT '日志主键',
+  `title` varchar(50) DEFAULT '' COMMENT '模块标题',
+  `business_type` int DEFAULT '0' COMMENT '业务类型（0其它 1新增 2修改 3删除）',
+  `method` varchar(200) DEFAULT '' COMMENT '方法名称',
+  `request_method` varchar(10) DEFAULT '' COMMENT '请求方式',
+  `operator_type` int DEFAULT '0' COMMENT '操作类别（0其它 1后台用户 2手机端用户）',
+  `oper_name` varchar(50) DEFAULT '' COMMENT '操作人员',
+  `dept_name` varchar(50) DEFAULT '' COMMENT '部门名称',
+  `oper_url` varchar(255) DEFAULT '' COMMENT '请求URL',
+  `oper_ip` varchar(128) DEFAULT '' COMMENT '主机地址',
+  `oper_location` varchar(255) DEFAULT '' COMMENT '操作地点',
+  `oper_param` varchar(2000) DEFAULT '' COMMENT '请求参数',
+  `json_result` varchar(2000) DEFAULT '' COMMENT '返回参数',
+  `status` int DEFAULT '0' COMMENT '操作状态（0正常 1异常）',
+  `error_msg` varchar(2000) DEFAULT '' COMMENT '错误消息',
+  `oper_time` datetime DEFAULT NULL COMMENT '操作时间',
+  `cost_time` bigint DEFAULT '0' COMMENT '消耗时间',
+  PRIMARY KEY (`oper_id`),
+  KEY `idx_sys_oper_log_bt` (`business_type`),
+  KEY `idx_sys_oper_log_s` (`status`),
+  KEY `idx_sys_oper_log_ot` (`oper_time`)
+) ENGINE=InnoDB AUTO_INCREMENT=362 DEFAULT CHARSET=utf8mb3 COMMENT='操作日志记录';
+
+-- ----------------------------
+-- Records of sys_oper_log
+-- ----------------------------
+INSERT INTO `sys_oper_log` VALUES ('100', '参数管理', '2', 'com.edu.system.controller.SysConfigController.edit()', 'PUT', '1', 'admin', null, '/config', '127.0.0.1', '', '{\"configId\":1,\"configKey\":\"sys.index.skinName\",\"configName\":\"主框架页-默认皮肤样式名称\",\"configType\":\"Y\",\"configValue\":\"skin-yellow\",\"createBy\":\"admin\",\"createTime\":\"2026-03-02 22:42:18\",\"params\":{},\"remark\":\"蓝色 skin-blue、绿色 skin-green、紫色 skin-purple、红色 skin-red、黄色 skin-yellow\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 13:10:52', '14');
+INSERT INTO `sys_oper_log` VALUES ('101', '参数管理', '9', 'com.edu.system.controller.SysConfigController.refreshCache()', 'DELETE', '1', 'admin', null, '/config/refreshCache', '127.0.0.1', '', '', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 13:10:54', '15');
+INSERT INTO `sys_oper_log` VALUES ('102', '角色管理', '1', 'com.edu.system.controller.SysRoleController.add()', 'POST', '1', 'admin', null, '/role', '127.0.0.1', '', '{\"admin\":false,\"createBy\":\"admin\",\"deptCheckStrictly\":true,\"deptIds\":[],\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[3000,3001,3002,3003,3004,3005,3006,3007],\"params\":{},\"roleId\":100,\"roleKey\":\"achievement:list\",\"roleName\":\"教师\",\"roleSort\":0,\"status\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 13:14:27', '26');
+INSERT INTO `sys_oper_log` VALUES ('103', '角色管理', '2', 'com.edu.system.controller.SysRoleController.edit()', 'PUT', '1', 'admin', null, '/role', '127.0.0.1', '', '{\"admin\":false,\"createTime\":\"2026-03-03 13:14:27\",\"dataScope\":\"1\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":false,\"menuIds\":[3000,3001,3002,3003,3004,3005,3006,3007],\"params\":{},\"roleId\":100,\"roleKey\":\"teacher\",\"roleName\":\"教师\",\"roleSort\":0,\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 13:14:41', '8');
+INSERT INTO `sys_oper_log` VALUES ('104', '角色管理', '2', 'com.edu.system.controller.SysRoleController.edit()', 'PUT', '1', 'admin', null, '/role', '127.0.0.1', '', '{\"admin\":false,\"createTime\":\"2026-03-03 13:14:27\",\"dataScope\":\"1\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[3000,3001,3002,3003,3004,3005,3006,3007],\"params\":{},\"roleId\":100,\"roleKey\":\"teacher\",\"roleName\":\"教师\",\"roleSort\":0,\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 13:14:48', '8');
+INSERT INTO `sys_oper_log` VALUES ('105', '角色管理', '2', 'com.edu.system.controller.SysRoleController.edit()', 'PUT', '1', 'admin', null, '/role', '127.0.0.1', '', '{\"admin\":false,\"createTime\":\"2026-03-02 22:42:14\",\"dataScope\":\"2\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[1,100,1000,1001,1002,1003,1004,1005,1006,101,1007,1008,1009,1010,1011,102,1012,1013,1014,1015,103,1016,1017,1018,1019,104,1020,1021,1022,1023,1024,105,1025,1026,1027,1028,1029,106,1030,1031,1032,1033,1034,107,1035,1036,1037,1038,108,500,1039,1040,1041,501,1042,1043,1044,1045,2,109,1046,1047,1048,110,1049,1050,1051,1052,1053,1054,111,112,113,3,114,115,1055,1056,1058,1057,1059,1060,116],\"params\":{},\"remark\":\"普通角色\",\"roleId\":2,\"roleKey\":\"common\",\"roleName\":\"普通角色\",\"roleSort\":2,\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 13:14:55', '11');
+INSERT INTO `sys_oper_log` VALUES ('106', '代码生成', '6', 'com.edu.gen.controller.GenController.importTableSave()', 'POST', '1', 'admin', null, '/gen/importTable', '127.0.0.1', '', '{\"tables\":\"edu_achievement,edu_achievement_audit_log\"}', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 13:38:34', '76');
+INSERT INTO `sys_oper_log` VALUES ('107', '字典类型', '1', 'com.edu.system.controller.SysDictTypeController.add()', 'POST', '1', 'admin', null, '/dict/type', '127.0.0.1', '', '{\"createBy\":\"admin\",\"dictName\":\"教学成果状态\",\"dictType\":\"achievement_status\",\"params\":{},\"remark\":\"审核状态\",\"status\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 13:45:12', '8');
+INSERT INTO `sys_oper_log` VALUES ('108', '字典类型', '1', 'com.edu.system.controller.SysDictTypeController.add()', 'POST', '1', 'admin', null, '/dict/type', '127.0.0.1', '', '{\"createBy\":\"admin\",\"dictName\":\"审核结果\",\"dictType\":\"audit_result\",\"params\":{},\"remark\":\"审核通过/驳回\",\"status\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 13:45:41', '4');
+INSERT INTO `sys_oper_log` VALUES ('109', '字典数据', '1', 'com.edu.system.controller.SysDictDataController.add()', 'POST', '1', 'admin', null, '/dict/data', '127.0.0.1', '', '{\"createBy\":\"admin\",\"cssClass\":\"default\",\"default\":false,\"dictLabel\":\"草稿\",\"dictSort\":1,\"dictType\":\"achievement_status\",\"dictValue\":\"0\",\"listClass\":\"default\",\"params\":{},\"status\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 13:46:36', '7');
+INSERT INTO `sys_oper_log` VALUES ('110', '字典数据', '1', 'com.edu.system.controller.SysDictDataController.add()', 'POST', '1', 'admin', null, '/dict/data', '127.0.0.1', '', '{\"createBy\":\"admin\",\"cssClass\":\"warning\",\"default\":false,\"dictLabel\":\"院级审核中\",\"dictSort\":2,\"dictType\":\"achievement_status\",\"dictValue\":\"1\",\"listClass\":\"default\",\"params\":{},\"remark\":\"\",\"status\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 13:47:00', '4');
+INSERT INTO `sys_oper_log` VALUES ('111', '字典数据', '1', 'com.edu.system.controller.SysDictDataController.add()', 'POST', '1', 'admin', null, '/dict/data', '127.0.0.1', '', '{\"createBy\":\"admin\",\"cssClass\":\"info\",\"default\":false,\"dictLabel\":\"校级审核中\",\"dictSort\":3,\"dictType\":\"achievement_status\",\"dictValue\":\"2\",\"listClass\":\"default\",\"params\":{},\"status\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 13:47:22', '4');
+INSERT INTO `sys_oper_log` VALUES ('112', '字典数据', '1', 'com.edu.system.controller.SysDictDataController.add()', 'POST', '1', 'admin', null, '/dict/data', '127.0.0.1', '', '{\"createBy\":\"admin\",\"cssClass\":\"success\",\"default\":false,\"dictLabel\":\"已通过\",\"dictSort\":4,\"dictType\":\"achievement_status\",\"dictValue\":\"3\",\"listClass\":\"default\",\"params\":{},\"status\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 13:47:38', '5');
+INSERT INTO `sys_oper_log` VALUES ('113', '字典数据', '1', 'com.edu.system.controller.SysDictDataController.add()', 'POST', '1', 'admin', null, '/dict/data', '127.0.0.1', '', '{\"createBy\":\"admin\",\"cssClass\":\"danger\",\"default\":false,\"dictLabel\":\"已驳回\",\"dictSort\":5,\"dictType\":\"achievement_status\",\"dictValue\":\"4\",\"listClass\":\"default\",\"params\":{},\"status\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 13:47:49', '4');
+INSERT INTO `sys_oper_log` VALUES ('114', '字典数据', '1', 'com.edu.system.controller.SysDictDataController.add()', 'POST', '1', 'admin', null, '/dict/data', '127.0.0.1', '', '{\"createBy\":\"admin\",\"cssClass\":\"success\",\"default\":false,\"dictLabel\":\"通过\",\"dictSort\":1,\"dictType\":\"audit_result\",\"dictValue\":\"0\",\"listClass\":\"default\",\"params\":{},\"status\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 13:48:11', '6');
+INSERT INTO `sys_oper_log` VALUES ('115', '字典数据', '1', 'com.edu.system.controller.SysDictDataController.add()', 'POST', '1', 'admin', null, '/dict/data', '127.0.0.1', '', '{\"createBy\":\"admin\",\"cssClass\":\"danger\",\"default\":false,\"dictLabel\":\"驳回\",\"dictSort\":2,\"dictType\":\"audit_result\",\"dictValue\":\"1\",\"listClass\":\"default\",\"params\":{},\"status\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 13:48:26', '4');
+INSERT INTO `sys_oper_log` VALUES ('116', '代码生成', '2', 'com.edu.gen.controller.GenController.editSave()', 'PUT', '1', 'admin', null, '/gen', '127.0.0.1', '', '{\"businessName\":\"achievement\",\"className\":\"EduAchievement\",\"columns\":[{\"capJavaField\":\"AchievementId\",\"columnComment\":\"成果 ID\",\"columnId\":1,\"columnName\":\"achievement_id\",\"columnType\":\"bigint\",\"createBy\":\"admin\",\"createTime\":\"2026-03-03 13:38:34\",\"dictType\":\"\",\"edit\":false,\"htmlType\":\"input\",\"increment\":true,\"insert\":true,\"isIncrement\":\"1\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"1\",\"isRequired\":\"1\",\"javaField\":\"achievementId\",\"javaType\":\"Long\",\"list\":true,\"params\":{},\"pk\":true,\"query\":false,\"queryType\":\"EQ\",\"required\":true,\"sort\":1,\"superColumn\":false,\"tableId\":1,\"updateBy\":\"\",\"usableColumn\":false},{\"capJavaField\":\"Title\",\"columnComment\":\"成果标题\",\"columnId\":2,\"columnName\":\"title\",\"columnType\":\"varchar(200)\",\"createBy\":\"admin\",\"createTime\":\"2026-03-03 13:38:34\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"isRequired\":\"1\",\"javaField\":\"title\",\"javaType\":\"String\",\"list\":true,\"params\":{},\"pk\":false,\"query\":true,\"queryType\":\"LIKE\",\"required\":true,\"sort\":2,\"superColumn\":false,\"tableId\":1,\"updateBy\":\"\",\"usableColumn\":false},{\"capJavaField\":\"Content\",\"columnComment\":\"成果内容\",\"columnId\":3,\"columnName\":\"content\",\"columnType\":\"text\",\"createBy\":\"admin\",\"createTime\":\"2026-03-03 13:38:34\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"editor\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"0\",\"isPk\":\"0\",\"isQuery\":\"0\",\"isRequired\":\"1\",\"javaField\":\"content\",\"javaType\":\"String\",\"list\":false,\"params\":{},\"pk\":false,\"query\":false,\"queryType\":\"EQ\",\"required\":true,\"sort\":3,\"superColumn\":false,\"tableId\":1,\"updateBy\":\"\",\"usableColumn\":false},{\"capJavaField\":\"FileUrl\",\"columnComment\":\"文件存储路径 (MinIO 路径)\",\"columnId\":4,\"columnName\":\"file_url\",\"columnType\":\"varchar(500)\",\"createBy\":\"admin\",\"createTime\":\"2026-03-03 13:38:34\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"fileUpload\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 13:51:59', '39');
+INSERT INTO `sys_oper_log` VALUES ('117', '字典类型', '1', 'com.edu.system.controller.SysDictTypeController.add()', 'POST', '1', 'admin', null, '/dict/type', '127.0.0.1', '', '{\"createBy\":\"admin\",\"dictName\":\"学院\",\"dictType\":\"college\",\"params\":{},\"status\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 13:53:29', '4');
+INSERT INTO `sys_oper_log` VALUES ('118', '代码生成', '8', 'com.edu.gen.controller.GenController.batchGenCode()', 'GET', '1', 'admin', null, '/gen/batchGenCode', '127.0.0.1', '', '{\"tables\":\"edu_achievement\"}', null, '0', null, '2026-03-03 13:54:33', '45');
+INSERT INTO `sys_oper_log` VALUES ('119', '菜单管理', '2', 'com.edu.system.controller.SysMenuController.edit()', 'PUT', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"component\":\"achievement/achievement/index\",\"createTime\":\"2026-03-03 14:00:17\",\"icon\":\"#\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":3016,\"menuName\":\"教学成果管理\",\"menuType\":\"C\",\"orderNum\":1,\"params\":{},\"parentId\":0,\"path\":\"achievement\",\"perms\":\"achievement:achievement:list\",\"routeName\":\"\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 14:01:19', '10');
+INSERT INTO `sys_oper_log` VALUES ('120', '代码生成', '2', 'com.edu.gen.controller.GenController.editSave()', 'PUT', '1', 'admin', null, '/gen', '127.0.0.1', '', '{\"businessName\":\"achievement\",\"className\":\"EduAchievementAuditLog\",\"columns\":[{\"capJavaField\":\"Id\",\"columnComment\":\"审核记录 ID\",\"columnId\":13,\"columnName\":\"id\",\"columnType\":\"bigint\",\"createBy\":\"admin\",\"createTime\":\"2026-03-03 13:38:34\",\"dictType\":\"\",\"edit\":false,\"htmlType\":\"input\",\"increment\":true,\"insert\":true,\"isIncrement\":\"1\",\"isInsert\":\"1\",\"isPk\":\"1\",\"javaField\":\"id\",\"javaType\":\"Long\",\"list\":false,\"params\":{},\"pk\":true,\"query\":false,\"queryType\":\"EQ\",\"required\":false,\"sort\":1,\"superColumn\":false,\"tableId\":2,\"updateBy\":\"\",\"usableColumn\":false},{\"capJavaField\":\"AchievementId\",\"columnComment\":\"成果 ID(关联 edu_achievement 表)\",\"columnId\":14,\"columnName\":\"achievement_id\",\"columnType\":\"bigint\",\"createBy\":\"admin\",\"createTime\":\"2026-03-03 13:38:34\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"isRequired\":\"1\",\"javaField\":\"achievementId\",\"javaType\":\"Long\",\"list\":true,\"params\":{},\"pk\":false,\"query\":true,\"queryType\":\"EQ\",\"required\":true,\"sort\":2,\"superColumn\":false,\"tableId\":2,\"updateBy\":\"\",\"usableColumn\":false},{\"capJavaField\":\"AuditorId\",\"columnComment\":\"审核人 ID(关联 sys_user 表)\",\"columnId\":15,\"columnName\":\"auditor_id\",\"columnType\":\"bigint\",\"createBy\":\"admin\",\"createTime\":\"2026-03-03 13:38:34\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"isRequired\":\"1\",\"javaField\":\"auditorId\",\"javaType\":\"Long\",\"list\":true,\"params\":{},\"pk\":false,\"query\":true,\"queryType\":\"EQ\",\"required\":true,\"sort\":3,\"superColumn\":false,\"tableId\":2,\"updateBy\":\"\",\"usableColumn\":false},{\"capJavaField\":\"AuditTime\",\"columnComment\":\"审核时间\",\"columnId\":16,\"columnName\":\"audit_time\",\"columnType\":\"datetime\",\"createBy\":\"admin\",\"createTime\":\"2026-03-03 13:38:34\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"datetime\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 14:03:50', '12');
+INSERT INTO `sys_oper_log` VALUES ('121', '代码生成', '8', 'com.edu.gen.controller.GenController.batchGenCode()', 'GET', '1', 'admin', null, '/gen/batchGenCode', '127.0.0.1', '', '{\"tables\":\"edu_achievement_audit_log\"}', null, '0', null, '2026-03-03 14:03:53', '24');
+INSERT INTO `sys_oper_log` VALUES ('122', '代码生成', '2', 'com.edu.gen.controller.GenController.editSave()', 'PUT', '1', 'admin', null, '/gen', '127.0.0.1', '', '{\"businessName\":\"achievement_audit\",\"className\":\"EduAchievementAuditLog\",\"columns\":[{\"capJavaField\":\"Id\",\"columnComment\":\"审核记录 ID\",\"columnId\":13,\"columnName\":\"id\",\"columnType\":\"bigint\",\"createBy\":\"admin\",\"createTime\":\"2026-03-03 13:38:34\",\"dictType\":\"\",\"edit\":false,\"htmlType\":\"input\",\"increment\":true,\"insert\":true,\"isIncrement\":\"1\",\"isInsert\":\"1\",\"isPk\":\"1\",\"javaField\":\"id\",\"javaType\":\"Long\",\"list\":false,\"params\":{},\"pk\":true,\"query\":false,\"queryType\":\"EQ\",\"required\":false,\"sort\":1,\"superColumn\":false,\"tableId\":2,\"updateBy\":\"\",\"updateTime\":\"2026-03-03 14:03:50\",\"usableColumn\":false},{\"capJavaField\":\"AchievementId\",\"columnComment\":\"成果 ID(关联 edu_achievement 表)\",\"columnId\":14,\"columnName\":\"achievement_id\",\"columnType\":\"bigint\",\"createBy\":\"admin\",\"createTime\":\"2026-03-03 13:38:34\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"isRequired\":\"1\",\"javaField\":\"achievementId\",\"javaType\":\"Long\",\"list\":true,\"params\":{},\"pk\":false,\"query\":true,\"queryType\":\"EQ\",\"required\":true,\"sort\":2,\"superColumn\":false,\"tableId\":2,\"updateBy\":\"\",\"updateTime\":\"2026-03-03 14:03:50\",\"usableColumn\":false},{\"capJavaField\":\"AuditorId\",\"columnComment\":\"审核人 ID(关联 sys_user 表)\",\"columnId\":15,\"columnName\":\"auditor_id\",\"columnType\":\"bigint\",\"createBy\":\"admin\",\"createTime\":\"2026-03-03 13:38:34\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"isRequired\":\"1\",\"javaField\":\"auditorId\",\"javaType\":\"Long\",\"list\":true,\"params\":{},\"pk\":false,\"query\":true,\"queryType\":\"EQ\",\"required\":true,\"sort\":3,\"superColumn\":false,\"tableId\":2,\"updateBy\":\"\",\"updateTime\":\"2026-03-03 14:03:50\",\"usableColumn\":false},{\"capJavaField\":\"AuditTime\",\"columnComment\":\"审核时间\",\"columnId\":16,\"columnName\":\"audit_time\",\"columnType\":\"datetime\",\"createBy\":\"admin\",\"createTime\":\"2026-03-03 13:38:34\",\"dictType\":\"\",\"edit\":true,\"ht', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 14:07:04', '13');
+INSERT INTO `sys_oper_log` VALUES ('123', '代码生成', '8', 'com.edu.gen.controller.GenController.batchGenCode()', 'GET', '1', 'admin', null, '/gen/batchGenCode', '127.0.0.1', '', '{\"tables\":\"edu_achievement_audit_log\"}', null, '0', null, '2026-03-03 14:07:13', '24');
+INSERT INTO `sys_oper_log` VALUES ('124', '菜单管理', '2', 'com.edu.system.controller.SysMenuController.edit()', 'PUT', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"component\":\"achievement/achievement/index\",\"createTime\":\"2026-03-03 14:08:45\",\"icon\":\"#\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":3028,\"menuName\":\"教学成果管理\",\"menuType\":\"C\",\"orderNum\":1,\"params\":{},\"parentId\":0,\"path\":\"achievement\",\"perms\":\"achievement:achievement:list\",\"routeName\":\"\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 14:11:21', '3');
+INSERT INTO `sys_oper_log` VALUES ('125', '教学成果审核记录', '1', 'com.edu.achievement.controller.EduAchievementAuditLogController.add()', 'POST', '1', 'admin', null, '/achievement_audit', '127.0.0.1', '', '{\"achievementId\":123456,\"auditResult\":\"0\",\"auditorId\":123,\"createTime\":\"2026-03-03 14:38:09\",\"delFlag\":\"0\",\"params\":{}} ', null, '1', '\r\n### Error updating database.  Cause: java.sql.SQLException: Field \'previous_status\' doesn\'t have a default value\r\n### The error may exist in file [D:\\.develop\\edu-achievement01\\edu-achievement-master\\edu-modules\\edu-achievement\\target\\classes\\mapper\\achievementAudit\\EduAchievementAuditLogMapper.xml]\r\n### The error may involve com.edu.achievement.mapper.EduAchievementAuditLogMapper.insertEduAchievementAuditLog-Inline\r\n### The error occurred while setting parameters\r\n### SQL: insert into edu_achievement_audit_log          ( achievement_id,             auditor_id,                                       audit_result,                                                    create_time,                                       del_flag )           values ( ?,             ?,                                       ?,                                                    ?,                                       ? )\r\n### Cause: java.sql.SQLException: Field \'previous_status\' doesn\'t have a default value\n; Field \'previous_status\' doesn\'t have a default value; nested exception is java.sql.SQLException: Field \'previous_status\' doesn\'t have a default value', '2026-03-03 14:38:09', '71');
+INSERT INTO `sys_oper_log` VALUES ('126', '教学成果管理', '1', 'com.edu.achievement.controller.EduAchievementController.add()', 'POST', '1', 'admin', null, '/achievement', '127.0.0.1', '', '{\"achievementId\":1,\"collegeId\":123,\"createTime\":\"2026-03-03 14:39:05\",\"delFlag\":\"0\",\"fileUrl\":\"http://127.0.0.1:9000/edu-achievement/2026/03/03/张鹏展简历_20260303143855A001.docx\",\"params\":{},\"teacherId\":123,\"title\":\"111\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 14:39:05', '8');
+INSERT INTO `sys_oper_log` VALUES ('127', '教学成果审核记录', '1', 'com.edu.achievement.controller.EduAchievementAuditLogController.add()', 'POST', '1', 'admin', null, '/achievement_audit', '127.0.0.1', '', '{\"achievementId\":123,\"auditResult\":\"0\",\"auditorId\":123,\"createTime\":\"2026-03-03 14:39:32\",\"delFlag\":\"0\",\"params\":{}} ', null, '1', '\r\n### Error updating database.  Cause: java.sql.SQLException: Field \'previous_status\' doesn\'t have a default value\r\n### The error may exist in file [D:\\.develop\\edu-achievement01\\edu-achievement-master\\edu-modules\\edu-achievement\\target\\classes\\mapper\\achievementAudit\\EduAchievementAuditLogMapper.xml]\r\n### The error may involve com.edu.achievement.mapper.EduAchievementAuditLogMapper.insertEduAchievementAuditLog-Inline\r\n### The error occurred while setting parameters\r\n### SQL: insert into edu_achievement_audit_log          ( achievement_id,             auditor_id,                                       audit_result,                                                    create_time,                                       del_flag )           values ( ?,             ?,                                       ?,                                                    ?,                                       ? )\r\n### Cause: java.sql.SQLException: Field \'previous_status\' doesn\'t have a default value\n; Field \'previous_status\' doesn\'t have a default value; nested exception is java.sql.SQLException: Field \'previous_status\' doesn\'t have a default value', '2026-03-03 14:39:32', '4');
+INSERT INTO `sys_oper_log` VALUES ('128', '教学成果审核记录', '1', 'com.edu.achievement.controller.EduAchievementAuditLogController.add()', 'POST', '1', 'admin', null, '/achievement_audit', '127.0.0.1', '', '{\"achievementId\":123,\"auditOpinion\":\"1\",\"auditResult\":\"0\",\"auditTime\":\"2026-03-02\",\"auditorId\":123,\"createTime\":\"2026-03-03 14:39:39\",\"delFlag\":\"0\",\"params\":{}} ', null, '1', '\r\n### Error updating database.  Cause: java.sql.SQLException: Field \'previous_status\' doesn\'t have a default value\r\n### The error may exist in file [D:\\.develop\\edu-achievement01\\edu-achievement-master\\edu-modules\\edu-achievement\\target\\classes\\mapper\\achievementAudit\\EduAchievementAuditLogMapper.xml]\r\n### The error may involve com.edu.achievement.mapper.EduAchievementAuditLogMapper.insertEduAchievementAuditLog-Inline\r\n### The error occurred while setting parameters\r\n### SQL: insert into edu_achievement_audit_log          ( achievement_id,             auditor_id,             audit_time,             audit_opinion,             audit_result,                                                    create_time,                                       del_flag )           values ( ?,             ?,             ?,             ?,             ?,                                                    ?,                                       ? )\r\n### Cause: java.sql.SQLException: Field \'previous_status\' doesn\'t have a default value\n; Field \'previous_status\' doesn\'t have a default value; nested exception is java.sql.SQLException: Field \'previous_status\' doesn\'t have a default value', '2026-03-03 14:39:39', '3');
+INSERT INTO `sys_oper_log` VALUES ('129', '菜单管理', '1', 'com.edu.system.controller.SysMenuController.add()', 'POST', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"component\":\"achievement/myAchievement/index\",\"createBy\":\"admin\",\"icon\":\"upload\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"成果上传\",\"menuType\":\"C\",\"orderNum\":1,\"params\":{},\"parentId\":0,\"path\":\"myAchievement\",\"perms\":\"achievement:achievement:myList\",\"routeName\":\"MyAchievement\",\"status\":\"0\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 14:55:05', '14');
+INSERT INTO `sys_oper_log` VALUES ('130', '菜单管理', '2', 'com.edu.system.controller.SysMenuController.edit()', 'PUT', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"component\":\"achievement/myAchievement/index\",\"createTime\":\"2026-03-03 14:55:04\",\"icon\":\"upload\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":3034,\"menuName\":\"成果上传\",\"menuType\":\"C\",\"orderNum\":1,\"params\":{},\"parentId\":0,\"path\":\"myAchievement\",\"perms\":\"achievement:achievement:myList\",\"routeName\":\"MyAchievement\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 15:05:52', '9');
+INSERT INTO `sys_oper_log` VALUES ('131', '菜单管理', '1', 'com.edu.system.controller.SysMenuController.add()', 'POST', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"achievement:achievement:myAdd\",\"menuType\":\"F\",\"orderNum\":1,\"params\":{},\"parentId\":3034,\"status\":\"0\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 15:25:57', '5');
+INSERT INTO `sys_oper_log` VALUES ('132', '角色管理', '2', 'com.edu.system.controller.SysRoleController.edit()', 'PUT', '1', 'admin', null, '/role', '127.0.0.1', '', '{\"admin\":false,\"createTime\":\"2026-03-03 13:14:27\",\"dataScope\":\"1\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[3034,3035],\"params\":{},\"roleId\":100,\"roleKey\":\"teacher\",\"roleName\":\"普通教师\",\"roleSort\":0,\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 15:26:25', '24');
+INSERT INTO `sys_oper_log` VALUES ('133', '菜单管理', '2', 'com.edu.system.controller.SysMenuController.edit()', 'PUT', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"component\":\"achievement/myAchievement/index\",\"createTime\":\"2026-03-03 14:55:04\",\"icon\":\"upload\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":3034,\"menuName\":\"成果上传\",\"menuType\":\"C\",\"orderNum\":1,\"params\":{},\"parentId\":0,\"path\":\"myAchievement\",\"perms\":\"\",\"routeName\":\"MyAchievement\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 15:39:47', '5');
+INSERT INTO `sys_oper_log` VALUES ('134', '用户管理', '1', 'com.edu.system.controller.SysUserController.add()', 'POST', '1', 'admin', null, '/user', '127.0.0.1', '', '{\"admin\":false,\"createBy\":\"admin\",\"deptId\":103,\"nickName\":\"普通教师\",\"params\":{},\"postIds\":[],\"roleIds\":[],\"status\":\"0\",\"userId\":100,\"userName\":\"teacher\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 15:41:23', '82');
+INSERT INTO `sys_oper_log` VALUES ('135', '用户管理', '2', 'com.edu.system.controller.SysUserController.edit()', 'PUT', '1', 'admin', null, '/user', '127.0.0.1', '', '{\"admin\":false,\"avatar\":\"\",\"createBy\":\"admin\",\"createTime\":\"2026-03-03 15:41:22\",\"delFlag\":\"0\",\"dept\":{\"ancestors\":\"0,100,101\",\"children\":[],\"deptId\":103,\"deptName\":\"研发部门\",\"leader\":\"若依\",\"orderNum\":1,\"params\":{},\"parentId\":101,\"status\":\"0\"},\"deptId\":103,\"email\":\"\",\"loginIp\":\"\",\"nickName\":\"普通教师\",\"params\":{},\"phonenumber\":\"\",\"postIds\":[],\"roleIds\":[100],\"roles\":[],\"sex\":\"0\",\"status\":\"0\",\"updateBy\":\"admin\",\"userId\":100,\"userName\":\"teacher\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 15:41:30', '11');
+INSERT INTO `sys_oper_log` VALUES ('136', '菜单管理', '2', 'com.edu.system.controller.SysMenuController.edit()', 'PUT', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"component\":\"achievement/achievement/index\",\"createTime\":\"2026-03-03 14:08:45\",\"icon\":\"system\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":3028,\"menuName\":\"教学成果管理\",\"menuType\":\"C\",\"orderNum\":1,\"params\":{},\"parentId\":0,\"path\":\"achievement\",\"perms\":\"achievement:achievement:list\",\"routeName\":\"\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 15:45:34', '4');
+INSERT INTO `sys_oper_log` VALUES ('137', '菜单管理', '2', 'com.edu.system.controller.SysMenuController.edit()', 'PUT', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"component\":\"achievement/myAchievement/index\",\"createTime\":\"2026-03-03 14:55:04\",\"icon\":\"upload\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":3034,\"menuName\":\"成果申报\",\"menuType\":\"C\",\"orderNum\":1,\"params\":{},\"parentId\":0,\"path\":\"myAchievement\",\"perms\":\"\",\"routeName\":\"MyAchievement\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 15:46:35', '4');
+INSERT INTO `sys_oper_log` VALUES ('138', '菜单管理', '1', 'com.edu.system.controller.SysMenuController.add()', 'POST', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"查询部门列表\",\"menuType\":\"F\",\"orderNum\":2,\"params\":{},\"parentId\":3034,\"perms\":\"system:dept:list\",\"status\":\"0\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 15:47:01', '4');
+INSERT INTO `sys_oper_log` VALUES ('139', '角色管理', '2', 'com.edu.system.controller.SysRoleController.edit()', 'PUT', '1', 'admin', null, '/role', '127.0.0.1', '', '{\"admin\":false,\"createTime\":\"2026-03-03 13:14:27\",\"dataScope\":\"1\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[3034,3035,3036],\"params\":{},\"roleId\":100,\"roleKey\":\"teacher\",\"roleName\":\"普通教师\",\"roleSort\":0,\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 15:49:37', '7');
+INSERT INTO `sys_oper_log` VALUES ('140', '上传成果', '1', 'com.edu.achievement.controller.EduAchievementController.myAdd()', 'POST', '1', 'admin', null, '/achievement/myAdd', '127.0.0.1', '', '{\"achievementId\":2,\"collegeId\":100,\"content\":\"这是介绍\",\"createBy\":\"admin\",\"createTime\":\"2026-03-03 15:53:09\",\"fileUrl\":\"http://127.0.0.1:9000/edu-achievement/2026/03/03/张鹏展简历_20260303154953A004.pdf\",\"params\":{},\"status\":\"0\",\"teacherId\":1,\"title\":\"成果1\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 15:53:10', '84');
+INSERT INTO `sys_oper_log` VALUES ('141', '上传成果', '1', 'com.edu.achievement.controller.EduAchievementController.myAdd()', 'POST', '1', 'admin', null, '/achievement/myAdd', '127.0.0.1', '', '{\"achievementId\":3,\"collegeId\":100,\"content\":\"成果二\",\"createBy\":\"admin\",\"createTime\":\"2026-03-03 15:59:37\",\"fileUrl\":\"http://127.0.0.1:9000/edu-achievement/2026/03/03/张鹏展简历_20260303155917A005.docx,http://127.0.0.1:9000/edu-achievement/2026/03/03/张鹏展简历_20260303155920A006.pdf\",\"params\":{},\"status\":\"0\",\"teacherId\":1,\"title\":\"成果二\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 15:59:37', '4');
+INSERT INTO `sys_oper_log` VALUES ('142', '字典类型', '1', 'com.edu.system.controller.SysDictTypeController.add()', 'POST', '1', 'admin', null, '/dict/type', '127.0.0.1', '', '{\"createBy\":\"admin\",\"dictName\":\"成果类型\",\"dictType\":\"edu_achievement_category\",\"params\":{},\"status\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 16:07:17', '7');
+INSERT INTO `sys_oper_log` VALUES ('143', '字典数据', '1', 'com.edu.system.controller.SysDictDataController.add()', 'POST', '1', 'admin', null, '/dict/data', '127.0.0.1', '', '{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"论文著作\",\"dictSort\":1,\"dictType\":\"edu_achievement_category\",\"dictValue\":\"1\",\"listClass\":\"default\",\"params\":{},\"remark\":\"期刊论文、专著等\",\"status\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 16:08:13', '5');
+INSERT INTO `sys_oper_log` VALUES ('144', '字典数据', '1', 'com.edu.system.controller.SysDictDataController.add()', 'POST', '1', 'admin', null, '/dict/data', '127.0.0.1', '', '{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"教材建设\",\"dictSort\":2,\"dictType\":\"edu_achievement_category\",\"dictValue\":\"2\",\"listClass\":\"default\",\"params\":{},\"remark\":\"规划教材、校本教材\",\"status\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 16:08:35', '4');
+INSERT INTO `sys_oper_log` VALUES ('145', '字典数据', '1', 'com.edu.system.controller.SysDictDataController.add()', 'POST', '1', 'admin', null, '/dict/data', '127.0.0.1', '', '{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"竞赛获奖\",\"dictSort\":3,\"dictType\":\"edu_achievement_category\",\"dictValue\":\"3\",\"listClass\":\"default\",\"params\":{},\"remark\":\"指导学生获奖或教师比赛\",\"status\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 16:08:48', '4');
+INSERT INTO `sys_oper_log` VALUES ('146', '字典数据', '1', 'com.edu.system.controller.SysDictDataController.add()', 'POST', '1', 'admin', null, '/dict/data', '127.0.0.1', '', '{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"教改项目\",\"dictSort\":4,\"dictType\":\"edu_achievement_category\",\"dictValue\":\"4\",\"listClass\":\"default\",\"params\":{},\"remark\":\"各级教学改革研究项目\",\"status\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 16:09:00', '4');
+INSERT INTO `sys_oper_log` VALUES ('147', '上传成果', '1', 'com.edu.achievement.controller.EduAchievementController.myAdd()', 'POST', '1', 'admin', null, '/achievement/myAdd', '127.0.0.1', '', '{\"achievementId\":4,\"category\":\"3\",\"collegeId\":100,\"content\":\"获奖\",\"createBy\":\"admin\",\"createTime\":\"2026-03-03 16:15:18\",\"fileUrl\":\"http://127.0.0.1:9000/edu-achievement/2026/03/03/张鹏展简历_20260303161514A007.pdf\",\"params\":{},\"status\":\"0\",\"teacherId\":1,\"title\":\"全国大学生竞赛三等奖\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 16:15:19', '33');
+INSERT INTO `sys_oper_log` VALUES ('148', '个人信息', '2', 'com.edu.system.controller.SysProfileController.updateProfile()', 'PUT', '1', 'admin', null, '/user/profile', '127.0.0.1', '', '{\"admin\":false,\"email\":\"2426481498@qq.com\",\"nickName\":\"zpz\",\"params\":{},\"phonenumber\":\"13733732086\",\"sex\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 16:15:56', '19');
+INSERT INTO `sys_oper_log` VALUES ('149', '用户头像', '2', 'com.edu.system.controller.SysProfileController.avatar()', 'POST', '1', 'admin', null, '/user/profile/avatar', '127.0.0.1', '', '', '{\"msg\":\"操作成功\",\"imgUrl\":\"http://127.0.0.1:9000/edu-achievement/2026/03/03/暖笺贺春_20260303161617A008.png\",\"code\":200}', '0', null, '2026-03-03 16:16:17', '55');
+INSERT INTO `sys_oper_log` VALUES ('150', '部门管理', '2', 'com.edu.system.controller.SysDeptController.edit()', 'PUT', '1', 'admin', null, '/dept', '127.0.0.1', '', '{\"ancestors\":\"0\",\"children\":[],\"createBy\":\"admin\",\"createTime\":\"2026-03-02 22:42:14\",\"delFlag\":\"0\",\"deptId\":100,\"deptName\":\"郑州大学\",\"email\":\"2426481498@qq.com\",\"leader\":\"zpz\",\"orderNum\":0,\"params\":{},\"parentId\":0,\"phone\":\"13733732086\",\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 16:17:12', '4');
+INSERT INTO `sys_oper_log` VALUES ('151', '部门管理', '2', 'com.edu.system.controller.SysDeptController.edit()', 'PUT', '1', 'admin', null, '/dept', '127.0.0.1', '', '{\"ancestors\":\"0\",\"children\":[],\"createBy\":\"admin\",\"createTime\":\"2026-03-02 22:42:14\",\"delFlag\":\"0\",\"deptId\":100,\"deptName\":\"郑州轻工业大学\",\"email\":\"2426481498@qq.com\",\"leader\":\"zpz\",\"orderNum\":0,\"params\":{},\"parentId\":0,\"phone\":\"13733732086\",\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 16:17:22', '4');
+INSERT INTO `sys_oper_log` VALUES ('152', '部门管理', '3', 'com.edu.system.controller.SysDeptController.remove()', 'DELETE', '1', 'admin', null, '/dept/103', '127.0.0.1', '', '103 ', '{\"msg\":\"部门存在用户,不允许删除\",\"code\":601}', '0', null, '2026-03-03 16:17:50', '3');
+INSERT INTO `sys_oper_log` VALUES ('153', '部门管理', '3', 'com.edu.system.controller.SysDeptController.remove()', 'DELETE', '1', 'admin', null, '/dept/107', '127.0.0.1', '', '107 ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 16:17:53', '3');
+INSERT INTO `sys_oper_log` VALUES ('154', '部门管理', '2', 'com.edu.system.controller.SysDeptController.edit()', 'PUT', '1', 'admin', null, '/dept', '127.0.0.1', '', '{\"ancestors\":\"0,100\",\"children\":[],\"createBy\":\"admin\",\"createTime\":\"2026-03-02 22:42:14\",\"delFlag\":\"0\",\"deptId\":103,\"deptName\":\"研发部门\",\"email\":\"ry@qq.com\",\"leader\":\"若依\",\"orderNum\":1,\"params\":{},\"parentId\":100,\"phone\":\"15888888888\",\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 16:18:24', '7');
+INSERT INTO `sys_oper_log` VALUES ('155', '部门管理', '2', 'com.edu.system.controller.SysDeptController.edit()', 'PUT', '1', 'admin', null, '/dept', '127.0.0.1', '', '{\"ancestors\":\"0,100\",\"children\":[],\"createBy\":\"admin\",\"createTime\":\"2026-03-02 22:42:14\",\"delFlag\":\"0\",\"deptId\":103,\"deptName\":\"成果管理院\",\"email\":\"2426481498@qq.com\",\"leader\":\"1\",\"orderNum\":1,\"params\":{},\"parentId\":100,\"phone\":\"13733732086\",\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 16:19:07', '6');
+INSERT INTO `sys_oper_log` VALUES ('156', '部门管理', '3', 'com.edu.system.controller.SysDeptController.remove()', 'DELETE', '1', 'admin', null, '/dept/106', '127.0.0.1', '', '106 ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 16:19:10', '3');
+INSERT INTO `sys_oper_log` VALUES ('157', '部门管理', '3', 'com.edu.system.controller.SysDeptController.remove()', 'DELETE', '1', 'admin', null, '/dept/108', '127.0.0.1', '', '108 ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 16:19:12', '2');
+INSERT INTO `sys_oper_log` VALUES ('158', '部门管理', '3', 'com.edu.system.controller.SysDeptController.remove()', 'DELETE', '1', 'admin', null, '/dept/109', '127.0.0.1', '', '109 ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 16:19:14', '3');
+INSERT INTO `sys_oper_log` VALUES ('159', '部门管理', '3', 'com.edu.system.controller.SysDeptController.remove()', 'DELETE', '1', 'admin', null, '/dept/105', '127.0.0.1', '', '105 ', '{\"msg\":\"部门存在用户,不允许删除\",\"code\":601}', '0', null, '2026-03-03 16:19:16', '2');
+INSERT INTO `sys_oper_log` VALUES ('160', '部门管理', '3', 'com.edu.system.controller.SysDeptController.remove()', 'DELETE', '1', 'admin', null, '/dept/104', '127.0.0.1', '', '104 ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 16:19:18', '3');
+INSERT INTO `sys_oper_log` VALUES ('161', '部门管理', '2', 'com.edu.system.controller.SysDeptController.edit()', 'PUT', '1', 'admin', null, '/dept', '127.0.0.1', '', '{\"ancestors\":\"0,100\",\"children\":[],\"createBy\":\"admin\",\"createTime\":\"2026-03-02 22:42:14\",\"delFlag\":\"0\",\"deptId\":105,\"deptName\":\"测试部门\",\"email\":\"ry@qq.com\",\"leader\":\"若依\",\"orderNum\":3,\"params\":{},\"parentId\":100,\"phone\":\"15888888888\",\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 16:19:22', '4');
+INSERT INTO `sys_oper_log` VALUES ('162', '部门管理', '2', 'com.edu.system.controller.SysDeptController.edit()', 'PUT', '1', 'admin', null, '/dept', '127.0.0.1', '', '{\"ancestors\":\"0,100\",\"children\":[],\"createBy\":\"admin\",\"createTime\":\"2026-03-02 22:42:14\",\"delFlag\":\"0\",\"deptId\":101,\"deptName\":\"计算机学院\",\"email\":\"ry@qq.com\",\"leader\":\"若依\",\"orderNum\":1,\"params\":{},\"parentId\":100,\"phone\":\"15888888888\",\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 16:19:32', '6');
+INSERT INTO `sys_oper_log` VALUES ('163', '部门管理', '2', 'com.edu.system.controller.SysDeptController.edit()', 'PUT', '1', 'admin', null, '/dept', '127.0.0.1', '', '{\"ancestors\":\"0,100\",\"children\":[],\"createBy\":\"admin\",\"createTime\":\"2026-03-02 22:42:14\",\"delFlag\":\"0\",\"deptId\":105,\"deptName\":\"软件学院\",\"email\":\"ry@qq.com\",\"leader\":\"若依\",\"orderNum\":3,\"params\":{},\"parentId\":100,\"phone\":\"15888888888\",\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 16:19:38', '5');
+INSERT INTO `sys_oper_log` VALUES ('164', '部门管理', '2', 'com.edu.system.controller.SysDeptController.edit()', 'PUT', '1', 'admin', null, '/dept', '127.0.0.1', '', '{\"ancestors\":\"0,100\",\"children\":[],\"createBy\":\"admin\",\"createTime\":\"2026-03-02 22:42:14\",\"delFlag\":\"0\",\"deptId\":102,\"deptName\":\"化学学院\",\"email\":\"ry@qq.com\",\"leader\":\"若依\",\"orderNum\":2,\"params\":{},\"parentId\":100,\"phone\":\"15888888888\",\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 16:19:52', '5');
+INSERT INTO `sys_oper_log` VALUES ('165', '用户头像', '2', 'com.edu.system.controller.SysProfileController.avatar()', 'POST', '1', 'admin', null, '/user/profile/avatar', '127.0.0.1', '', '', '{\"msg\":\"操作成功\",\"imgUrl\":\"http://127.0.0.1:9000/edu-achievement/2026/03/03/ENDFIELD_SHARE_1770620948_20260303162138A009.png\",\"code\":200}', '0', null, '2026-03-03 16:21:38', '65');
+INSERT INTO `sys_oper_log` VALUES ('166', '上传成果', '1', 'com.edu.achievement.controller.EduAchievementController.myAdd()', 'POST', '1', 'teacher', null, '/achievement/myAdd', '127.0.0.1', '', '{\"achievementId\":5,\"category\":\"3\",\"collegeId\":101,\"content\":\"测试\",\"createBy\":\"teacher\",\"createTime\":\"2026-03-03 16:24:01\",\"fileUrl\":\"http://127.0.0.1:9000/edu-achievement/2026/03/03/职位证明参考模板_20260303162353A010.docx\",\"params\":{},\"status\":\"0\",\"teacherId\":100,\"title\":\"竞赛奖\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 16:24:01', '4');
+INSERT INTO `sys_oper_log` VALUES ('167', '角色管理', '2', 'com.edu.system.controller.SysRoleController.edit()', 'PUT', '1', 'admin', null, '/role', '127.0.0.1', '', '{\"admin\":false,\"createTime\":\"2026-03-03 13:14:27\",\"dataScope\":\"1\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[3034,3035,3036],\"params\":{},\"roleId\":100,\"roleKey\":\"teacher\",\"roleName\":\"普通教师\",\"roleSort\":0,\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 16:40:38', '6');
+INSERT INTO `sys_oper_log` VALUES ('168', '菜单管理', '1', 'com.edu.system.controller.SysMenuController.add()', 'POST', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"component\":\"achievement/myAchievementList/index\\t\",\"createBy\":\"admin\",\"icon\":\"education\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"成果管理\",\"menuType\":\"C\",\"orderNum\":2,\"params\":{},\"parentId\":0,\"path\":\"myAchievementList\",\"perms\":\"achievement:achievement:myList\",\"routeName\":\"MyAchievementList\",\"status\":\"0\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 16:43:36', '4');
+INSERT INTO `sys_oper_log` VALUES ('169', '菜单管理', '3', 'com.edu.system.controller.SysMenuController.remove()', 'DELETE', '1', 'admin', null, '/menu/4', '127.0.0.1', '', '4 ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 16:44:16', '3');
+INSERT INTO `sys_oper_log` VALUES ('170', '菜单管理', '2', 'com.edu.system.controller.SysMenuController.edit()', 'PUT', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"createTime\":\"2026-03-02 22:42:14\",\"icon\":\"tool\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":3,\"menuName\":\"系统工具\",\"menuType\":\"M\",\"orderNum\":10,\"params\":{},\"parentId\":0,\"path\":\"tool\",\"perms\":\"\",\"query\":\"\",\"routeName\":\"\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 16:44:27', '3');
+INSERT INTO `sys_oper_log` VALUES ('171', '菜单管理', '2', 'com.edu.system.controller.SysMenuController.edit()', 'PUT', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"createTime\":\"2026-03-02 22:42:14\",\"icon\":\"monitor\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":2,\"menuName\":\"系统监控\",\"menuType\":\"M\",\"orderNum\":10,\"params\":{},\"parentId\":0,\"path\":\"monitor\",\"perms\":\"\",\"query\":\"\",\"routeName\":\"\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 16:44:31', '3');
+INSERT INTO `sys_oper_log` VALUES ('172', '菜单管理', '2', 'com.edu.system.controller.SysMenuController.edit()', 'PUT', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"createTime\":\"2026-03-02 22:42:14\",\"icon\":\"system\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":1,\"menuName\":\"系统管理\",\"menuType\":\"M\",\"orderNum\":9,\"params\":{},\"parentId\":0,\"path\":\"system\",\"perms\":\"\",\"query\":\"\",\"routeName\":\"\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 16:44:48', '3');
+INSERT INTO `sys_oper_log` VALUES ('173', '角色管理', '2', 'com.edu.system.controller.SysRoleController.edit()', 'PUT', '1', 'admin', null, '/role', '127.0.0.1', '', '{\"admin\":false,\"createTime\":\"2026-03-03 13:14:27\",\"dataScope\":\"1\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[3034,3035,3036,3037],\"params\":{},\"roleId\":100,\"roleKey\":\"teacher\",\"roleName\":\"普通教师\",\"roleSort\":0,\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 16:47:06', '5');
+INSERT INTO `sys_oper_log` VALUES ('174', '菜单管理', '2', 'com.edu.system.controller.SysMenuController.edit()', 'PUT', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"component\":\"achievement/myAchievementList/index\\t\",\"createTime\":\"2026-03-03 16:43:36\",\"icon\":\"education\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":3037,\"menuName\":\"成果管理\",\"menuType\":\"C\",\"orderNum\":2,\"params\":{},\"parentId\":0,\"path\":\"myAchievementList\",\"perms\":\"\",\"routeName\":\"MyAchievementList\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 16:49:58', '3');
+INSERT INTO `sys_oper_log` VALUES ('175', '菜单管理', '2', 'com.edu.system.controller.SysMenuController.edit()', 'PUT', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"component\":\"achievement/myAchievementList/index\\t\",\"createTime\":\"2026-03-03 16:43:36\",\"icon\":\"education\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":3037,\"menuName\":\"成果管理\",\"menuType\":\"C\",\"orderNum\":2,\"params\":{},\"parentId\":0,\"path\":\"myAchievementList\",\"perms\":\"\",\"routeName\":\"MyAchievementList\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 16:51:59', '3');
+INSERT INTO `sys_oper_log` VALUES ('176', '菜单管理', '2', 'com.edu.system.controller.SysMenuController.edit()', 'PUT', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"component\":\"achievement/myAchievementList/index\",\"createTime\":\"2026-03-03 16:43:36\",\"icon\":\"education\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":3037,\"menuName\":\"成果管理\",\"menuType\":\"C\",\"orderNum\":2,\"params\":{},\"parentId\":0,\"path\":\"myAchievementList\",\"perms\":\"\",\"routeName\":\"MyAchievementList\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 16:53:34', '4');
+INSERT INTO `sys_oper_log` VALUES ('177', '菜单管理', '2', 'com.edu.system.controller.SysMenuController.edit()', 'PUT', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"component\":\"achievement/myAchievementList/index\",\"createTime\":\"2026-03-03 16:43:36\",\"icon\":\"education\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":3037,\"menuName\":\"成果管理\",\"menuType\":\"C\",\"orderNum\":2,\"params\":{},\"parentId\":0,\"path\":\"myAchievementList\",\"perms\":\"achievement:achievement:myList\",\"routeName\":\"MyAchievementList\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 16:53:45', '3');
+INSERT INTO `sys_oper_log` VALUES ('178', '教学成果管理', '3', 'com.edu.achievement.controller.EduAchievementController.remove()', 'DELETE', '1', 'admin', null, '/achievement/2', '127.0.0.1', '', '[2] ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 17:56:53', '8');
+INSERT INTO `sys_oper_log` VALUES ('179', '上传成果', '1', 'com.edu.achievement.controller.EduAchievementController.myAdd()', 'POST', '1', 'admin', null, '/achievement/myAdd', '127.0.0.1', '', '{\"achievementId\":6,\"category\":\"1\",\"collegeId\":100,\"content\":\"11\",\"createBy\":\"admin\",\"createTime\":\"2026-03-03 17:57:05\",\"params\":{},\"status\":\"0\",\"teacherId\":1,\"title\":\"11\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 17:57:05', '4');
+INSERT INTO `sys_oper_log` VALUES ('180', '上传成果', '1', 'com.edu.achievement.controller.EduAchievementController.myAdd()', 'POST', '1', 'admin', null, '/achievement/myAdd', '127.0.0.1', '', '{\"achievementId\":7,\"category\":\"2\",\"collegeId\":100,\"content\":\"333\",\"createBy\":\"admin\",\"createTime\":\"2026-03-03 17:57:10\",\"params\":{},\"status\":\"0\",\"teacherId\":1,\"title\":\"2\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 17:57:10', '2');
+INSERT INTO `sys_oper_log` VALUES ('181', '上传成果', '1', 'com.edu.achievement.controller.EduAchievementController.myAdd()', 'POST', '1', 'admin', null, '/achievement/myAdd', '127.0.0.1', '', '{\"achievementId\":8,\"category\":\"1\",\"collegeId\":101,\"content\":\"2232\",\"createBy\":\"admin\",\"createTime\":\"2026-03-03 17:57:17\",\"params\":{},\"status\":\"0\",\"teacherId\":1,\"title\":\"4\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 17:57:17', '3');
+INSERT INTO `sys_oper_log` VALUES ('182', '上传成果', '1', 'com.edu.achievement.controller.EduAchievementController.myAdd()', 'POST', '1', 'teacher', null, '/achievement/myAdd', '127.0.0.1', '', '{\"achievementId\":9,\"category\":\"1\",\"collegeId\":101,\"content\":\"3\",\"createBy\":\"teacher\",\"createTime\":\"2026-03-03 17:58:58\",\"params\":{},\"status\":\"0\",\"teacherId\":100,\"title\":\"1\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 17:58:58', '3');
+INSERT INTO `sys_oper_log` VALUES ('183', '上传成果', '1', 'com.edu.achievement.controller.EduAchievementController.myAdd()', 'POST', '1', 'teacher', null, '/achievement/myAdd', '127.0.0.1', '', '{\"achievementId\":10,\"category\":\"2\",\"collegeId\":102,\"content\":\"123\",\"createBy\":\"teacher\",\"createTime\":\"2026-03-03 17:59:04\",\"params\":{},\"status\":\"0\",\"teacherId\":100,\"title\":\"4\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 17:59:04', '3');
+INSERT INTO `sys_oper_log` VALUES ('184', '教学成果管理', '5', 'com.edu.achievement.controller.EduAchievementController.export()', 'POST', '1', 'admin', null, '/achievement/export', '127.0.0.1', '', '{\"pageSize\":\"10\",\"pageNum\":\"1\"}', null, '0', null, '2026-03-03 18:15:24', '656');
+INSERT INTO `sys_oper_log` VALUES ('185', '字典数据', '1', 'com.edu.system.controller.SysDictDataController.add()', 'POST', '1', 'admin', null, '/dict/data', '127.0.0.1', '', '{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"教学管理\",\"dictSort\":5,\"dictType\":\"edu_achievement_category\",\"dictValue\":\"5\",\"listClass\":\"default\",\"params\":{},\"status\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 19:21:57', '12');
+INSERT INTO `sys_oper_log` VALUES ('186', '字典数据', '2', 'com.edu.system.controller.SysDictDataController.edit()', 'PUT', '1', 'admin', null, '/dict/data', '127.0.0.1', '', '{\"createBy\":\"admin\",\"createTime\":\"2026-03-03 19:21:57\",\"default\":false,\"dictCode\":111,\"dictLabel\":\"教学管理\",\"dictSort\":5,\"dictType\":\"edu_achievement_category\",\"dictValue\":\"5\",\"isDefault\":\"N\",\"listClass\":\"default\",\"params\":{},\"remark\":\"教学评估，质量检测，监控工作等\\n\",\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 19:22:40', '6');
+INSERT INTO `sys_oper_log` VALUES ('187', '字典数据', '2', 'com.edu.system.controller.SysDictDataController.edit()', 'PUT', '1', 'admin', null, '/dict/data', '127.0.0.1', '', '{\"createBy\":\"admin\",\"createTime\":\"2026-03-03 16:08:13\",\"default\":false,\"dictCode\":107,\"dictLabel\":\"科研执导\",\"dictSort\":1,\"dictType\":\"edu_achievement_category\",\"dictValue\":\"1\",\"isDefault\":\"N\",\"listClass\":\"default\",\"params\":{},\"remark\":\"期刊论文、专著等\",\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 19:23:08', '4');
+INSERT INTO `sys_oper_log` VALUES ('188', '字典数据', '2', 'com.edu.system.controller.SysDictDataController.edit()', 'PUT', '1', 'admin', null, '/dict/data', '127.0.0.1', '', '{\"createBy\":\"admin\",\"createTime\":\"2026-03-03 16:08:48\",\"default\":false,\"dictCode\":109,\"dictLabel\":\"竞赛执导\",\"dictSort\":3,\"dictType\":\"edu_achievement_category\",\"dictValue\":\"3\",\"isDefault\":\"N\",\"listClass\":\"default\",\"params\":{},\"remark\":\"指导学生获奖或教师比赛\",\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 19:23:22', '4');
+INSERT INTO `sys_oper_log` VALUES ('189', '字典数据', '1', 'com.edu.system.controller.SysDictDataController.add()', 'POST', '1', 'admin', null, '/dict/data', '127.0.0.1', '', '{\"createBy\":\"admin\",\"default\":false,\"dictLabel\":\"优秀课程\",\"dictSort\":6,\"dictType\":\"edu_achievement_category\",\"dictValue\":\"6\",\"listClass\":\"default\",\"params\":{},\"status\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 19:23:46', '4');
+INSERT INTO `sys_oper_log` VALUES ('190', '角色管理', '2', 'com.edu.system.controller.SysRoleController.edit()', 'PUT', '1', 'admin', null, '/role', '127.0.0.1', '', '{\"admin\":false,\"createTime\":\"2026-03-03 13:14:27\",\"dataScope\":\"1\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[3028,3029,3034,3035,3036,3037],\"params\":{},\"roleId\":100,\"roleKey\":\"teacher\",\"roleName\":\"普通教师\",\"roleSort\":0,\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 19:42:09', '199');
+INSERT INTO `sys_oper_log` VALUES ('191', '角色管理', '2', 'com.edu.system.controller.SysRoleController.edit()', 'PUT', '1', 'admin', null, '/role', '127.0.0.1', '', '{\"admin\":false,\"createTime\":\"2026-03-03 13:14:27\",\"dataScope\":\"1\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[3034,3035,3036,3037],\"params\":{},\"roleId\":100,\"roleKey\":\"teacher\",\"roleName\":\"普通教师\",\"roleSort\":0,\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 19:45:43', '7');
+INSERT INTO `sys_oper_log` VALUES ('192', '菜单管理', '1', 'com.edu.system.controller.SysMenuController.add()', 'POST', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"成果详情查询\",\"menuType\":\"F\",\"orderNum\":1,\"params\":{},\"parentId\":3037,\"perms\":\"achievement:achievement:query\",\"status\":\"0\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 19:49:11', '10');
+INSERT INTO `sys_oper_log` VALUES ('193', '角色管理', '2', 'com.edu.system.controller.SysRoleController.edit()', 'PUT', '1', 'admin', null, '/role', '127.0.0.1', '', '{\"admin\":false,\"createTime\":\"2026-03-03 13:14:27\",\"dataScope\":\"1\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[3034,3035,3036,3037,3038],\"params\":{},\"roleId\":100,\"roleKey\":\"teacher\",\"roleName\":\"普通教师\",\"roleSort\":0,\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 19:49:25', '6');
+INSERT INTO `sys_oper_log` VALUES ('194', '菜单管理', '1', 'com.edu.system.controller.SysMenuController.add()', 'POST', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"执行修改\",\"menuType\":\"F\",\"orderNum\":2,\"params\":{},\"parentId\":3037,\"perms\":\"achievement:achievement:edit\",\"status\":\"0\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 19:51:56', '4');
+INSERT INTO `sys_oper_log` VALUES ('195', '菜单管理', '1', 'com.edu.system.controller.SysMenuController.add()', 'POST', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"列表展示\",\"menuType\":\"F\",\"orderNum\":3,\"params\":{},\"parentId\":3037,\"perms\":\"achievement:achievement:list\",\"status\":\"0\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 19:52:11', '4');
+INSERT INTO `sys_oper_log` VALUES ('196', '菜单管理', '3', 'com.edu.system.controller.SysMenuController.remove()', 'DELETE', '1', 'admin', null, '/menu/3040', '127.0.0.1', '', '3040 ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 19:52:21', '5');
+INSERT INTO `sys_oper_log` VALUES ('197', '用户头像', '2', 'com.edu.system.controller.SysProfileController.avatar()', 'POST', '1', 'teacher', null, '/user/profile/avatar', '127.0.0.1', '', '', '{\"msg\":\"操作成功\",\"imgUrl\":\"http://127.0.0.1:9000/edu-achievement/2026/03/03/ENDFIELD_SHARE_1772350628_20260303200033A011.png\",\"code\":200}', '0', null, '2026-03-03 20:00:33', '100');
+INSERT INTO `sys_oper_log` VALUES ('198', '用户管理', '1', 'com.edu.system.controller.SysUserController.add()', 'POST', '1', 'admin', null, '/user', '127.0.0.1', '', '{\"admin\":false,\"createBy\":\"admin\",\"deptId\":100,\"nickName\":\"zpz\",\"params\":{},\"postIds\":[],\"roleIds\":[],\"status\":\"0\",\"userId\":101,\"userName\":\"zpz\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 20:03:08', '75');
+INSERT INTO `sys_oper_log` VALUES ('199', '角色管理', '2', 'com.edu.system.controller.SysRoleController.edit()', 'PUT', '1', 'admin', null, '/role', '127.0.0.1', '', '{\"admin\":false,\"createTime\":\"2026-03-03 13:14:27\",\"dataScope\":\"1\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[3037,3034,3035,3036,3038],\"params\":{},\"roleId\":100,\"roleKey\":\"teacher\",\"roleName\":\"普通教师\",\"roleSort\":2,\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 20:03:28', '5');
+INSERT INTO `sys_oper_log` VALUES ('200', '角色管理', '1', 'com.edu.system.controller.SysRoleController.add()', 'POST', '1', 'admin', null, '/role', '127.0.0.1', '', '{\"admin\":false,\"createBy\":\"admin\",\"deptCheckStrictly\":true,\"deptIds\":[],\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[2,3034,3035,3036,3028,3029,3030,3031,3032,3033,3037,3038,3039,1,100,1000,1001,1002,1003,1004,1005,1006,101,1007,1008,1009,1010,1011,102,1012,1013,1014,1015,103,1016,1017,1018,1019,104,1020,1021,1022,1023,1024,105,1025,1026,1027,1028,1029,106,1030,1031,1032,1033,1034,107,1035,1036,1037,1038,108,500,1039,1040,1041,501,1042,1043,1044,1045,109,1046,1047,1048,110,1049,1050,1051,1052,1053,1054],\"params\":{},\"roleId\":101,\"roleKey\":\"admin1\",\"roleName\":\"管理员\",\"roleSort\":1,\"status\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 20:04:12', '8');
+INSERT INTO `sys_oper_log` VALUES ('201', '用户管理', '2', 'com.edu.system.controller.SysUserController.edit()', 'PUT', '1', 'admin', null, '/user', '127.0.0.1', '', '{\"admin\":false,\"avatar\":\"\",\"createBy\":\"admin\",\"createTime\":\"2026-03-03 20:03:08\",\"delFlag\":\"0\",\"dept\":{\"ancestors\":\"0\",\"children\":[],\"deptId\":100,\"deptName\":\"郑州轻工业大学\",\"leader\":\"zpz\",\"orderNum\":0,\"params\":{},\"parentId\":0,\"status\":\"0\"},\"deptId\":100,\"email\":\"\",\"loginIp\":\"\",\"nickName\":\"zpz\",\"params\":{},\"phonenumber\":\"\",\"postIds\":[],\"roleIds\":[101],\"roles\":[],\"sex\":\"0\",\"status\":\"0\",\"updateBy\":\"admin\",\"userId\":101,\"userName\":\"zpz\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 20:04:22', '6');
+INSERT INTO `sys_oper_log` VALUES ('202', '用户管理', '2', 'com.edu.system.controller.SysUserController.edit()', 'PUT', '1', 'admin', null, '/user', '127.0.0.1', '', '{\"admin\":false,\"avatar\":\"\",\"createBy\":\"admin\",\"createTime\":\"2026-03-03 20:03:08\",\"delFlag\":\"0\",\"dept\":{\"ancestors\":\"0\",\"children\":[],\"deptId\":100,\"deptName\":\"郑州轻工业大学\",\"leader\":\"zpz\",\"orderNum\":0,\"params\":{},\"parentId\":0,\"status\":\"0\"},\"deptId\":100,\"email\":\"\",\"loginIp\":\"\",\"nickName\":\"adminN\",\"params\":{},\"phonenumber\":\"\",\"postIds\":[],\"roleIds\":[101],\"roles\":[{\"admin\":false,\"dataScope\":\"1\",\"deptCheckStrictly\":false,\"flag\":false,\"menuCheckStrictly\":false,\"params\":{},\"roleId\":101,\"roleKey\":\"admin1\",\"roleName\":\"管理员\",\"roleSort\":1,\"status\":\"0\"}],\"sex\":\"0\",\"status\":\"0\",\"updateBy\":\"admin\",\"userId\":101,\"userName\":\"zpz\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 20:04:40', '4');
+INSERT INTO `sys_oper_log` VALUES ('203', '参数管理', '2', 'com.edu.system.controller.SysConfigController.edit()', 'PUT', '1', 'admin', null, '/config', '127.0.0.1', '', '{\"configId\":6,\"configKey\":\"sys.account.initPasswordModify\",\"configName\":\"用户管理-初始密码修改策略\",\"configType\":\"Y\",\"configValue\":\"0\",\"createBy\":\"admin\",\"createTime\":\"2026-03-02 22:42:18\",\"params\":{},\"remark\":\"0：初始密码修改策略关闭，没有任何提示，1：提醒用户，如果未修改初始密码，则在登录时就会提醒修改密码对话框\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 20:07:23', '6');
+INSERT INTO `sys_oper_log` VALUES ('204', '参数管理', '2', 'com.edu.system.controller.SysConfigController.edit()', 'PUT', '1', 'admin', null, '/config', '127.0.0.1', '', '{\"configId\":4,\"configKey\":\"sys.account.registerUser\",\"configName\":\"账号自助-是否开启用户注册功能\",\"configType\":\"Y\",\"configValue\":\"true\",\"createBy\":\"admin\",\"createTime\":\"2026-03-02 22:42:18\",\"params\":{},\"remark\":\"是否开启注册用户功能（true开启，false关闭）\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-03 20:07:32', '3');
+INSERT INTO `sys_oper_log` VALUES ('205', '部门管理', '2', 'com.edu.system.controller.SysDeptController.edit()', 'PUT', '1', 'admin', null, '/dept', '127.0.0.1', '', '{\"ancestors\":\"0,100\",\"children\":[],\"createBy\":\"admin\",\"createTime\":\"2026-03-02 22:42:14\",\"delFlag\":\"0\",\"deptId\":103,\"deptName\":\"成果管理院\",\"email\":\"2426481498@qq.com\",\"leader\":\"1\",\"orderNum\":0,\"params\":{},\"parentId\":100,\"phone\":\"13733732086\",\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-10 13:14:19', '21');
+INSERT INTO `sys_oper_log` VALUES ('206', '菜单管理', '1', 'com.edu.system.controller.SysMenuController.add()', 'POST', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"教师修改\",\"menuType\":\"F\",\"orderNum\":1,\"params\":{},\"parentId\":3037,\"perms\":\"achievement:teacher:edit\",\"status\":\"0\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-10 14:47:02', '29');
+INSERT INTO `sys_oper_log` VALUES ('207', '菜单管理', '1', 'com.edu.system.controller.SysMenuController.add()', 'POST', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"教师查询\",\"menuType\":\"F\",\"orderNum\":2,\"params\":{},\"parentId\":3037,\"perms\":\"achievement:teacher:query\",\"status\":\"0\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-10 14:47:42', '5');
+INSERT INTO `sys_oper_log` VALUES ('208', '角色管理', '2', 'com.edu.system.controller.SysRoleController.edit()', 'PUT', '1', 'admin', null, '/role', '127.0.0.1', '', '{\"admin\":false,\"createTime\":\"2026-03-03 13:14:27\",\"dataScope\":\"1\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[3037,3034,3035,3036,3038,3041,3042],\"params\":{},\"roleId\":100,\"roleKey\":\"teacher\",\"roleName\":\"普通教师\",\"roleSort\":2,\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-10 14:49:32', '46');
+INSERT INTO `sys_oper_log` VALUES ('209', '角色管理', '2', 'com.edu.system.controller.SysRoleController.edit()', 'PUT', '1', 'admin', null, '/role', '127.0.0.1', '', '{\"admin\":false,\"createTime\":\"2026-03-02 22:42:14\",\"dataScope\":\"2\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[1,100,1000,1001,1002,1003,1004,1005,1006,101,1007,1008,1009,1010,1011,102,1012,1013,1014,1015,103,1016,1017,1018,1019,104,1020,1021,1022,1023,1024,105,1025,1026,1027,1028,1029,106,1030,1031,1032,1033,1034,107,1035,1036,1037,1038,108,500,1039,1040,1041,501,1042,1043,1044,1045,2,109,1046,1047,1048,110,1049,1050,1051,1052,1053,1054,111,112,113,3,114,115,1055,1056,1058,1057,1059,1060,116],\"params\":{},\"remark\":\"普通角色\",\"roleId\":2,\"roleKey\":\"common\",\"roleName\":\"普通角色\",\"roleSort\":2,\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-10 14:49:43', '11');
+INSERT INTO `sys_oper_log` VALUES ('210', '角色管理', '2', 'com.edu.system.controller.SysRoleController.edit()', 'PUT', '1', 'admin', null, '/role', '127.0.0.1', '', '{\"admin\":false,\"createTime\":\"2026-03-03 20:04:12\",\"dataScope\":\"1\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[3037,2,3034,3035,3036,3028,3029,3030,3031,3032,3033,3038,3039,1,100,1000,1001,1002,1003,1004,1005,1006,101,1007,1008,1009,1010,1011,102,1012,1013,1014,1015,103,1016,1017,1018,1019,104,1020,1021,1022,1023,1024,105,1025,1026,1027,1028,1029,106,1030,1031,1032,1033,1034,107,1035,1036,1037,1038,108,500,1039,1040,1041,501,1042,1043,1044,1045,109,1046,1047,1048],\"params\":{},\"roleId\":101,\"roleKey\":\"admin1\",\"roleName\":\"管理员\",\"roleSort\":1,\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-10 14:50:04', '9');
+INSERT INTO `sys_oper_log` VALUES ('211', '菜单管理', '2', 'com.edu.system.controller.SysMenuController.edit()', 'PUT', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"component\":\"achievement/myAchievementList/index\",\"createTime\":\"2026-03-03 16:43:36\",\"icon\":\"education\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":3037,\"menuName\":\"成果管理\",\"menuType\":\"C\",\"orderNum\":2,\"params\":{},\"parentId\":0,\"path\":\"myAchievementList\",\"perms\":\"achievement:achievement:teacherList\",\"routeName\":\"MyAchievementList\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-10 15:29:02', '5');
+INSERT INTO `sys_oper_log` VALUES ('212', '菜单管理', '2', 'com.edu.system.controller.SysMenuController.edit()', 'PUT', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"createTime\":\"2026-03-03 15:25:57\",\"icon\":\"#\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":3035,\"menuName\":\"教师新增\",\"menuType\":\"F\",\"orderNum\":1,\"params\":{},\"parentId\":3034,\"path\":\"\",\"perms\":\"achievement:achievement:teacherAdd\",\"routeName\":\"\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-10 15:32:12', '5');
+INSERT INTO `sys_oper_log` VALUES ('213', '菜单管理', '2', 'com.edu.system.controller.SysMenuController.edit()', 'PUT', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"createTime\":\"2026-03-10 14:47:02\",\"icon\":\"#\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":3041,\"menuName\":\"教师修改\",\"menuType\":\"F\",\"orderNum\":1,\"params\":{},\"parentId\":3037,\"path\":\"\",\"perms\":\"achievement:achievement:teacherEdit\",\"routeName\":\"\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-10 15:32:46', '5');
+INSERT INTO `sys_oper_log` VALUES ('214', '菜单管理', '2', 'com.edu.system.controller.SysMenuController.edit()', 'PUT', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"createTime\":\"2026-03-10 14:47:42\",\"icon\":\"#\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":3042,\"menuName\":\"教师查询\",\"menuType\":\"F\",\"orderNum\":2,\"params\":{},\"parentId\":3037,\"path\":\"\",\"perms\":\"achievement:achievement:teacherQuery\",\"routeName\":\"\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-10 15:33:11', '5');
+INSERT INTO `sys_oper_log` VALUES ('215', '菜单管理', '2', 'com.edu.system.controller.SysMenuController.edit()', 'PUT', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"component\":\"achievement/myAchievementList/index\",\"createTime\":\"2026-03-03 16:43:36\",\"icon\":\"education\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":3037,\"menuName\":\"成果管理\",\"menuType\":\"C\",\"orderNum\":2,\"params\":{},\"parentId\":0,\"path\":\"myAchievementList\",\"perms\":\"achievement:achievement:teacherList\",\"routeName\":\"teacherListAchievement\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-10 15:47:28', '4');
+INSERT INTO `sys_oper_log` VALUES ('216', '菜单管理', '3', 'com.edu.system.controller.SysMenuController.remove()', 'DELETE', '1', 'admin', null, '/menu/3039', '127.0.0.1', '', '3039 ', '{\"msg\":\"菜单已分配,不允许删除\",\"code\":601}', '0', null, '2026-03-10 15:48:56', '5');
+INSERT INTO `sys_oper_log` VALUES ('217', '角色管理', '2', 'com.edu.system.controller.SysRoleController.edit()', 'PUT', '1', 'admin', null, '/role', '127.0.0.1', '', '{\"admin\":false,\"createTime\":\"2026-03-03 13:14:27\",\"dataScope\":\"1\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[],\"params\":{},\"roleId\":100,\"roleKey\":\"teacher\",\"roleName\":\"普通教师\",\"roleSort\":2,\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-10 15:49:09', '6');
+INSERT INTO `sys_oper_log` VALUES ('218', '角色管理', '2', 'com.edu.system.controller.SysRoleController.edit()', 'PUT', '1', 'admin', null, '/role', '127.0.0.1', '', '{\"admin\":false,\"createTime\":\"2026-03-03 20:04:12\",\"dataScope\":\"1\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[2,1,100,1000,1001,1002,1003,1004,1005,1006,101,1007,1008,1009,1010,1011,102,1012,1013,1014,1015,103,1016,1017,1018,1019,104,1020,1021,1022,1023,1024,105,1025,1026,1027,1028,1029,106,1030,1031,1032,1033,1034,107,1035,1036,1037,1038,108,500,1039,1040,1041,501,1042,1043,1044,1045,109,1046,1047,1048],\"params\":{},\"roleId\":101,\"roleKey\":\"admin1\",\"roleName\":\"管理员\",\"roleSort\":1,\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-10 15:49:19', '9');
+INSERT INTO `sys_oper_log` VALUES ('219', '菜单管理', '3', 'com.edu.system.controller.SysMenuController.remove()', 'DELETE', '1', 'admin', null, '/menu/3039', '127.0.0.1', '', '3039 ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-10 15:49:28', '3');
+INSERT INTO `sys_oper_log` VALUES ('220', '菜单管理', '3', 'com.edu.system.controller.SysMenuController.remove()', 'DELETE', '1', 'admin', null, '/menu/3038', '127.0.0.1', '', '3038 ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-10 15:49:33', '3');
+INSERT INTO `sys_oper_log` VALUES ('221', '菜单管理', '1', 'com.edu.system.controller.SysMenuController.add()', 'POST', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"教师删除\",\"menuType\":\"F\",\"orderNum\":3,\"params\":{},\"parentId\":3037,\"perms\":\"achievement:achievement:teacherGet\",\"status\":\"0\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-10 15:51:44', '3');
+INSERT INTO `sys_oper_log` VALUES ('222', '菜单管理', '2', 'com.edu.system.controller.SysMenuController.edit()', 'PUT', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"createTime\":\"2026-03-10 15:51:44\",\"icon\":\"#\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":3043,\"menuName\":\"教师删除\",\"menuType\":\"F\",\"orderNum\":3,\"params\":{},\"parentId\":3037,\"path\":\"\",\"perms\":\"achievement:achievement:teacherRemove\",\"routeName\":\"\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-10 15:52:08', '5');
+INSERT INTO `sys_oper_log` VALUES ('223', '菜单管理', '1', 'com.edu.system.controller.SysMenuController.add()', 'POST', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"教师成果详情\",\"menuType\":\"F\",\"orderNum\":4,\"params\":{},\"parentId\":3037,\"perms\":\"achievement:achievement:teacherGet\",\"status\":\"0\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-10 15:53:06', '4');
+INSERT INTO `sys_oper_log` VALUES ('224', '我的成果-新增', '1', 'com.edu.achievement.controller.EduAchievementController.teacherAdd()', 'POST', '1', 'admin', null, '/achievement/teacherAddAchievement', '127.0.0.1', '', '{\"achievementId\":15,\"category\":\"1\",\"collegeId\":100,\"content\":\"123\",\"createTime\":\"2026-03-10 15:57:44\",\"params\":{},\"status\":\"1\",\"teacherId\":1,\"title\":\"123\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-10 15:57:44', '32');
+INSERT INTO `sys_oper_log` VALUES ('225', '我的成果-修改', '2', 'com.edu.achievement.controller.EduAchievementController.teacherEdit()', 'PUT', '1', 'admin', null, '/achievement/teacherUpdateAchievement', '127.0.0.1', '', '{\"achievementId\":3,\"category\":\"1\",\"collegeId\":100,\"content\":\"成果二\",\"createBy\":\"admin\",\"createTime\":\"2026-03-03 15:59:37\",\"delFlag\":\"0\",\"fileUrl\":\"http://127.0.0.1:9000/edu-achievement/2026/03/03/张鹏展简历_20260303155917A005.docx,http://127.0.0.1:9000/edu-achievement/2026/03/03/张鹏展简历_20260303155920A006.pdf\",\"params\":{},\"status\":\"1\",\"teacherId\":1,\"title\":\"成果二 （1）\",\"updateBy\":\"admin\",\"updateTime\":\"2026-03-10 16:11:12\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-10 16:11:13', '32');
+INSERT INTO `sys_oper_log` VALUES ('226', '字典数据', '2', 'com.edu.system.controller.SysDictDataController.edit()', 'PUT', '1', 'admin', null, '/dict/data', '127.0.0.1', '', '{\"createBy\":\"admin\",\"createTime\":\"2026-03-03 16:08:13\",\"default\":false,\"dictCode\":107,\"dictLabel\":\"科研指导\",\"dictSort\":1,\"dictType\":\"edu_achievement_category\",\"dictValue\":\"1\",\"isDefault\":\"N\",\"listClass\":\"default\",\"params\":{},\"remark\":\"期刊论文、专著等\",\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-10 16:12:30', '5');
+INSERT INTO `sys_oper_log` VALUES ('227', '字典数据', '2', 'com.edu.system.controller.SysDictDataController.edit()', 'PUT', '1', 'admin', null, '/dict/data', '127.0.0.1', '', '{\"createBy\":\"admin\",\"createTime\":\"2026-03-03 16:08:48\",\"default\":false,\"dictCode\":109,\"dictLabel\":\"竞赛指导\",\"dictSort\":3,\"dictType\":\"edu_achievement_category\",\"dictValue\":\"3\",\"isDefault\":\"N\",\"listClass\":\"default\",\"params\":{},\"remark\":\"指导学生获奖或教师比赛\",\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-10 16:12:41', '4');
+INSERT INTO `sys_oper_log` VALUES ('228', '字典数据', '2', 'com.edu.system.controller.SysDictDataController.edit()', 'PUT', '1', 'admin', null, '/dict/data', '127.0.0.1', '', '{\"createBy\":\"admin\",\"createTime\":\"2026-03-03 16:09:00\",\"default\":false,\"dictCode\":110,\"dictLabel\":\"教学改革\",\"dictSort\":4,\"dictType\":\"edu_achievement_category\",\"dictValue\":\"4\",\"isDefault\":\"N\",\"listClass\":\"default\",\"params\":{},\"remark\":\"各级教学改革研究项目\",\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-10 16:13:05', '4');
+INSERT INTO `sys_oper_log` VALUES ('229', '字典数据', '2', 'com.edu.system.controller.SysDictDataController.edit()', 'PUT', '1', 'admin', null, '/dict/data', '127.0.0.1', '', '{\"createBy\":\"admin\",\"createTime\":\"2026-03-03 19:21:57\",\"default\":false,\"dictCode\":111,\"dictLabel\":\"教学评估\",\"dictSort\":5,\"dictType\":\"edu_achievement_category\",\"dictValue\":\"5\",\"isDefault\":\"N\",\"listClass\":\"default\",\"params\":{},\"remark\":\"教学评估，质量检测，监控工作等\\n\",\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-10 16:13:14', '4');
+INSERT INTO `sys_oper_log` VALUES ('230', '教学成果管理', '1', 'com.edu.achievement.controller.EduAchievementController.add()', 'POST', '1', 'admin', null, '/achievement', '127.0.0.1', '', '{\"category\":\"1\",\"content\":\"111231\",\"createTime\":\"2026-03-10 16:23:15\",\"fileUrl\":\"http://127.0.0.1:9000/edu-achievement/2026/03/10/meme_20260310162308A001.txt\",\"params\":{},\"status\":\"0\",\"title\":\"t1\"} ', null, '1', '\r\n### Error updating database.  Cause: java.sql.SQLException: Field \'teacher_id\' doesn\'t have a default value\r\n### The error may exist in file [D:\\.develop\\edu-achievement01\\edu-achievement-master\\edu-modules\\edu-achievement\\target\\classes\\mapper\\achievement\\EduAchievementMapper.xml]\r\n### The error may involve com.edu.achievement.mapper.EduAchievementMapper.insertEduAchievement-Inline\r\n### The error occurred while setting parameters\r\n### SQL: insert into edu_achievement          ( title,             content,             file_url,                                       status,                          create_time,                                                    category )           values ( ?,             ?,             ?,                                       ?,                          ?,                                                    ? )\r\n### Cause: java.sql.SQLException: Field \'teacher_id\' doesn\'t have a default value\n; Field \'teacher_id\' doesn\'t have a default value; nested exception is java.sql.SQLException: Field \'teacher_id\' doesn\'t have a default value', '2026-03-10 16:23:15', '71');
+INSERT INTO `sys_oper_log` VALUES ('231', '教学成果管理', '1', 'com.edu.achievement.controller.EduAchievementController.add()', 'POST', '1', 'admin', null, '/achievement', '127.0.0.1', '', '{\"category\":\"1\",\"content\":\"\",\"createTime\":\"2026-03-10 16:23:39\",\"fileUrl\":\"http://127.0.0.1:9000/edu-achievement/2026/03/10/meme_20260310162338A002.txt\",\"params\":{},\"status\":\"0\",\"title\":\"1231\"} ', null, '1', '\r\n### Error updating database.  Cause: java.sql.SQLException: Field \'teacher_id\' doesn\'t have a default value\r\n### The error may exist in file [D:\\.develop\\edu-achievement01\\edu-achievement-master\\edu-modules\\edu-achievement\\target\\classes\\mapper\\achievement\\EduAchievementMapper.xml]\r\n### The error may involve com.edu.achievement.mapper.EduAchievementMapper.insertEduAchievement-Inline\r\n### The error occurred while setting parameters\r\n### SQL: insert into edu_achievement          ( title,                          file_url,                                       status,                          create_time,                                                    category )           values ( ?,                          ?,                                       ?,                          ?,                                                    ? )\r\n### Cause: java.sql.SQLException: Field \'teacher_id\' doesn\'t have a default value\n; Field \'teacher_id\' doesn\'t have a default value; nested exception is java.sql.SQLException: Field \'teacher_id\' doesn\'t have a default value', '2026-03-10 16:23:39', '5');
+INSERT INTO `sys_oper_log` VALUES ('232', '教学成果管理', '1', 'com.edu.achievement.controller.EduAchievementController.add()', 'POST', '1', 'admin', null, '/achievement', '127.0.0.1', '', '{\"category\":\"1\",\"content\":\"1234\",\"createTime\":\"2026-03-10 16:26:06\",\"fileUrl\":\"http://127.0.0.1:9000/edu-achievement/2026/03/10/meme_20260310162603A003.txt\",\"params\":{},\"status\":\"0\",\"teacherId\":1,\"title\":\"t1\"} ', null, '1', '\r\n### Error updating database.  Cause: java.sql.SQLException: Field \'college_id\' doesn\'t have a default value\r\n### The error may exist in file [D:\\.develop\\edu-achievement01\\edu-achievement-master\\edu-modules\\edu-achievement\\target\\classes\\mapper\\achievement\\EduAchievementMapper.xml]\r\n### The error may involve com.edu.achievement.mapper.EduAchievementMapper.insertEduAchievement-Inline\r\n### The error occurred while setting parameters\r\n### SQL: insert into edu_achievement          ( title,             content,             file_url,             teacher_id,                          status,                          create_time,                                                    category )           values ( ?,             ?,             ?,             ?,                          ?,                          ?,                                                    ? )\r\n### Cause: java.sql.SQLException: Field \'college_id\' doesn\'t have a default value\n; Field \'college_id\' doesn\'t have a default value; nested exception is java.sql.SQLException: Field \'college_id\' doesn\'t have a default value', '2026-03-10 16:26:06', '68');
+INSERT INTO `sys_oper_log` VALUES ('233', '教学成果管理', '1', 'com.edu.achievement.controller.EduAchievementController.add()', 'POST', '1', 'admin', null, '/achievement', '127.0.0.1', '', '{\"category\":\"1\",\"createTime\":\"2026-03-10 16:34:12\",\"params\":{},\"status\":\"0\",\"teacherId\":1,\"title\":\"t1\"} ', null, '1', '\r\n### Error updating database.  Cause: java.sql.SQLException: Field \'college_id\' doesn\'t have a default value\r\n### The error may exist in file [D:\\.develop\\edu-achievement01\\edu-achievement-master\\edu-modules\\edu-achievement\\target\\classes\\mapper\\achievement\\EduAchievementMapper.xml]\r\n### The error may involve com.edu.achievement.mapper.EduAchievementMapper.insertEduAchievement-Inline\r\n### The error occurred while setting parameters\r\n### SQL: insert into edu_achievement          ( title,                                       teacher_id,                          status,                          create_time,                                                    category )           values ( ?,                                       ?,                          ?,                          ?,                                                    ? )\r\n### Cause: java.sql.SQLException: Field \'college_id\' doesn\'t have a default value\n; Field \'college_id\' doesn\'t have a default value; nested exception is java.sql.SQLException: Field \'college_id\' doesn\'t have a default value', '2026-03-10 16:34:12', '4');
+INSERT INTO `sys_oper_log` VALUES ('234', '教学成果管理', '1', 'com.edu.achievement.controller.EduAchievementController.add()', 'POST', '1', 'admin', null, '/achievement', '127.0.0.1', '', '{\"category\":\"2\",\"createTime\":\"2026-03-10 16:34:16\",\"params\":{},\"status\":\"0\",\"teacherId\":1,\"title\":\"t1\"} ', null, '1', '\r\n### Error updating database.  Cause: java.sql.SQLException: Field \'college_id\' doesn\'t have a default value\r\n### The error may exist in file [D:\\.develop\\edu-achievement01\\edu-achievement-master\\edu-modules\\edu-achievement\\target\\classes\\mapper\\achievement\\EduAchievementMapper.xml]\r\n### The error may involve com.edu.achievement.mapper.EduAchievementMapper.insertEduAchievement-Inline\r\n### The error occurred while setting parameters\r\n### SQL: insert into edu_achievement          ( title,                                       teacher_id,                          status,                          create_time,                                                    category )           values ( ?,                                       ?,                          ?,                          ?,                                                    ? )\r\n### Cause: java.sql.SQLException: Field \'college_id\' doesn\'t have a default value\n; Field \'college_id\' doesn\'t have a default value; nested exception is java.sql.SQLException: Field \'college_id\' doesn\'t have a default value', '2026-03-10 16:34:16', '3');
+INSERT INTO `sys_oper_log` VALUES ('235', '教学成果管理', '1', 'com.edu.achievement.controller.EduAchievementController.add()', 'POST', '1', 'admin', null, '/achievement', '127.0.0.1', '', '{\"achievementId\":16,\"category\":\"1\",\"collegeId\":100,\"content\":\"wqe\",\"createTime\":\"2026-03-10 16:40:44\",\"fileUrl\":\"http://127.0.0.1:9000/edu-achievement/2026/03/10/meme_20260310164041A004.txt\",\"params\":{},\"status\":\"0\",\"teacherId\":1,\"title\":\"123\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-10 16:40:44', '5');
+INSERT INTO `sys_oper_log` VALUES ('236', '教学成果管理', '1', 'com.edu.achievement.controller.EduAchievementController.add()', 'POST', '1', 'admin', null, '/achievement', '127.0.0.1', '', '{\"achievementId\":17,\"category\":\"1\",\"collegeId\":103,\"createTime\":\"2026-03-10 16:41:29\",\"params\":{},\"status\":\"0\",\"teacherId\":1,\"title\":\"t1\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-10 16:41:29', '9');
+INSERT INTO `sys_oper_log` VALUES ('237', '字典类型', '9', 'com.edu.system.controller.SysDictTypeController.refreshCache()', 'DELETE', '1', 'admin', null, '/dict/type/refreshCache', '127.0.0.1', '', '', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-10 16:52:16', '24');
+INSERT INTO `sys_oper_log` VALUES ('238', '我的成果-新增', '1', 'com.edu.achievement.controller.EduAchievementController.teacherAdd()', 'POST', '1', 'admin', null, '/achievement/teacherAddAchievement', '127.0.0.1', '', '{\"achievementId\":18,\"category\":\"2\",\"collegeId\":100,\"content\":\"123\",\"createTime\":\"2026-03-10 16:57:05\",\"params\":{},\"status\":\"1\",\"teacherId\":1,\"title\":\"123\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-10 16:57:05', '3');
+INSERT INTO `sys_oper_log` VALUES ('239', '我的成果-新增', '1', 'com.edu.achievement.controller.EduAchievementController.teacherAdd()', 'POST', '1', 'admin', null, '/achievement/teacherAddAchievement', '127.0.0.1', '', '{\"category\":\"1\",\"content\":\"12312\",\"createTime\":\"2026-03-10 17:49:46\",\"params\":{},\"status\":\"1\",\"teacherId\":1,\"title\":\"123414\"} ', null, '1', '\r\n### Error updating database.  Cause: java.sql.SQLException: Field \'college_id\' doesn\'t have a default value\r\n### The error may exist in file [D:\\.develop\\edu-achievement01\\edu-achievement-master\\edu-modules\\edu-achievement\\target\\classes\\mapper\\achievement\\EduAchievementMapper.xml]\r\n### The error may involve com.edu.achievement.mapper.EduAchievementMapper.insertEduAchievement-Inline\r\n### The error occurred while setting parameters\r\n### SQL: insert into edu_achievement          ( title,             content,                          teacher_id,                          status,                          create_time,                                                    category )           values ( ?,             ?,                          ?,                          ?,                          ?,                                                    ? )\r\n### Cause: java.sql.SQLException: Field \'college_id\' doesn\'t have a default value\n; Field \'college_id\' doesn\'t have a default value; nested exception is java.sql.SQLException: Field \'college_id\' doesn\'t have a default value', '2026-03-10 17:49:46', '70');
+INSERT INTO `sys_oper_log` VALUES ('240', '我的成果-修改', '2', 'com.edu.achievement.controller.EduAchievementController.teacherEdit()', 'PUT', '1', 'admin', null, '/achievement/teacherUpdateAchievement', '127.0.0.1', '', '{\"achievementId\":3,\"category\":\"1\",\"collegeId\":100,\"content\":\"成果二\",\"createBy\":\"admin\",\"createTime\":\"2026-03-03 15:59:37\",\"delFlag\":\"0\",\"fileUrl\":\"http://127.0.0.1:9000/edu-achievement/2026/03/03/张鹏展简历_20260303155917A005.docx,http://127.0.0.1:9000/edu-achievement/2026/03/03/张鹏展简历_20260303155920A006.pdf\",\"params\":{},\"status\":\"1\",\"teacherId\":1,\"title\":\"成果二 （1）11\",\"updateBy\":\"admin\",\"updateTime\":\"2026-03-10 17:50:35\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-10 17:50:35', '6');
+INSERT INTO `sys_oper_log` VALUES ('241', '我的成果-修改', '2', 'com.edu.achievement.controller.EduAchievementController.teacherEdit()', 'PUT', '1', 'admin', null, '/achievement/teacherUpdateAchievement', '127.0.0.1', '', '{\"achievementId\":6,\"category\":\"1\",\"collegeId\":100,\"content\":\"1123\",\"createBy\":\"admin\",\"createTime\":\"2026-03-03 17:57:05\",\"delFlag\":\"0\",\"params\":{},\"status\":\"4\",\"teacherId\":1,\"title\":\"11\",\"updateBy\":\"admin\",\"updateTime\":\"2026-03-10 17:52:47\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-10 17:52:47', '4');
+INSERT INTO `sys_oper_log` VALUES ('242', '我的成果-新增', '1', 'com.edu.achievement.controller.EduAchievementController.teacherAdd()', 'POST', '1', 'admin', null, '/achievement/teacherAddAchievement', '127.0.0.1', '', '{\"achievementId\":19,\"category\":\"6\",\"collegeId\":103,\"content\":\"1231\",\"createTime\":\"2026-03-15 16:45:45\",\"params\":{},\"status\":\"1\",\"teacherId\":1,\"title\":\"26315t\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-15 16:45:45', '36');
+INSERT INTO `sys_oper_log` VALUES ('243', '岗位管理', '2', 'com.edu.system.controller.SysPostController.edit()', 'PUT', '1', 'admin', null, '/post', '127.0.0.1', '', '{\"createBy\":\"admin\",\"createTime\":\"2026-03-02 22:42:14\",\"flag\":false,\"params\":{},\"postCode\":\"boss\",\"postId\":1,\"postName\":\"校长\",\"postSort\":1,\"remark\":\"\",\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-15 16:48:43', '10');
+INSERT INTO `sys_oper_log` VALUES ('244', '岗位管理', '2', 'com.edu.system.controller.SysPostController.edit()', 'PUT', '1', 'admin', null, '/post', '127.0.0.1', '', '{\"createBy\":\"admin\",\"createTime\":\"2026-03-02 22:42:14\",\"flag\":false,\"params\":{},\"postCode\":\"se\",\"postId\":2,\"postName\":\"院长\",\"postSort\":2,\"remark\":\"\",\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-15 16:49:05', '3');
+INSERT INTO `sys_oper_log` VALUES ('245', '岗位管理', '2', 'com.edu.system.controller.SysPostController.edit()', 'PUT', '1', 'admin', null, '/post', '127.0.0.1', '', '{\"createBy\":\"admin\",\"createTime\":\"2026-03-02 22:42:14\",\"flag\":false,\"params\":{},\"postCode\":\"user\",\"postId\":4,\"postName\":\"普通教师\",\"postSort\":4,\"remark\":\"\",\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-15 16:49:11', '3');
+INSERT INTO `sys_oper_log` VALUES ('246', '岗位管理', '2', 'com.edu.system.controller.SysPostController.edit()', 'PUT', '1', 'admin', null, '/post', '127.0.0.1', '', '{\"createBy\":\"admin\",\"createTime\":\"2026-03-02 22:42:14\",\"flag\":false,\"params\":{},\"postCode\":\"hr\",\"postId\":3,\"postName\":\"成果管理\",\"postSort\":3,\"remark\":\"\",\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-15 16:49:31', '3');
+INSERT INTO `sys_oper_log` VALUES ('247', '菜单管理', '1', 'com.edu.system.controller.SysMenuController.add()', 'POST', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"component\":\"achievement/collegeAudit/index\",\"createBy\":\"admin\",\"icon\":\"form\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"院级审核工作台\",\"menuType\":\"C\",\"orderNum\":2,\"params\":{},\"parentId\":0,\"path\":\"collegeAudit\",\"routeName\":\"collegeAudit\",\"status\":\"0\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-15 17:15:16', '10');
+INSERT INTO `sys_oper_log` VALUES ('248', '菜单管理', '1', 'com.edu.system.controller.SysMenuController.add()', 'POST', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"component\":\"achievement/schoolAudit/index\",\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"校级审核工作台\",\"menuType\":\"C\",\"orderNum\":3,\"params\":{},\"parentId\":0,\"path\":\"schoolAudit\",\"routeName\":\"schoolAudit\",\"status\":\"0\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-15 17:15:47', '3');
+INSERT INTO `sys_oper_log` VALUES ('249', '菜单管理', '2', 'com.edu.system.controller.SysMenuController.edit()', 'PUT', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"component\":\"achievement/schoolAudit/index\",\"createTime\":\"2026-03-15 17:15:47\",\"icon\":\"#\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":3046,\"menuName\":\"校级审核工作台\",\"menuType\":\"C\",\"orderNum\":2,\"params\":{},\"parentId\":0,\"path\":\"schoolAudit\",\"perms\":\"\",\"routeName\":\"schoolAudit\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-15 17:16:28', '5');
+INSERT INTO `sys_oper_log` VALUES ('250', '菜单管理', '2', 'com.edu.system.controller.SysMenuController.edit()', 'PUT', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"component\":\"achievement/schoolAudit/index\",\"createTime\":\"2026-03-15 17:15:47\",\"icon\":\"form\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":3046,\"menuName\":\"校级审核工作台\",\"menuType\":\"C\",\"orderNum\":2,\"params\":{},\"parentId\":0,\"path\":\"schoolAudit\",\"perms\":\"\",\"routeName\":\"schoolAudit\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-15 17:16:53', '4');
+INSERT INTO `sys_oper_log` VALUES ('251', '菜单管理', '1', 'com.edu.system.controller.SysMenuController.add()', 'POST', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"component\":\"achievement/auditRecord/index\",\"createBy\":\"admin\",\"icon\":\"log\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"审核记录\",\"menuType\":\"C\",\"orderNum\":3,\"params\":{},\"parentId\":0,\"path\":\"auditRecord\",\"routeName\":\"auditRecord\",\"status\":\"0\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-15 17:17:41', '4');
+INSERT INTO `sys_oper_log` VALUES ('252', '角色管理', '1', 'com.edu.system.controller.SysRoleController.add()', 'POST', '1', 'admin', null, '/role', '127.0.0.1', '', '{\"admin\":false,\"createBy\":\"admin\",\"deptCheckStrictly\":true,\"deptIds\":[],\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[3045,3047],\"params\":{},\"roleId\":102,\"roleKey\":\"CollegeAudit\",\"roleName\":\"院级审核员\",\"roleSort\":4,\"status\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-15 17:19:40', '20');
+INSERT INTO `sys_oper_log` VALUES ('253', '角色管理', '1', 'com.edu.system.controller.SysRoleController.add()', 'POST', '1', 'admin', null, '/role', '127.0.0.1', '', '{\"admin\":false,\"createBy\":\"admin\",\"deptCheckStrictly\":true,\"deptIds\":[],\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[3046,3047],\"params\":{},\"roleId\":103,\"roleKey\":\"SchoolAudit\",\"roleName\":\"校级审核员\",\"roleSort\":5,\"status\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-15 17:20:06', '5');
+INSERT INTO `sys_oper_log` VALUES ('254', '院级审核', '2', 'com.edu.achievement.controller.EduAuditRecordController.collegeHandle()', 'POST', '1', 'admin', null, '/audit/college/handle', '127.0.0.1', '', '{\"achievementId\":19,\"achievementTitle\":\"26315t\",\"auditLevel\":\"1\",\"auditOpinion\":\"可以\",\"auditResult\":\"1\",\"auditorId\":1,\"auditorName\":\"admin\",\"createTime\":\"2026-03-15 17:21:45\",\"params\":{},\"recordId\":1} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-15 17:21:46', '39');
+INSERT INTO `sys_oper_log` VALUES ('255', '校级审核', '2', 'com.edu.achievement.controller.EduAuditRecordController.schoolHandle()', 'POST', '1', 'admin', null, '/audit/school/handle', '127.0.0.1', '', '{\"achievementId\":19,\"achievementTitle\":\"26315t\",\"auditLevel\":\"2\",\"auditOpinion\":\"不行\",\"auditResult\":\"2\",\"auditorId\":1,\"auditorName\":\"admin\",\"createTime\":\"2026-03-15 17:22:04\",\"params\":{},\"recordId\":2} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-15 17:22:04', '6');
+INSERT INTO `sys_oper_log` VALUES ('256', '教学成果管理', '3', 'com.edu.achievement.controller.EduAchievementController.remove()', 'DELETE', '1', 'admin', null, '/achievement/1', '127.0.0.1', '', '[1] ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-15 19:04:17', '23');
+INSERT INTO `sys_oper_log` VALUES ('257', '角色管理', '2', 'com.edu.system.controller.SysRoleController.edit()', 'PUT', '1', 'admin', null, '/role', '127.0.0.1', '', '{\"admin\":false,\"createTime\":\"2026-03-03 13:14:27\",\"dataScope\":\"1\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[3034,3035,3036,3037,3041,3042,3043,3044],\"params\":{},\"roleId\":100,\"roleKey\":\"teacher\",\"roleName\":\"普通教师\",\"roleSort\":2,\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-15 19:09:35', '8');
+INSERT INTO `sys_oper_log` VALUES ('258', '角色管理', '2', 'com.edu.system.controller.SysRoleController.edit()', 'PUT', '1', 'admin', null, '/role', '127.0.0.1', '', '{\"admin\":false,\"createTime\":\"2026-03-15 17:19:40\",\"dataScope\":\"1\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[3045,3047],\"params\":{},\"roleId\":102,\"roleKey\":\"CollegeAudit\",\"roleName\":\"院级审核员\",\"roleSort\":4,\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-15 19:09:40', '6');
+INSERT INTO `sys_oper_log` VALUES ('259', '角色管理', '2', 'com.edu.system.controller.SysRoleController.edit()', 'PUT', '1', 'admin', null, '/role', '127.0.0.1', '', '{\"admin\":false,\"createTime\":\"2026-03-15 17:20:06\",\"dataScope\":\"1\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[3046,3047],\"params\":{},\"roleId\":103,\"roleKey\":\"SchoolAudit\",\"roleName\":\"校级审核员\",\"roleSort\":5,\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-15 19:09:43', '6');
+INSERT INTO `sys_oper_log` VALUES ('260', '用户管理', '1', 'com.edu.system.controller.SysUserController.add()', 'POST', '1', 'admin', null, '/user', '127.0.0.1', '', '{\"admin\":false,\"createBy\":\"admin\",\"nickName\":\"collegeAudit\",\"params\":{},\"postIds\":[],\"roleIds\":[102],\"status\":\"0\",\"userId\":102,\"userName\":\"collegeAudit\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-15 19:10:14', '80');
+INSERT INTO `sys_oper_log` VALUES ('261', '用户管理', '1', 'com.edu.system.controller.SysUserController.add()', 'POST', '1', 'admin', null, '/user', '127.0.0.1', '', '{\"admin\":false,\"createBy\":\"admin\",\"nickName\":\"schoolAudit\",\"params\":{},\"postIds\":[],\"roleIds\":[103],\"status\":\"0\",\"userId\":103,\"userName\":\"schoolAudit\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-15 19:10:30', '69');
+INSERT INTO `sys_oper_log` VALUES ('262', '菜单管理', '2', 'com.edu.system.controller.SysMenuController.edit()', 'PUT', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"component\":\"achievement/schoolAudit/index\",\"createTime\":\"2026-03-15 17:15:47\",\"icon\":\"form\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":3046,\"menuName\":\"校级审核工作台\",\"menuType\":\"C\",\"orderNum\":2,\"params\":{},\"parentId\":0,\"path\":\"schoolAudit\",\"perms\":\"achievement:audit:college\",\"routeName\":\"schoolAudit\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-15 19:16:30', '4');
+INSERT INTO `sys_oper_log` VALUES ('263', '菜单管理', '1', 'com.edu.system.controller.SysMenuController.add()', 'POST', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"获取详细信息\",\"menuType\":\"F\",\"orderNum\":2,\"params\":{},\"parentId\":3046,\"perms\":\"achievement:audit:query\",\"status\":\"0\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-15 19:17:34', '4');
+INSERT INTO `sys_oper_log` VALUES ('264', '菜单管理', '1', 'com.edu.system.controller.SysMenuController.add()', 'POST', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"审核记录\",\"menuType\":\"F\",\"orderNum\":3,\"params\":{},\"parentId\":3047,\"perms\":\"achievement:audit:recordList\",\"status\":\"0\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-15 19:18:42', '4');
+INSERT INTO `sys_oper_log` VALUES ('265', '菜单管理', '1', 'com.edu.system.controller.SysMenuController.add()', 'POST', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"导出审核记录\",\"menuType\":\"F\",\"orderNum\":4,\"params\":{},\"parentId\":3047,\"perms\":\"achievement:audit:recordList\",\"status\":\"0\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-15 19:19:03', '3');
+INSERT INTO `sys_oper_log` VALUES ('266', '菜单管理', '2', 'com.edu.system.controller.SysMenuController.edit()', 'PUT', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"component\":\"achievement/collegeAudit/index\",\"createTime\":\"2026-03-15 17:15:16\",\"icon\":\"form\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":3045,\"menuName\":\"院级审核工作台\",\"menuType\":\"C\",\"orderNum\":2,\"params\":{},\"parentId\":0,\"path\":\"collegeAudit\",\"perms\":\"achievement:audit:college\",\"routeName\":\"collegeAudit\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-15 19:20:26', '3');
+INSERT INTO `sys_oper_log` VALUES ('267', '菜单管理', '1', 'com.edu.system.controller.SysMenuController.add()', 'POST', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"查询详细\",\"menuType\":\"F\",\"orderNum\":1,\"params\":{},\"parentId\":3045,\"perms\":\"achievement:audit:query\",\"status\":\"0\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-15 19:21:51', '3');
+INSERT INTO `sys_oper_log` VALUES ('268', '菜单管理', '2', 'com.edu.system.controller.SysMenuController.edit()', 'PUT', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"createTime\":\"2026-03-15 19:21:51\",\"icon\":\"#\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":3051,\"menuName\":\"获取详细信息\",\"menuType\":\"F\",\"orderNum\":1,\"params\":{},\"parentId\":3045,\"path\":\"\",\"perms\":\"achievement:audit:query\",\"routeName\":\"\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-15 19:22:02', '4');
+INSERT INTO `sys_oper_log` VALUES ('269', '角色管理', '3', 'com.edu.system.controller.SysRoleController.remove()', 'DELETE', '1', 'admin', null, '/role/2', '127.0.0.1', '', '[2] ', null, '1', '普通角色已分配,不能删除', '2026-03-15 19:23:26', '6');
+INSERT INTO `sys_oper_log` VALUES ('270', '用户管理', '2', 'com.edu.system.controller.SysUserController.edit()', 'PUT', '1', 'admin', null, '/user', '127.0.0.1', '', '{\"admin\":false,\"avatar\":\"\",\"createBy\":\"admin\",\"createTime\":\"2026-03-02 22:42:14\",\"delFlag\":\"0\",\"dept\":{\"ancestors\":\"0,100\",\"children\":[],\"deptId\":105,\"deptName\":\"软件学院\",\"leader\":\"若依\",\"orderNum\":3,\"params\":{},\"parentId\":100,\"status\":\"0\"},\"deptId\":105,\"email\":\"ry@qq.com\",\"loginDate\":\"2026-03-02 22:42:14\",\"loginIp\":\"127.0.0.1\",\"nickName\":\"若依\",\"params\":{},\"phonenumber\":\"15666666666\",\"postIds\":[],\"pwdUpdateDate\":\"2026-03-02 22:42:14\",\"remark\":\"测试员\",\"roleIds\":[],\"roles\":[{\"admin\":false,\"dataScope\":\"2\",\"deptCheckStrictly\":false,\"flag\":false,\"menuCheckStrictly\":false,\"params\":{},\"roleId\":2,\"roleKey\":\"common\",\"roleName\":\"普通角色\",\"roleSort\":2,\"status\":\"0\"}],\"sex\":\"1\",\"status\":\"0\",\"updateBy\":\"admin\",\"userId\":2,\"userName\":\"ry\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-15 19:23:41', '9');
+INSERT INTO `sys_oper_log` VALUES ('271', '用户管理', '3', 'com.edu.system.controller.SysUserController.remove()', 'DELETE', '1', 'admin', null, '/user/2', '127.0.0.1', '', '[2] ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-15 19:23:43', '4');
+INSERT INTO `sys_oper_log` VALUES ('272', '角色管理', '3', 'com.edu.system.controller.SysRoleController.remove()', 'DELETE', '1', 'admin', null, '/role/2', '127.0.0.1', '', '[2] ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-15 19:23:49', '5');
+INSERT INTO `sys_oper_log` VALUES ('273', '角色管理', '2', 'com.edu.system.controller.SysRoleController.edit()', 'PUT', '1', 'admin', null, '/role', '127.0.0.1', '', '{\"admin\":false,\"createTime\":\"2026-03-15 17:19:40\",\"dataScope\":\"1\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[3045,3051,3047,3049,3050],\"params\":{},\"roleId\":102,\"roleKey\":\"CollegeAudit\",\"roleName\":\"院级审核员\",\"roleSort\":4,\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-15 19:23:59', '5');
+INSERT INTO `sys_oper_log` VALUES ('274', '角色管理', '2', 'com.edu.system.controller.SysRoleController.edit()', 'PUT', '1', 'admin', null, '/role', '127.0.0.1', '', '{\"admin\":false,\"createTime\":\"2026-03-15 17:20:06\",\"dataScope\":\"1\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[3046,3048,3047,3049,3050],\"params\":{},\"roleId\":103,\"roleKey\":\"SchoolAudit\",\"roleName\":\"校级审核员\",\"roleSort\":5,\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-15 19:24:10', '5');
+INSERT INTO `sys_oper_log` VALUES ('275', '角色管理', '2', 'com.edu.system.controller.SysRoleController.edit()', 'PUT', '1', 'admin', null, '/role', '127.0.0.1', '', '{\"admin\":false,\"createTime\":\"2026-03-03 20:04:12\",\"dataScope\":\"1\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[1,3028,3029,3030,3031,3032,3033,3047,3049,3050,100,1000,1001,1002,1003,1004,1005,1006,101,1007,1008,1009,1010,1011,102,1012,1013,1014,1015,103,1016,1017,1018,1019,105,1025,1026,1027,1028,1029,107,1035,1036,1037,1038],\"params\":{},\"roleId\":101,\"roleKey\":\"admin1\",\"roleName\":\"管理员\",\"roleSort\":1,\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-15 19:25:00', '6');
+INSERT INTO `sys_oper_log` VALUES ('276', '通知公告', '3', 'com.edu.system.controller.SysNoticeController.remove()', 'DELETE', '1', 'admin', null, '/notice/1', '127.0.0.1', '', '[1] ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-15 19:25:06', '2');
+INSERT INTO `sys_oper_log` VALUES ('277', '通知公告', '3', 'com.edu.system.controller.SysNoticeController.remove()', 'DELETE', '1', 'admin', null, '/notice/2', '127.0.0.1', '', '[2] ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-15 19:25:10', '2');
+INSERT INTO `sys_oper_log` VALUES ('278', '通知公告', '1', 'com.edu.system.controller.SysNoticeController.add()', 'POST', '1', 'admin', null, '/notice', '127.0.0.1', '', '{\"createBy\":\"admin\",\"noticeContent\":\"<p>高校教学成果管理系统</p>\",\"noticeTitle\":\"高校教学成果管理系统\",\"noticeType\":\"1\",\"params\":{},\"status\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-15 19:25:25', '4');
+INSERT INTO `sys_oper_log` VALUES ('279', '用户管理', '2', 'com.edu.system.controller.SysUserController.edit()', 'PUT', '1', 'admin', null, '/user', '127.0.0.1', '', '{\"admin\":false,\"avatar\":\"\",\"createBy\":\"admin\",\"createTime\":\"2026-03-15 19:10:30\",\"delFlag\":\"0\",\"deptId\":103,\"email\":\"\",\"loginDate\":\"2026-03-15 19:10:59\",\"loginIp\":\"127.0.0.1\",\"nickName\":\"schoolAudit\",\"params\":{},\"phonenumber\":\"\",\"postIds\":[],\"roleIds\":[103],\"roles\":[{\"admin\":false,\"dataScope\":\"1\",\"deptCheckStrictly\":false,\"flag\":false,\"menuCheckStrictly\":false,\"params\":{},\"roleId\":103,\"roleKey\":\"SchoolAudit\",\"roleName\":\"校级审核员\",\"roleSort\":5,\"status\":\"0\"}],\"sex\":\"0\",\"status\":\"0\",\"updateBy\":\"admin\",\"userId\":103,\"userName\":\"schoolAudit\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-15 19:29:30', '6');
+INSERT INTO `sys_oper_log` VALUES ('280', '用户管理', '2', 'com.edu.system.controller.SysUserController.edit()', 'PUT', '1', 'admin', null, '/user', '127.0.0.1', '', '{\"admin\":false,\"avatar\":\"\",\"createBy\":\"admin\",\"createTime\":\"2026-03-15 19:10:14\",\"delFlag\":\"0\",\"deptId\":103,\"email\":\"\",\"loginIp\":\"\",\"nickName\":\"collegeAudit\",\"params\":{},\"phonenumber\":\"\",\"postIds\":[],\"roleIds\":[102],\"roles\":[{\"admin\":false,\"dataScope\":\"1\",\"deptCheckStrictly\":false,\"flag\":false,\"menuCheckStrictly\":false,\"params\":{},\"roleId\":102,\"roleKey\":\"CollegeAudit\",\"roleName\":\"院级审核员\",\"roleSort\":4,\"status\":\"0\"}],\"sex\":\"0\",\"status\":\"0\",\"updateBy\":\"admin\",\"userId\":102,\"userName\":\"collegeAudit\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-15 19:29:45', '6');
+INSERT INTO `sys_oper_log` VALUES ('281', '用户管理', '2', 'com.edu.system.controller.SysUserController.edit()', 'PUT', '1', 'admin', null, '/user', '127.0.0.1', '', '{\"admin\":false,\"avatar\":\"\",\"createBy\":\"admin\",\"createTime\":\"2026-03-15 19:10:14\",\"delFlag\":\"0\",\"dept\":{\"ancestors\":\"0,100\",\"children\":[],\"deptId\":103,\"deptName\":\"成果管理院\",\"leader\":\"1\",\"orderNum\":0,\"params\":{},\"parentId\":100,\"status\":\"0\"},\"deptId\":100,\"email\":\"\",\"loginIp\":\"\",\"nickName\":\"collegeAudit\",\"params\":{},\"phonenumber\":\"\",\"postIds\":[],\"roleIds\":[102],\"roles\":[{\"admin\":false,\"dataScope\":\"1\",\"deptCheckStrictly\":false,\"flag\":false,\"menuCheckStrictly\":false,\"params\":{},\"roleId\":102,\"roleKey\":\"CollegeAudit\",\"roleName\":\"院级审核员\",\"roleSort\":4,\"status\":\"0\"}],\"sex\":\"0\",\"status\":\"0\",\"updateBy\":\"admin\",\"userId\":102,\"userName\":\"collegeAudit\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-15 19:29:56', '4');
+INSERT INTO `sys_oper_log` VALUES ('282', '用户管理', '2', 'com.edu.system.controller.SysUserController.edit()', 'PUT', '1', 'admin', null, '/user', '127.0.0.1', '', '{\"admin\":false,\"avatar\":\"\",\"createBy\":\"admin\",\"createTime\":\"2026-03-15 19:10:14\",\"delFlag\":\"0\",\"dept\":{\"ancestors\":\"0\",\"children\":[],\"deptId\":100,\"deptName\":\"郑州轻工业大学\",\"leader\":\"zpz\",\"orderNum\":0,\"params\":{},\"parentId\":0,\"status\":\"0\"},\"deptId\":103,\"email\":\"\",\"loginIp\":\"\",\"nickName\":\"collegeAudit\",\"params\":{},\"phonenumber\":\"\",\"postIds\":[],\"roleIds\":[102],\"roles\":[{\"admin\":false,\"dataScope\":\"1\",\"deptCheckStrictly\":false,\"flag\":false,\"menuCheckStrictly\":false,\"params\":{},\"roleId\":102,\"roleKey\":\"CollegeAudit\",\"roleName\":\"院级审核员\",\"roleSort\":4,\"status\":\"0\"}],\"sex\":\"0\",\"status\":\"0\",\"updateBy\":\"admin\",\"userId\":102,\"userName\":\"collegeAudit\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-15 19:30:03', '4');
+INSERT INTO `sys_oper_log` VALUES ('283', '用户管理', '2', 'com.edu.system.controller.SysUserController.edit()', 'PUT', '1', 'admin', null, '/user', '127.0.0.1', '', '{\"admin\":false,\"avatar\":\"\",\"createBy\":\"admin\",\"createTime\":\"2026-03-15 19:10:30\",\"delFlag\":\"0\",\"dept\":{\"ancestors\":\"0,100\",\"children\":[],\"deptId\":103,\"deptName\":\"成果管理院\",\"leader\":\"1\",\"orderNum\":0,\"params\":{},\"parentId\":100,\"status\":\"0\"},\"deptId\":103,\"email\":\"\",\"loginDate\":\"2026-03-15 19:10:59\",\"loginIp\":\"127.0.0.1\",\"nickName\":\"schoolAudit\",\"params\":{},\"phonenumber\":\"\",\"postIds\":[],\"roleIds\":[103],\"roles\":[{\"admin\":false,\"dataScope\":\"1\",\"deptCheckStrictly\":false,\"flag\":false,\"menuCheckStrictly\":false,\"params\":{},\"roleId\":103,\"roleKey\":\"SchoolAudit\",\"roleName\":\"校级审核员\",\"roleSort\":5,\"status\":\"0\"}],\"sex\":\"0\",\"status\":\"0\",\"updateBy\":\"admin\",\"userId\":103,\"userName\":\"schoolAudit\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-15 19:30:05', '4');
+INSERT INTO `sys_oper_log` VALUES ('284', '用户管理', '2', 'com.edu.system.controller.SysUserController.edit()', 'PUT', '1', 'admin', null, '/user', '127.0.0.1', '', '{\"admin\":false,\"avatar\":\"\",\"createBy\":\"admin\",\"createTime\":\"2026-03-03 20:03:08\",\"delFlag\":\"0\",\"dept\":{\"ancestors\":\"0\",\"children\":[],\"deptId\":100,\"deptName\":\"郑州轻工业大学\",\"leader\":\"zpz\",\"orderNum\":0,\"params\":{},\"parentId\":0,\"status\":\"0\"},\"deptId\":103,\"email\":\"\",\"loginDate\":\"2026-03-03 20:04:58\",\"loginIp\":\"127.0.0.1\",\"nickName\":\"adminN\",\"params\":{},\"phonenumber\":\"\",\"postIds\":[],\"roleIds\":[101],\"roles\":[{\"admin\":false,\"dataScope\":\"1\",\"deptCheckStrictly\":false,\"flag\":false,\"menuCheckStrictly\":false,\"params\":{},\"roleId\":101,\"roleKey\":\"admin1\",\"roleName\":\"管理员\",\"roleSort\":1,\"status\":\"0\"}],\"sex\":\"0\",\"status\":\"0\",\"updateBy\":\"admin\",\"userId\":101,\"userName\":\"zpz\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-15 19:30:09', '4');
+INSERT INTO `sys_oper_log` VALUES ('285', '用户管理', '2', 'com.edu.system.controller.SysUserController.edit()', 'PUT', '1', 'admin', null, '/user', '127.0.0.1', '', '{\"admin\":false,\"avatar\":\"http://127.0.0.1:9000/edu-achievement/2026/03/03/ENDFIELD_SHARE_1772350628_20260303200033A011.png\",\"createBy\":\"admin\",\"createTime\":\"2026-03-03 15:41:22\",\"delFlag\":\"0\",\"dept\":{\"ancestors\":\"0,100\",\"children\":[],\"deptId\":103,\"deptName\":\"成果管理院\",\"leader\":\"1\",\"orderNum\":0,\"params\":{},\"parentId\":100,\"status\":\"0\"},\"deptId\":103,\"email\":\"\",\"loginDate\":\"2026-03-03 19:53:54\",\"loginIp\":\"127.0.0.1\",\"nickName\":\"普通教师\",\"params\":{},\"phonenumber\":\"\",\"postIds\":[],\"roleIds\":[100],\"roles\":[{\"admin\":false,\"dataScope\":\"1\",\"deptCheckStrictly\":false,\"flag\":false,\"menuCheckStrictly\":false,\"params\":{},\"roleId\":100,\"roleKey\":\"teacher\",\"roleName\":\"普通教师\",\"roleSort\":2,\"status\":\"0\"}],\"sex\":\"0\",\"status\":\"0\",\"updateBy\":\"admin\",\"userId\":100,\"userName\":\"teacher\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-15 19:30:13', '5');
+INSERT INTO `sys_oper_log` VALUES ('286', '用户管理', '2', 'com.edu.system.controller.SysUserController.edit()', 'PUT', '1', 'admin', null, '/user', '127.0.0.1', '', '{\"admin\":false,\"avatar\":\"http://127.0.0.1:9000/edu-achievement/2026/03/03/ENDFIELD_SHARE_1772350628_20260303200033A011.png\",\"createBy\":\"admin\",\"createTime\":\"2026-03-03 15:41:22\",\"delFlag\":\"0\",\"dept\":{\"ancestors\":\"0,100\",\"children\":[],\"deptId\":103,\"deptName\":\"成果管理院\",\"leader\":\"1\",\"orderNum\":0,\"params\":{},\"parentId\":100,\"status\":\"0\"},\"deptId\":103,\"email\":\"\",\"loginDate\":\"2026-03-03 19:53:54\",\"loginIp\":\"127.0.0.1\",\"nickName\":\"普通教师\",\"params\":{},\"phonenumber\":\"\",\"postIds\":[],\"roleIds\":[100,101],\"roles\":[{\"admin\":false,\"dataScope\":\"1\",\"deptCheckStrictly\":false,\"flag\":false,\"menuCheckStrictly\":false,\"params\":{},\"roleId\":100,\"roleKey\":\"teacher\",\"roleName\":\"普通教师\",\"roleSort\":2,\"status\":\"0\"}],\"sex\":\"0\",\"status\":\"0\",\"updateBy\":\"admin\",\"userId\":100,\"userName\":\"teacher\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-15 19:30:23', '6');
+INSERT INTO `sys_oper_log` VALUES ('287', '用户管理', '2', 'com.edu.system.controller.SysUserController.edit()', 'PUT', '1', 'admin', null, '/user', '127.0.0.1', '', '{\"admin\":false,\"avatar\":\"http://127.0.0.1:9000/edu-achievement/2026/03/03/ENDFIELD_SHARE_1772350628_20260303200033A011.png\",\"createBy\":\"admin\",\"createTime\":\"2026-03-03 15:41:22\",\"delFlag\":\"0\",\"dept\":{\"ancestors\":\"0,100\",\"children\":[],\"deptId\":103,\"deptName\":\"成果管理院\",\"leader\":\"1\",\"orderNum\":0,\"params\":{},\"parentId\":100,\"status\":\"0\"},\"deptId\":103,\"email\":\"\",\"loginDate\":\"2026-03-03 19:53:54\",\"loginIp\":\"127.0.0.1\",\"nickName\":\"普通教师\",\"params\":{},\"phonenumber\":\"\",\"postIds\":[],\"roleIds\":[100],\"roles\":[{\"admin\":false,\"dataScope\":\"1\",\"deptCheckStrictly\":false,\"flag\":false,\"menuCheckStrictly\":false,\"params\":{},\"roleId\":100,\"roleKey\":\"teacher\",\"roleName\":\"普通教师\",\"roleSort\":2,\"status\":\"0\"},{\"admin\":false,\"dataScope\":\"1\",\"deptCheckStrictly\":false,\"flag\":false,\"menuCheckStrictly\":false,\"params\":{},\"roleId\":101,\"roleKey\":\"admin1\",\"roleName\":\"管理员\",\"roleSort\":1,\"status\":\"0\"}],\"sex\":\"0\",\"status\":\"0\",\"updateBy\":\"admin\",\"userId\":100,\"userName\":\"teacher\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-15 19:30:38', '4');
+INSERT INTO `sys_oper_log` VALUES ('288', '用户管理', '2', 'com.edu.system.controller.SysUserController.edit()', 'PUT', '1', 'admin', null, '/user', '127.0.0.1', '', '{\"admin\":false,\"avatar\":\"\",\"createBy\":\"admin\",\"createTime\":\"2026-03-03 20:03:08\",\"delFlag\":\"0\",\"dept\":{\"ancestors\":\"0,100\",\"children\":[],\"deptId\":103,\"deptName\":\"成果管理院\",\"leader\":\"1\",\"orderNum\":0,\"params\":{},\"parentId\":100,\"status\":\"0\"},\"deptId\":103,\"email\":\"\",\"loginDate\":\"2026-03-03 20:04:58\",\"loginIp\":\"127.0.0.1\",\"nickName\":\"adminN\",\"params\":{},\"phonenumber\":\"\",\"postIds\":[],\"roleIds\":[101],\"roles\":[{\"admin\":false,\"dataScope\":\"1\",\"deptCheckStrictly\":false,\"flag\":false,\"menuCheckStrictly\":false,\"params\":{},\"roleId\":101,\"roleKey\":\"admin1\",\"roleName\":\"管理员\",\"roleSort\":1,\"status\":\"0\"}],\"sex\":\"0\",\"status\":\"0\",\"updateBy\":\"admin\",\"userId\":101,\"userName\":\"zpz\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-15 19:30:41', '4');
+INSERT INTO `sys_oper_log` VALUES ('289', '我的成果-新增', '1', 'com.edu.achievement.controller.EduAchievementController.teacherAdd()', 'POST', '1', 'teacher', null, '/achievement/teacherAddAchievement', '127.0.0.1', '', '{\"achievementId\":20,\"category\":\"2\",\"collegeId\":103,\"content\":\"wda\",\"createBy\":\"teacher\",\"createTime\":\"2026-03-15 19:32:13\",\"params\":{},\"status\":\"1\",\"teacherId\":100,\"title\":\"3151932\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-15 19:32:14', '32');
+INSERT INTO `sys_oper_log` VALUES ('290', '菜单管理', '2', 'com.edu.system.controller.SysMenuController.edit()', 'PUT', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"component\":\"achievement/schoolAudit/index\",\"createTime\":\"2026-03-15 17:15:47\",\"icon\":\"form\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":3046,\"menuName\":\"校级审核工作台\",\"menuType\":\"C\",\"orderNum\":2,\"params\":{},\"parentId\":0,\"path\":\"schoolAudit\",\"perms\":\"achievement:audit:school\",\"routeName\":\"schoolAudit\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-15 19:35:17', '4');
+INSERT INTO `sys_oper_log` VALUES ('291', '菜单管理', '2', 'com.edu.system.controller.SysMenuController.edit()', 'PUT', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"createTime\":\"2026-03-15 19:19:03\",\"icon\":\"#\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":3050,\"menuName\":\"导出审核记录\",\"menuType\":\"F\",\"orderNum\":4,\"params\":{},\"parentId\":3047,\"path\":\"\",\"perms\":\"achievement:audit:export\",\"routeName\":\"\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-15 19:36:16', '3');
+INSERT INTO `sys_oper_log` VALUES ('292', '菜单管理', '1', 'com.edu.system.controller.SysMenuController.add()', 'POST', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"部门查询\",\"menuType\":\"F\",\"orderNum\":10,\"params\":{},\"parentId\":3037,\"path\":\"system:dept:list\",\"perms\":\"system:dept:list\",\"status\":\"0\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-15 19:42:56', '3');
+INSERT INTO `sys_oper_log` VALUES ('293', '菜单管理', '1', 'com.edu.system.controller.SysMenuController.add()', 'POST', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"部门查询\",\"menuType\":\"F\",\"orderNum\":10,\"params\":{},\"parentId\":3045,\"perms\":\"system:dept:list\",\"status\":\"0\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-15 19:43:16', '4');
+INSERT INTO `sys_oper_log` VALUES ('294', '菜单管理', '1', 'com.edu.system.controller.SysMenuController.add()', 'POST', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"部门查询\",\"menuType\":\"F\",\"orderNum\":10,\"params\":{},\"parentId\":3046,\"perms\":\"system:dept:list\",\"status\":\"0\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-15 19:43:30', '4');
+INSERT INTO `sys_oper_log` VALUES ('295', '角色管理', '2', 'com.edu.system.controller.SysRoleController.edit()', 'PUT', '1', 'admin', null, '/role', '127.0.0.1', '', '{\"admin\":false,\"createTime\":\"2026-03-15 17:20:06\",\"dataScope\":\"1\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[3046,3048,3054,3047,3049,3050],\"params\":{},\"roleId\":103,\"roleKey\":\"SchoolAudit\",\"roleName\":\"校级审核员\",\"roleSort\":5,\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-15 19:44:14', '5');
+INSERT INTO `sys_oper_log` VALUES ('296', '菜单管理', '1', 'com.edu.system.controller.SysMenuController.add()', 'POST', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"部门查询\",\"menuType\":\"F\",\"orderNum\":10,\"params\":{},\"parentId\":3047,\"perms\":\"system:dept:list\",\"status\":\"0\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-15 19:46:14', '3');
+INSERT INTO `sys_oper_log` VALUES ('297', '院级审核', '2', 'com.edu.achievement.controller.EduAuditRecordController.collegeHandle()', 'POST', '1', 'collegeAudit', null, '/audit/college/handle', '127.0.0.1', '', '{\"achievementId\":20,\"achievementTitle\":\"3151932\",\"auditLevel\":\"1\",\"auditOpinion\":\"123\",\"auditResult\":\"1\",\"auditorId\":102,\"auditorName\":\"collegeAudit\",\"createTime\":\"2026-03-15 19:49:10\",\"params\":{},\"recordId\":3} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-15 19:49:10', '43');
+INSERT INTO `sys_oper_log` VALUES ('298', '角色管理', '2', 'com.edu.system.controller.SysRoleController.edit()', 'PUT', '1', 'admin', null, '/role', '127.0.0.1', '', '{\"admin\":false,\"createTime\":\"2026-03-15 17:19:40\",\"dataScope\":\"1\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[3045,3051,3053,3047,3049,3050,3055],\"params\":{},\"roleId\":102,\"roleKey\":\"CollegeAudit\",\"roleName\":\"院级审核员\",\"roleSort\":4,\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-15 19:50:57', '5');
+INSERT INTO `sys_oper_log` VALUES ('299', '角色管理', '2', 'com.edu.system.controller.SysRoleController.edit()', 'PUT', '1', 'admin', null, '/role', '127.0.0.1', '', '{\"admin\":false,\"createTime\":\"2026-03-15 17:20:06\",\"dataScope\":\"1\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[3046,3048,3054,3047,3049,3050,3055],\"params\":{},\"roleId\":103,\"roleKey\":\"SchoolAudit\",\"roleName\":\"校级审核员\",\"roleSort\":5,\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-15 19:51:06', '4');
+INSERT INTO `sys_oper_log` VALUES ('300', '菜单管理', '2', 'com.edu.system.controller.SysMenuController.edit()', 'PUT', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"component\":\"system/notice/index\",\"createTime\":\"2026-03-02 22:42:14\",\"icon\":\"message\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":107,\"menuName\":\"通知公告\",\"menuType\":\"C\",\"orderNum\":8,\"params\":{},\"parentId\":0,\"path\":\"notice\",\"perms\":\"system:notice:list\",\"query\":\"\",\"routeName\":\"\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-16 14:58:57', '14');
+INSERT INTO `sys_oper_log` VALUES ('301', '菜单管理', '2', 'com.edu.system.controller.SysMenuController.edit()', 'PUT', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"component\":\"system/notice/index\",\"createTime\":\"2026-03-02 22:42:14\",\"icon\":\"message\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":107,\"menuName\":\"通知公告\",\"menuType\":\"C\",\"orderNum\":8,\"params\":{},\"parentId\":1,\"path\":\"notice\",\"perms\":\"system:notice:list\",\"query\":\"\",\"routeName\":\"\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-16 15:01:13', '4');
+INSERT INTO `sys_oper_log` VALUES ('302', '通知公告', '2', 'com.edu.system.controller.SysNoticeController.edit()', 'PUT', '1', 'admin', null, '/notice', '127.0.0.1', '', '{\"createBy\":\"100\",\"createTime\":\"2026-03-15 19:49:10\",\"noticeContent\":\"您申报的成果「3151932」通过院级审核，已进入校级审核。\\n审核意见：123\",\"noticeId\":11,\"noticeTitle\":\"您的教学成果审核结果通知\",\"noticeType\":\"1\",\"params\":{},\"status\":\"1\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-16 15:10:05', '9');
+INSERT INTO `sys_oper_log` VALUES ('303', '通知公告', '2', 'com.edu.system.controller.SysNoticeController.edit()', 'PUT', '1', 'admin', null, '/notice', '127.0.0.1', '', '{\"createBy\":\"100\",\"createTime\":\"2026-03-15 19:49:10\",\"noticeContent\":\"您申报的成果「3151932」通过院级审核，已进入校级审核。\\n审核意见：123\",\"noticeId\":11,\"noticeTitle\":\"您的教学成果审核结果通知\",\"noticeType\":\"1\",\"params\":{},\"status\":\"1\",\"updateBy\":\"admin\",\"updateTime\":\"2026-03-16 15:10:05\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-16 15:10:07', '4');
+INSERT INTO `sys_oper_log` VALUES ('304', '菜单管理', '1', 'com.edu.system.controller.SysMenuController.add()', 'POST', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"icon\":\"user\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"个人中心\",\"menuType\":\"C\",\"orderNum\":10,\"params\":{},\"parentId\":0,\"path\":\"user\",\"status\":\"0\",\"visible\":\"0\"} ', '{\"msg\":\"新增菜单\'个人中心\'失败，路由名称或地址已存在\",\"code\":500}', '0', null, '2026-03-16 15:12:55', '3');
+INSERT INTO `sys_oper_log` VALUES ('305', '通知公告', '2', 'com.edu.system.controller.SysNoticeController.edit()', 'PUT', '1', 'admin', null, '/notice', '127.0.0.1', '', '{\"createBy\":\"100\",\"createTime\":\"2026-03-15 19:49:10\",\"noticeContent\":\"您申报的成果「3151932」通过院级审核，已进入校级审核。\\n审核意见：123\",\"noticeId\":11,\"noticeTitle\":\"您的教学成果审核结果通知\",\"noticeType\":\"1\",\"params\":{},\"status\":\"1\",\"updateBy\":\"admin\",\"updateTime\":\"2026-03-16 15:10:07\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-16 15:19:45', '4');
+INSERT INTO `sys_oper_log` VALUES ('306', '菜单管理', '1', 'com.edu.system.controller.SysMenuController.add()', 'POST', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"createBy\":\"admin\",\"icon\":\"404\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"通用权限\",\"menuType\":\"C\",\"orderNum\":10,\"params\":{},\"parentId\":0,\"path\":\"power\",\"status\":\"0\",\"visible\":\"1\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-16 15:21:42', '8');
+INSERT INTO `sys_oper_log` VALUES ('307', '菜单管理', '1', 'com.edu.system.controller.SysMenuController.add()', 'POST', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"读取消息\",\"menuType\":\"F\",\"orderNum\":1,\"params\":{},\"parentId\":3056,\"perms\":\"system:notice:list\",\"status\":\"0\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-16 15:25:55', '5');
+INSERT INTO `sys_oper_log` VALUES ('308', '角色管理', '2', 'com.edu.system.controller.SysRoleController.edit()', 'PUT', '1', 'admin', null, '/role', '127.0.0.1', '', '{\"admin\":false,\"createTime\":\"2026-03-03 20:04:12\",\"dataScope\":\"1\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[1,3028,3029,3030,3031,3032,3033,3047,3049,3050,3055,100,1000,1001,1002,1003,1004,1005,1006,101,1007,1008,1009,1010,1011,102,1012,1013,1014,1015,103,1016,1017,1018,1019,104,1020,1021,1022,1023,1024,105,1025,1026,1027,1028,1029,3056,3057],\"params\":{},\"roleId\":101,\"roleKey\":\"admin1\",\"roleName\":\"管理员\",\"roleSort\":1,\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-16 15:27:09', '165');
+INSERT INTO `sys_oper_log` VALUES ('309', '角色管理', '2', 'com.edu.system.controller.SysRoleController.edit()', 'PUT', '1', 'admin', null, '/role', '127.0.0.1', '', '{\"admin\":false,\"createTime\":\"2026-03-03 13:14:27\",\"dataScope\":\"1\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[3037,3034,3035,3036,3041,3042,3043,3044,3056,3057],\"params\":{},\"roleId\":100,\"roleKey\":\"teacher\",\"roleName\":\"普通教师\",\"roleSort\":2,\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-16 15:27:17', '7');
+INSERT INTO `sys_oper_log` VALUES ('310', '角色管理', '2', 'com.edu.system.controller.SysRoleController.edit()', 'PUT', '1', 'admin', null, '/role', '127.0.0.1', '', '{\"admin\":false,\"createTime\":\"2026-03-15 17:19:40\",\"dataScope\":\"1\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[3045,3051,3053,3047,3049,3050,3055,3056,3057],\"params\":{},\"roleId\":102,\"roleKey\":\"CollegeAudit\",\"roleName\":\"院级审核员\",\"roleSort\":4,\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-16 15:27:20', '8');
+INSERT INTO `sys_oper_log` VALUES ('311', '角色管理', '2', 'com.edu.system.controller.SysRoleController.edit()', 'PUT', '1', 'admin', null, '/role', '127.0.0.1', '', '{\"admin\":false,\"createTime\":\"2026-03-15 17:20:06\",\"dataScope\":\"1\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[3046,3048,3054,3047,3049,3050,3055,3056,3057],\"params\":{},\"roleId\":103,\"roleKey\":\"SchoolAudit\",\"roleName\":\"校级审核员\",\"roleSort\":5,\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-16 15:27:24', '6');
+INSERT INTO `sys_oper_log` VALUES ('312', '我的成果-新增', '1', 'com.edu.achievement.controller.EduAchievementController.teacherAdd()', 'POST', '1', 'teacher', null, '/achievement/teacherAddAchievement', '127.0.0.1', '', '{\"achievementId\":21,\"category\":\"4\",\"collegeId\":103,\"content\":\"123\",\"createBy\":\"teacher\",\"createTime\":\"2026-03-16 15:28:23\",\"params\":{},\"status\":\"1\",\"teacherId\":100,\"title\":\"31615\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-16 15:28:23', '44');
+INSERT INTO `sys_oper_log` VALUES ('313', '校级审核', '2', 'com.edu.achievement.controller.EduAuditRecordController.schoolHandle()', 'POST', '1', 'schoolAudit', null, '/audit/school/handle', '127.0.0.1', '', '{\"achievementId\":5,\"achievementTitle\":\"竞赛奖\",\"auditLevel\":\"2\",\"auditOpinion\":\"123\",\"auditResult\":\"1\",\"auditorId\":103,\"auditorName\":\"schoolAudit\",\"createTime\":\"2026-03-16 15:29:43\",\"params\":{},\"recordId\":4} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-16 15:29:43', '12');
+INSERT INTO `sys_oper_log` VALUES ('314', '校级审核', '2', 'com.edu.achievement.controller.EduAuditRecordController.schoolHandle()', 'POST', '1', 'schoolAudit', null, '/audit/school/handle', '127.0.0.1', '', '{\"achievementId\":20,\"achievementTitle\":\"3151932\",\"auditLevel\":\"2\",\"auditOpinion\":\"\",\"auditResult\":\"2\",\"auditorId\":103,\"auditorName\":\"schoolAudit\",\"createTime\":\"2026-03-16 15:29:49\",\"params\":{},\"recordId\":5} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-16 15:29:49', '8');
+INSERT INTO `sys_oper_log` VALUES ('315', '院级审核', '2', 'com.edu.achievement.controller.EduAuditRecordController.collegeHandle()', 'POST', '1', 'collegeAudit', null, '/audit/college/handle', '127.0.0.1', '', '{\"achievementId\":21,\"achievementTitle\":\"31615\",\"auditLevel\":\"1\",\"auditOpinion\":\"\",\"auditResult\":\"1\",\"auditorId\":102,\"auditorName\":\"collegeAudit\",\"createTime\":\"2026-03-16 15:30:27\",\"params\":{},\"recordId\":6} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-16 15:30:27', '6');
+INSERT INTO `sys_oper_log` VALUES ('316', '用户管理', '2', 'com.edu.system.controller.SysUserController.edit()', 'PUT', '1', 'admin', null, '/user', '127.0.0.1', '', '{\"admin\":false,\"avatar\":\"\",\"createBy\":\"admin\",\"createTime\":\"2026-03-15 19:10:14\",\"delFlag\":\"0\",\"dept\":{\"ancestors\":\"0,100\",\"children\":[],\"deptId\":103,\"deptName\":\"成果管理院\",\"leader\":\"1\",\"orderNum\":0,\"params\":{},\"parentId\":100,\"status\":\"0\"},\"deptId\":103,\"email\":\"\",\"loginDate\":\"2026-03-16 15:30:17\",\"loginIp\":\"127.0.0.1\",\"nickName\":\"学院审核\",\"params\":{},\"phonenumber\":\"\",\"postIds\":[],\"roleIds\":[102],\"roles\":[{\"admin\":false,\"dataScope\":\"1\",\"deptCheckStrictly\":false,\"flag\":false,\"menuCheckStrictly\":false,\"params\":{},\"roleId\":102,\"roleKey\":\"CollegeAudit\",\"roleName\":\"院级审核员\",\"roleSort\":4,\"status\":\"0\"}],\"sex\":\"0\",\"status\":\"0\",\"updateBy\":\"admin\",\"userId\":102,\"userName\":\"collegeAudit\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-16 15:32:01', '12');
+INSERT INTO `sys_oper_log` VALUES ('317', '用户管理', '2', 'com.edu.system.controller.SysUserController.edit()', 'PUT', '1', 'admin', null, '/user', '127.0.0.1', '', '{\"admin\":false,\"avatar\":\"\",\"createBy\":\"admin\",\"createTime\":\"2026-03-15 19:10:30\",\"delFlag\":\"0\",\"dept\":{\"ancestors\":\"0,100\",\"children\":[],\"deptId\":103,\"deptName\":\"成果管理院\",\"leader\":\"1\",\"orderNum\":0,\"params\":{},\"parentId\":100,\"status\":\"0\"},\"deptId\":103,\"email\":\"\",\"loginDate\":\"2026-03-16 15:29:01\",\"loginIp\":\"127.0.0.1\",\"nickName\":\"学校审核\",\"params\":{},\"phonenumber\":\"\",\"postIds\":[],\"roleIds\":[103],\"roles\":[{\"admin\":false,\"dataScope\":\"1\",\"deptCheckStrictly\":false,\"flag\":false,\"menuCheckStrictly\":false,\"params\":{},\"roleId\":103,\"roleKey\":\"SchoolAudit\",\"roleName\":\"校级审核员\",\"roleSort\":5,\"status\":\"0\"}],\"sex\":\"0\",\"status\":\"0\",\"updateBy\":\"admin\",\"userId\":103,\"userName\":\"schoolAudit\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-16 15:32:08', '6');
+INSERT INTO `sys_oper_log` VALUES ('318', '用户管理', '2', 'com.edu.system.controller.SysUserController.edit()', 'PUT', '1', 'admin', null, '/user', '127.0.0.1', '', '{\"admin\":false,\"avatar\":\"\",\"createBy\":\"admin\",\"createTime\":\"2026-03-03 20:03:08\",\"delFlag\":\"0\",\"dept\":{\"ancestors\":\"0,100\",\"children\":[],\"deptId\":103,\"deptName\":\"成果管理院\",\"leader\":\"1\",\"orderNum\":0,\"params\":{},\"parentId\":100,\"status\":\"0\"},\"deptId\":103,\"email\":\"\",\"loginDate\":\"2026-03-03 20:04:58\",\"loginIp\":\"127.0.0.1\",\"nickName\":\"管理员\",\"params\":{},\"phonenumber\":\"\",\"postIds\":[],\"roleIds\":[101],\"roles\":[{\"admin\":false,\"dataScope\":\"1\",\"deptCheckStrictly\":false,\"flag\":false,\"menuCheckStrictly\":false,\"params\":{},\"roleId\":101,\"roleKey\":\"admin1\",\"roleName\":\"管理员\",\"roleSort\":1,\"status\":\"0\"}],\"sex\":\"0\",\"status\":\"0\",\"updateBy\":\"admin\",\"userId\":101,\"userName\":\"zpz\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-16 15:32:17', '4');
+INSERT INTO `sys_oper_log` VALUES ('319', '菜单管理', '1', 'com.edu.system.controller.SysMenuController.add()', 'POST', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"显示审核进度\",\"menuType\":\"F\",\"orderNum\":2,\"params\":{},\"parentId\":3056,\"perms\":\"achievement:audit:recordList\",\"status\":\"0\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-16 15:36:30', '6');
+INSERT INTO `sys_oper_log` VALUES ('320', '菜单管理', '1', 'com.edu.system.controller.SysMenuController.add()', 'POST', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"信息更新\",\"menuType\":\"F\",\"orderNum\":3,\"params\":{},\"parentId\":3056,\"status\":\"0\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-16 15:46:39', '4');
+INSERT INTO `sys_oper_log` VALUES ('321', '菜单管理', '2', 'com.edu.system.controller.SysMenuController.edit()', 'PUT', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"createTime\":\"2026-03-16 15:46:39\",\"icon\":\"#\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":3059,\"menuName\":\"信息更新\",\"menuType\":\"F\",\"orderNum\":3,\"params\":{},\"parentId\":3056,\"path\":\"\",\"perms\":\"system:notice:edit\",\"routeName\":\"\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-16 15:46:51', '4');
+INSERT INTO `sys_oper_log` VALUES ('322', '菜单管理', '1', 'com.edu.system.controller.SysMenuController.add()', 'POST', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"查询字典\",\"menuType\":\"F\",\"orderNum\":4,\"params\":{},\"parentId\":3056,\"perms\":\"system:dict:list\",\"status\":\"0\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-16 15:47:18', '4');
+INSERT INTO `sys_oper_log` VALUES ('323', '菜单管理', '1', 'com.edu.system.controller.SysMenuController.add()', 'POST', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"导出审核记录\",\"menuType\":\"F\",\"orderNum\":5,\"params\":{},\"parentId\":3056,\"perms\":\"achievement:audit:export\",\"status\":\"0\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-16 15:48:15', '4');
+INSERT INTO `sys_oper_log` VALUES ('324', '菜单管理', '3', 'com.edu.system.controller.SysMenuController.remove()', 'DELETE', '1', 'admin', null, '/menu/3052', '127.0.0.1', '', '3052 ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-16 15:48:39', '5');
+INSERT INTO `sys_oper_log` VALUES ('325', '菜单管理', '3', 'com.edu.system.controller.SysMenuController.remove()', 'DELETE', '1', 'admin', null, '/menu/3036', '127.0.0.1', '', '3036 ', '{\"msg\":\"菜单已分配,不允许删除\",\"code\":601}', '0', null, '2026-03-16 15:48:46', '2');
+INSERT INTO `sys_oper_log` VALUES ('326', '角色管理', '2', 'com.edu.system.controller.SysRoleController.edit()', 'PUT', '1', 'admin', null, '/role', '127.0.0.1', '', '{\"admin\":false,\"createTime\":\"2026-03-03 20:04:12\",\"dataScope\":\"1\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[1,3028,3029,3030,3031,3032,3033,3047,3049,3050,3055,100,1000,1001,1002,1003,1004,1005,1006,101,1007,1008,1009,1010,1011,102,1012,1013,1014,1015,103,1016,1017,1018,1019,104,1020,1021,1022,1023,1024,105,1025,1026,1027,1028,1029,3056,3057,3058,3059,3060,3061],\"params\":{},\"roleId\":101,\"roleKey\":\"admin1\",\"roleName\":\"管理员\",\"roleSort\":1,\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-16 15:49:03', '7');
+INSERT INTO `sys_oper_log` VALUES ('327', '角色管理', '2', 'com.edu.system.controller.SysRoleController.edit()', 'PUT', '1', 'admin', null, '/role', '127.0.0.1', '', '{\"admin\":false,\"createTime\":\"2026-03-03 13:14:27\",\"dataScope\":\"1\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[3034,3035,3037,3041,3042,3043,3044,3056,3057,3058,3059,3060,3061],\"params\":{},\"roleId\":100,\"roleKey\":\"teacher\",\"roleName\":\"普通教师\",\"roleSort\":2,\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-16 15:49:15', '5');
+INSERT INTO `sys_oper_log` VALUES ('328', '角色管理', '2', 'com.edu.system.controller.SysRoleController.edit()', 'PUT', '1', 'admin', null, '/role', '127.0.0.1', '', '{\"admin\":false,\"createTime\":\"2026-03-15 17:19:40\",\"dataScope\":\"1\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[3045,3051,3047,3049,3050,3055,3056,3057,3058,3059,3060,3061],\"params\":{},\"roleId\":102,\"roleKey\":\"CollegeAudit\",\"roleName\":\"院级审核员\",\"roleSort\":4,\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-16 15:49:33', '6');
+INSERT INTO `sys_oper_log` VALUES ('329', '角色管理', '2', 'com.edu.system.controller.SysRoleController.edit()', 'PUT', '1', 'admin', null, '/role', '127.0.0.1', '', '{\"admin\":false,\"createTime\":\"2026-03-15 17:20:06\",\"dataScope\":\"1\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[3046,3048,3047,3049,3050,3055,3056,3057,3058,3059,3060,3061],\"params\":{},\"roleId\":103,\"roleKey\":\"SchoolAudit\",\"roleName\":\"校级审核员\",\"roleSort\":5,\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-16 15:49:45', '5');
+INSERT INTO `sys_oper_log` VALUES ('330', '菜单管理', '3', 'com.edu.system.controller.SysMenuController.remove()', 'DELETE', '1', 'admin', null, '/menu/3036', '127.0.0.1', '', '3036 ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-16 15:49:54', '3');
+INSERT INTO `sys_oper_log` VALUES ('331', '菜单管理', '3', 'com.edu.system.controller.SysMenuController.remove()', 'DELETE', '1', 'admin', null, '/menu/3053', '127.0.0.1', '', '3053 ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-16 15:50:05', '3');
+INSERT INTO `sys_oper_log` VALUES ('332', '菜单管理', '3', 'com.edu.system.controller.SysMenuController.remove()', 'DELETE', '1', 'admin', null, '/menu/3054', '127.0.0.1', '', '3054 ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-16 15:50:10', '3');
+INSERT INTO `sys_oper_log` VALUES ('333', '菜单管理', '3', 'com.edu.system.controller.SysMenuController.remove()', 'DELETE', '1', 'admin', null, '/menu/3055', '127.0.0.1', '', '3055 ', '{\"msg\":\"菜单已分配,不允许删除\",\"code\":601}', '0', null, '2026-03-16 15:50:16', '2');
+INSERT INTO `sys_oper_log` VALUES ('334', '角色管理', '2', 'com.edu.system.controller.SysRoleController.edit()', 'PUT', '1', 'admin', null, '/role', '127.0.0.1', '', '{\"admin\":false,\"createTime\":\"2026-03-15 17:19:40\",\"dataScope\":\"1\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[3047,3045,3051,3049,3050,3056,3057,3058,3059,3060,3061],\"params\":{},\"roleId\":102,\"roleKey\":\"CollegeAudit\",\"roleName\":\"院级审核员\",\"roleSort\":4,\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-16 15:50:29', '5');
+INSERT INTO `sys_oper_log` VALUES ('335', '角色管理', '2', 'com.edu.system.controller.SysRoleController.edit()', 'PUT', '1', 'admin', null, '/role', '127.0.0.1', '', '{\"admin\":false,\"createTime\":\"2026-03-15 17:20:06\",\"dataScope\":\"1\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[3047,3046,3048,3049,3050,3056,3057,3058,3059,3060,3061],\"params\":{},\"roleId\":103,\"roleKey\":\"SchoolAudit\",\"roleName\":\"校级审核员\",\"roleSort\":5,\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-16 15:50:34', '25');
+INSERT INTO `sys_oper_log` VALUES ('336', '角色管理', '2', 'com.edu.system.controller.SysRoleController.edit()', 'PUT', '1', 'admin', null, '/role', '127.0.0.1', '', '{\"admin\":false,\"createTime\":\"2026-03-03 20:04:12\",\"dataScope\":\"1\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[3047,1,3028,3029,3030,3031,3032,3033,3049,3050,100,1000,1001,1002,1003,1004,1005,1006,101,1007,1008,1009,1010,1011,102,1012,1013,1014,1015,103,1016,1017,1018,1019,104,1020,1021,1022,1023,1024,105,1025,1026,1027,1028,1029,3056,3057,3058,3059,3060,3061],\"params\":{},\"roleId\":101,\"roleKey\":\"admin1\",\"roleName\":\"管理员\",\"roleSort\":1,\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-16 15:50:38', '24');
+INSERT INTO `sys_oper_log` VALUES ('337', '菜单管理', '3', 'com.edu.system.controller.SysMenuController.remove()', 'DELETE', '1', 'admin', null, '/menu/3055', '127.0.0.1', '', '3055 ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-16 15:50:48', '2');
+INSERT INTO `sys_oper_log` VALUES ('338', '菜单管理', '1', 'com.edu.system.controller.SysMenuController.add()', 'POST', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"部门查询\",\"menuType\":\"F\",\"orderNum\":4,\"params\":{},\"parentId\":3056,\"perms\":\"system:dict:dept\",\"status\":\"0\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-16 15:51:13', '24');
+INSERT INTO `sys_oper_log` VALUES ('339', '通知公告', '2', 'com.edu.system.controller.SysNoticeController.edit()', 'PUT', '1', 'admin', null, '/notice', '127.0.0.1', '', '{\"createBy\":\"100\",\"createTime\":\"2026-03-16 15:30:27\",\"noticeContent\":\"您申报的成果「31615」通过院级审核，已进入校级审核。\",\"noticeId\":14,\"noticeTitle\":\"您的教学成果审核结果通知\",\"noticeType\":\"1\",\"params\":{},\"status\":\"1\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-16 15:51:32', '2');
+INSERT INTO `sys_oper_log` VALUES ('340', '通知公告', '2', 'com.edu.system.controller.SysNoticeController.edit()', 'PUT', '1', 'admin', null, '/notice', '127.0.0.1', '', '{\"createBy\":\"100\",\"createTime\":\"2026-03-16 15:29:49\",\"noticeContent\":\"您申报的成果「3151932」校级审核未通过。\",\"noticeId\":13,\"noticeTitle\":\"您的教学成果审核结果通知\",\"noticeType\":\"1\",\"params\":{},\"status\":\"1\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-16 15:51:32', '1');
+INSERT INTO `sys_oper_log` VALUES ('341', '通知公告', '2', 'com.edu.system.controller.SysNoticeController.edit()', 'PUT', '1', 'admin', null, '/notice', '127.0.0.1', '', '{\"createBy\":\"100\",\"createTime\":\"2026-03-16 15:29:43\",\"noticeContent\":\"您申报的成果「竞赛奖」恭喜！您的成果已通过校级审核。\\n审核意见：123\",\"noticeId\":12,\"noticeTitle\":\"您的教学成果审核结果通知\",\"noticeType\":\"1\",\"params\":{},\"status\":\"1\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-16 15:51:33', '2');
+INSERT INTO `sys_oper_log` VALUES ('342', '通知公告', '2', 'com.edu.system.controller.SysNoticeController.edit()', 'PUT', '1', 'admin', null, '/notice', '127.0.0.1', '', '{\"createBy\":\"100\",\"createTime\":\"2026-03-15 19:49:10\",\"noticeContent\":\"您申报的成果「3151932」通过院级审核，已进入校级审核。\\n审核意见：123\",\"noticeId\":11,\"noticeTitle\":\"您的教学成果审核结果通知\",\"noticeType\":\"1\",\"params\":{},\"status\":\"1\",\"updateBy\":\"admin\",\"updateTime\":\"2026-03-16 15:19:45\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-16 15:51:34', '1');
+INSERT INTO `sys_oper_log` VALUES ('343', '菜单管理', '1', 'com.edu.system.controller.SysMenuController.add()', 'POST', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"createBy\":\"admin\",\"icon\":\"404\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"管理员权限\",\"menuType\":\"C\",\"orderNum\":10,\"params\":{},\"parentId\":0,\"path\":\"adminPower\",\"status\":\"0\",\"visible\":\"1\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-16 15:56:29', '4');
+INSERT INTO `sys_oper_log` VALUES ('344', '菜单管理', '1', 'com.edu.system.controller.SysMenuController.add()', 'POST', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"achievement:achievement:list\",\"menuType\":\"F\",\"orderNum\":1,\"params\":{},\"parentId\":3063,\"perms\":\"achievement:achievement:list\",\"status\":\"0\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-16 15:56:47', '4');
+INSERT INTO `sys_oper_log` VALUES ('345', '菜单管理', '1', 'com.edu.system.controller.SysMenuController.add()', 'POST', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"achievement:achievement:add/edit/remove\",\"menuType\":\"F\",\"orderNum\":2,\"params\":{},\"parentId\":3063,\"path\":\"achievement:achievement:add/edit/remove\",\"perms\":\"achievement:achievement:add/edit/remove\",\"status\":\"0\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-16 15:57:00', '4');
+INSERT INTO `sys_oper_log` VALUES ('346', '菜单管理', '1', 'com.edu.system.controller.SysMenuController.add()', 'POST', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"achievement:audit:recordList\",\"menuType\":\"F\",\"orderNum\":3,\"params\":{},\"parentId\":3063,\"perms\":\"achievement:audit:recordList\",\"status\":\"0\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-16 15:57:09', '3');
+INSERT INTO `sys_oper_log` VALUES ('347', '菜单管理', '1', 'com.edu.system.controller.SysMenuController.add()', 'POST', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"achievement:audit:recordList\",\"menuType\":\"F\",\"orderNum\":4,\"params\":{},\"parentId\":3063,\"perms\":\"achievement:audit:recordList\",\"status\":\"0\",\"visible\":\"0\"} ', '{\"msg\":\"新增菜单\'achievement:audit:recordList\'失败，菜单名称已存在\",\"code\":500}', '0', null, '2026-03-16 15:57:19', '2');
+INSERT INTO `sys_oper_log` VALUES ('348', '菜单管理', '1', 'com.edu.system.controller.SysMenuController.add()', 'POST', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"achievement:audit:recordList1\",\"menuType\":\"F\",\"orderNum\":4,\"params\":{},\"parentId\":3063,\"perms\":\"achievement:audit:recordList\",\"status\":\"0\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-16 15:57:26', '2');
+INSERT INTO `sys_oper_log` VALUES ('349', '菜单管理', '3', 'com.edu.system.controller.SysMenuController.remove()', 'DELETE', '1', 'admin', null, '/menu/3067', '127.0.0.1', '', '3067 ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-16 15:57:33', '2');
+INSERT INTO `sys_oper_log` VALUES ('350', '菜单管理', '1', 'com.edu.system.controller.SysMenuController.add()', 'POST', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"achievement:audit:export\",\"menuType\":\"F\",\"orderNum\":4,\"params\":{},\"parentId\":3063,\"perms\":\"achievement:audit:export\",\"status\":\"0\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-16 15:57:49', '3');
+INSERT INTO `sys_oper_log` VALUES ('351', '角色管理', '2', 'com.edu.system.controller.SysRoleController.edit()', 'PUT', '1', 'admin', null, '/role', '127.0.0.1', '', '{\"admin\":false,\"createTime\":\"2026-03-03 20:04:12\",\"dataScope\":\"1\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[1,3028,3029,3030,3031,3032,3033,3047,3049,3050,100,1000,1001,1002,1003,1004,1005,1006,101,1007,1008,1009,1010,1011,102,1012,1013,1014,1015,103,1016,1017,1018,1019,104,1020,1021,1022,1023,1024,105,1025,1026,1027,1028,1029,3056,3057,3058,3059,3060,3062,3061,3063,3064,3065,3066,3068],\"params\":{},\"roleId\":101,\"roleKey\":\"admin1\",\"roleName\":\"管理员\",\"roleSort\":1,\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-16 16:01:03', '6');
+INSERT INTO `sys_oper_log` VALUES ('352', '角色管理', '2', 'com.edu.system.controller.SysRoleController.edit()', 'PUT', '1', 'admin', null, '/role', '127.0.0.1', '', '{\"admin\":false,\"createTime\":\"2026-03-03 13:14:27\",\"dataScope\":\"1\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[3034,3035,3037,3041,3042,3043,3044,3056,3057,3058,3059,3060,3062,3061],\"params\":{},\"roleId\":100,\"roleKey\":\"teacher\",\"roleName\":\"普通教师\",\"roleSort\":2,\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-16 16:01:07', '6');
+INSERT INTO `sys_oper_log` VALUES ('353', '角色管理', '2', 'com.edu.system.controller.SysRoleController.edit()', 'PUT', '1', 'admin', null, '/role', '127.0.0.1', '', '{\"admin\":false,\"createTime\":\"2026-03-15 17:20:06\",\"dataScope\":\"1\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[3046,3048,3047,3049,3050,3056,3057,3058,3059,3060,3062,3061],\"params\":{},\"roleId\":103,\"roleKey\":\"SchoolAudit\",\"roleName\":\"校级审核员\",\"roleSort\":5,\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-16 16:01:11', '5');
+INSERT INTO `sys_oper_log` VALUES ('354', '我的成果-重新提交', '2', 'com.edu.achievement.controller.EduAchievementController.teacherResubmit()', 'PUT', '1', 'teacher', null, '/achievement/teacherResubmit', '127.0.0.1', '', '{\"achievementId\":20,\"category\":\"2\",\"collegeId\":103,\"content\":\"wda123\",\"createBy\":\"teacher\",\"createTime\":\"2026-03-15 19:32:14\",\"delFlag\":\"0\",\"params\":{},\"status\":\"1\",\"teacherId\":100,\"teacherName\":\"普通教师\",\"title\":\"3151932\",\"updateBy\":\"teacher\",\"updateTime\":\"2026-03-16 16:05:50\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-16 16:05:50', '36');
+INSERT INTO `sys_oper_log` VALUES ('355', '菜单管理', '1', 'com.edu.system.controller.SysMenuController.add()', 'POST', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"部门查询\",\"menuType\":\"F\",\"orderNum\":4,\"params\":{},\"parentId\":3056,\"perms\":\"system:dept:list\",\"status\":\"0\",\"visible\":\"0\"} ', '{\"msg\":\"新增菜单\'部门查询\'失败，菜单名称已存在\",\"code\":500}', '0', null, '2026-03-16 16:15:15', '1');
+INSERT INTO `sys_oper_log` VALUES ('356', '菜单管理', '1', 'com.edu.system.controller.SysMenuController.add()', 'POST', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"createBy\":\"admin\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuName\":\"部门查询1\",\"menuType\":\"F\",\"orderNum\":4,\"params\":{},\"parentId\":3056,\"perms\":\"system:dept:list\",\"status\":\"0\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-16 16:15:19', '3');
+INSERT INTO `sys_oper_log` VALUES ('357', '菜单管理', '3', 'com.edu.system.controller.SysMenuController.remove()', 'DELETE', '1', 'admin', null, '/menu/3062', '127.0.0.1', '', '3062 ', '{\"msg\":\"菜单已分配,不允许删除\",\"code\":601}', '0', null, '2026-03-16 16:15:22', '2');
+INSERT INTO `sys_oper_log` VALUES ('358', '角色管理', '2', 'com.edu.system.controller.SysRoleController.edit()', 'PUT', '1', 'admin', null, '/role', '127.0.0.1', '', '{\"admin\":false,\"createTime\":\"2026-03-03 20:04:12\",\"dataScope\":\"1\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[1,3056,3028,3029,3030,3031,3032,3033,3047,3049,3050,100,1000,1001,1002,1003,1004,1005,1006,101,1007,1008,1009,1010,1011,102,1012,1013,1014,1015,103,1016,1017,1018,1019,104,1020,1021,1022,1023,1024,105,1025,1026,1027,1028,1029,3057,3058,3059,3060,3069,3061,3063,3064,3065,3066,3068],\"params\":{},\"roleId\":101,\"roleKey\":\"admin1\",\"roleName\":\"管理员\",\"roleSort\":1,\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-16 16:15:37', '8');
+INSERT INTO `sys_oper_log` VALUES ('359', '角色管理', '2', 'com.edu.system.controller.SysRoleController.edit()', 'PUT', '1', 'admin', null, '/role', '127.0.0.1', '', '{\"admin\":false,\"createTime\":\"2026-03-03 13:14:27\",\"dataScope\":\"1\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[3056,3034,3035,3037,3041,3042,3043,3044,3057,3058,3059,3060,3069,3061],\"params\":{},\"roleId\":100,\"roleKey\":\"teacher\",\"roleName\":\"普通教师\",\"roleSort\":2,\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-16 16:15:42', '6');
+INSERT INTO `sys_oper_log` VALUES ('360', '角色管理', '2', 'com.edu.system.controller.SysRoleController.edit()', 'PUT', '1', 'admin', null, '/role', '127.0.0.1', '', '{\"admin\":false,\"createTime\":\"2026-03-15 17:19:40\",\"dataScope\":\"1\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[3056,3045,3051,3047,3049,3050,3057,3058,3059,3060,3069,3061],\"params\":{},\"roleId\":102,\"roleKey\":\"CollegeAudit\",\"roleName\":\"院级审核员\",\"roleSort\":4,\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-16 16:15:47', '5');
+INSERT INTO `sys_oper_log` VALUES ('361', '角色管理', '2', 'com.edu.system.controller.SysRoleController.edit()', 'PUT', '1', 'admin', null, '/role', '127.0.0.1', '', '{\"admin\":false,\"createTime\":\"2026-03-15 17:20:06\",\"dataScope\":\"1\",\"delFlag\":\"0\",\"deptCheckStrictly\":true,\"flag\":false,\"menuCheckStrictly\":true,\"menuIds\":[3056,3046,3048,3047,3049,3050,3057,3058,3059,3060,3069,3061],\"params\":{},\"roleId\":103,\"roleKey\":\"SchoolAudit\",\"roleName\":\"校级审核员\",\"roleSort\":5,\"status\":\"0\",\"updateBy\":\"admin\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-03-16 16:15:53', '5');
+
+-- ----------------------------
+-- Table structure for sys_post
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_post`;
+CREATE TABLE `sys_post` (
+  `post_id` bigint NOT NULL AUTO_INCREMENT COMMENT '岗位ID',
+  `post_code` varchar(64) NOT NULL COMMENT '岗位编码',
+  `post_name` varchar(50) NOT NULL COMMENT '岗位名称',
+  `post_sort` int NOT NULL COMMENT '显示顺序',
+  `status` char(1) NOT NULL COMMENT '状态（0正常 1停用）',
+  `create_by` varchar(64) DEFAULT '' COMMENT '创建者',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `remark` varchar(500) DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`post_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3 COMMENT='岗位信息表';
+
+-- ----------------------------
+-- Records of sys_post
+-- ----------------------------
+INSERT INTO `sys_post` VALUES ('1', 'boss', '校长', '1', '0', 'admin', '2026-03-02 22:42:14', 'admin', '2026-03-15 16:48:43', '');
+INSERT INTO `sys_post` VALUES ('2', 'se', '院长', '2', '0', 'admin', '2026-03-02 22:42:14', 'admin', '2026-03-15 16:49:05', '');
+INSERT INTO `sys_post` VALUES ('3', 'hr', '成果管理', '3', '0', 'admin', '2026-03-02 22:42:14', 'admin', '2026-03-15 16:49:31', '');
+INSERT INTO `sys_post` VALUES ('4', 'user', '普通教师', '4', '0', 'admin', '2026-03-02 22:42:14', 'admin', '2026-03-15 16:49:11', '');
+
+-- ----------------------------
+-- Table structure for sys_role
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_role`;
+CREATE TABLE `sys_role` (
+  `role_id` bigint NOT NULL AUTO_INCREMENT COMMENT '角色ID',
+  `role_name` varchar(30) NOT NULL COMMENT '角色名称',
+  `role_key` varchar(100) NOT NULL COMMENT '角色权限字符串',
+  `role_sort` int NOT NULL COMMENT '显示顺序',
+  `data_scope` char(1) DEFAULT '1' COMMENT '数据范围（1：全部数据权限 2：自定数据权限 3：本部门数据权限 4：本部门及以下数据权限）',
+  `menu_check_strictly` tinyint(1) DEFAULT '1' COMMENT '菜单树选择项是否关联显示',
+  `dept_check_strictly` tinyint(1) DEFAULT '1' COMMENT '部门树选择项是否关联显示',
+  `status` char(1) NOT NULL COMMENT '角色状态（0正常 1停用）',
+  `del_flag` char(1) DEFAULT '0' COMMENT '删除标志（0代表存在 2代表删除）',
+  `create_by` varchar(64) DEFAULT '' COMMENT '创建者',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `remark` varchar(500) DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`role_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=104 DEFAULT CHARSET=utf8mb3 COMMENT='角色信息表';
+
+-- ----------------------------
+-- Records of sys_role
+-- ----------------------------
+INSERT INTO `sys_role` VALUES ('1', '超级管理员', 'admin', '1', '1', '1', '1', '0', '0', 'admin', '2026-03-02 22:42:14', '', null, '超级管理员');
+INSERT INTO `sys_role` VALUES ('2', '普通角色', 'common', '2', '2', '1', '1', '0', '2', 'admin', '2026-03-02 22:42:14', 'admin', '2026-03-10 14:49:43', '普通角色');
+INSERT INTO `sys_role` VALUES ('100', '普通教师', 'teacher', '2', '1', '1', '1', '0', '0', 'admin', '2026-03-03 13:14:27', 'admin', '2026-03-16 16:15:42', null);
+INSERT INTO `sys_role` VALUES ('101', '管理员', 'admin1', '1', '1', '1', '1', '0', '0', 'admin', '2026-03-03 20:04:12', 'admin', '2026-03-16 16:15:37', null);
+INSERT INTO `sys_role` VALUES ('102', '院级审核员', 'CollegeAudit', '4', '1', '1', '1', '0', '0', 'admin', '2026-03-15 17:19:40', 'admin', '2026-03-16 16:15:47', null);
+INSERT INTO `sys_role` VALUES ('103', '校级审核员', 'SchoolAudit', '5', '1', '1', '1', '0', '0', 'admin', '2026-03-15 17:20:06', 'admin', '2026-03-16 16:15:53', null);
+
+-- ----------------------------
+-- Table structure for sys_role_dept
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_role_dept`;
+CREATE TABLE `sys_role_dept` (
+  `role_id` bigint NOT NULL COMMENT '角色ID',
+  `dept_id` bigint NOT NULL COMMENT '部门ID',
+  PRIMARY KEY (`role_id`,`dept_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='角色和部门关联表';
+
+-- ----------------------------
+-- Records of sys_role_dept
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for sys_role_menu
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_role_menu`;
+CREATE TABLE `sys_role_menu` (
+  `role_id` bigint NOT NULL COMMENT '角色ID',
+  `menu_id` bigint NOT NULL COMMENT '菜单ID',
+  PRIMARY KEY (`role_id`,`menu_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='角色和菜单关联表';
+
+-- ----------------------------
+-- Records of sys_role_menu
+-- ----------------------------
+INSERT INTO `sys_role_menu` VALUES ('100', '3034');
+INSERT INTO `sys_role_menu` VALUES ('100', '3035');
+INSERT INTO `sys_role_menu` VALUES ('100', '3037');
+INSERT INTO `sys_role_menu` VALUES ('100', '3041');
+INSERT INTO `sys_role_menu` VALUES ('100', '3042');
+INSERT INTO `sys_role_menu` VALUES ('100', '3043');
+INSERT INTO `sys_role_menu` VALUES ('100', '3044');
+INSERT INTO `sys_role_menu` VALUES ('100', '3056');
+INSERT INTO `sys_role_menu` VALUES ('100', '3057');
+INSERT INTO `sys_role_menu` VALUES ('100', '3058');
+INSERT INTO `sys_role_menu` VALUES ('100', '3059');
+INSERT INTO `sys_role_menu` VALUES ('100', '3060');
+INSERT INTO `sys_role_menu` VALUES ('100', '3061');
+INSERT INTO `sys_role_menu` VALUES ('100', '3069');
+INSERT INTO `sys_role_menu` VALUES ('101', '1');
+INSERT INTO `sys_role_menu` VALUES ('101', '100');
+INSERT INTO `sys_role_menu` VALUES ('101', '101');
+INSERT INTO `sys_role_menu` VALUES ('101', '102');
+INSERT INTO `sys_role_menu` VALUES ('101', '103');
+INSERT INTO `sys_role_menu` VALUES ('101', '104');
+INSERT INTO `sys_role_menu` VALUES ('101', '105');
+INSERT INTO `sys_role_menu` VALUES ('101', '1000');
+INSERT INTO `sys_role_menu` VALUES ('101', '1001');
+INSERT INTO `sys_role_menu` VALUES ('101', '1002');
+INSERT INTO `sys_role_menu` VALUES ('101', '1003');
+INSERT INTO `sys_role_menu` VALUES ('101', '1004');
+INSERT INTO `sys_role_menu` VALUES ('101', '1005');
+INSERT INTO `sys_role_menu` VALUES ('101', '1006');
+INSERT INTO `sys_role_menu` VALUES ('101', '1007');
+INSERT INTO `sys_role_menu` VALUES ('101', '1008');
+INSERT INTO `sys_role_menu` VALUES ('101', '1009');
+INSERT INTO `sys_role_menu` VALUES ('101', '1010');
+INSERT INTO `sys_role_menu` VALUES ('101', '1011');
+INSERT INTO `sys_role_menu` VALUES ('101', '1012');
+INSERT INTO `sys_role_menu` VALUES ('101', '1013');
+INSERT INTO `sys_role_menu` VALUES ('101', '1014');
+INSERT INTO `sys_role_menu` VALUES ('101', '1015');
+INSERT INTO `sys_role_menu` VALUES ('101', '1016');
+INSERT INTO `sys_role_menu` VALUES ('101', '1017');
+INSERT INTO `sys_role_menu` VALUES ('101', '1018');
+INSERT INTO `sys_role_menu` VALUES ('101', '1019');
+INSERT INTO `sys_role_menu` VALUES ('101', '1020');
+INSERT INTO `sys_role_menu` VALUES ('101', '1021');
+INSERT INTO `sys_role_menu` VALUES ('101', '1022');
+INSERT INTO `sys_role_menu` VALUES ('101', '1023');
+INSERT INTO `sys_role_menu` VALUES ('101', '1024');
+INSERT INTO `sys_role_menu` VALUES ('101', '1025');
+INSERT INTO `sys_role_menu` VALUES ('101', '1026');
+INSERT INTO `sys_role_menu` VALUES ('101', '1027');
+INSERT INTO `sys_role_menu` VALUES ('101', '1028');
+INSERT INTO `sys_role_menu` VALUES ('101', '1029');
+INSERT INTO `sys_role_menu` VALUES ('101', '3028');
+INSERT INTO `sys_role_menu` VALUES ('101', '3029');
+INSERT INTO `sys_role_menu` VALUES ('101', '3030');
+INSERT INTO `sys_role_menu` VALUES ('101', '3031');
+INSERT INTO `sys_role_menu` VALUES ('101', '3032');
+INSERT INTO `sys_role_menu` VALUES ('101', '3033');
+INSERT INTO `sys_role_menu` VALUES ('101', '3047');
+INSERT INTO `sys_role_menu` VALUES ('101', '3049');
+INSERT INTO `sys_role_menu` VALUES ('101', '3050');
+INSERT INTO `sys_role_menu` VALUES ('101', '3056');
+INSERT INTO `sys_role_menu` VALUES ('101', '3057');
+INSERT INTO `sys_role_menu` VALUES ('101', '3058');
+INSERT INTO `sys_role_menu` VALUES ('101', '3059');
+INSERT INTO `sys_role_menu` VALUES ('101', '3060');
+INSERT INTO `sys_role_menu` VALUES ('101', '3061');
+INSERT INTO `sys_role_menu` VALUES ('101', '3063');
+INSERT INTO `sys_role_menu` VALUES ('101', '3064');
+INSERT INTO `sys_role_menu` VALUES ('101', '3065');
+INSERT INTO `sys_role_menu` VALUES ('101', '3066');
+INSERT INTO `sys_role_menu` VALUES ('101', '3068');
+INSERT INTO `sys_role_menu` VALUES ('101', '3069');
+INSERT INTO `sys_role_menu` VALUES ('102', '3045');
+INSERT INTO `sys_role_menu` VALUES ('102', '3047');
+INSERT INTO `sys_role_menu` VALUES ('102', '3049');
+INSERT INTO `sys_role_menu` VALUES ('102', '3050');
+INSERT INTO `sys_role_menu` VALUES ('102', '3051');
+INSERT INTO `sys_role_menu` VALUES ('102', '3056');
+INSERT INTO `sys_role_menu` VALUES ('102', '3057');
+INSERT INTO `sys_role_menu` VALUES ('102', '3058');
+INSERT INTO `sys_role_menu` VALUES ('102', '3059');
+INSERT INTO `sys_role_menu` VALUES ('102', '3060');
+INSERT INTO `sys_role_menu` VALUES ('102', '3061');
+INSERT INTO `sys_role_menu` VALUES ('102', '3069');
+INSERT INTO `sys_role_menu` VALUES ('103', '3046');
+INSERT INTO `sys_role_menu` VALUES ('103', '3047');
+INSERT INTO `sys_role_menu` VALUES ('103', '3048');
+INSERT INTO `sys_role_menu` VALUES ('103', '3049');
+INSERT INTO `sys_role_menu` VALUES ('103', '3050');
+INSERT INTO `sys_role_menu` VALUES ('103', '3056');
+INSERT INTO `sys_role_menu` VALUES ('103', '3057');
+INSERT INTO `sys_role_menu` VALUES ('103', '3058');
+INSERT INTO `sys_role_menu` VALUES ('103', '3059');
+INSERT INTO `sys_role_menu` VALUES ('103', '3060');
+INSERT INTO `sys_role_menu` VALUES ('103', '3061');
+INSERT INTO `sys_role_menu` VALUES ('103', '3069');
+
+-- ----------------------------
+-- Table structure for sys_user
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_user`;
+CREATE TABLE `sys_user` (
+  `user_id` bigint NOT NULL AUTO_INCREMENT COMMENT '用户ID',
+  `dept_id` bigint DEFAULT NULL COMMENT '部门ID',
+  `user_name` varchar(30) NOT NULL COMMENT '用户账号',
+  `nick_name` varchar(30) NOT NULL COMMENT '用户昵称',
+  `user_type` varchar(2) DEFAULT '00' COMMENT '用户类型（00系统用户）',
+  `email` varchar(50) DEFAULT '' COMMENT '用户邮箱',
+  `phonenumber` varchar(11) DEFAULT '' COMMENT '手机号码',
+  `sex` char(1) DEFAULT '0' COMMENT '用户性别（0男 1女 2未知）',
+  `avatar` varchar(100) DEFAULT '' COMMENT '头像地址',
+  `password` varchar(100) DEFAULT '' COMMENT '密码',
+  `status` char(1) DEFAULT '0' COMMENT '账号状态（0正常 1停用）',
+  `del_flag` char(1) DEFAULT '0' COMMENT '删除标志（0代表存在 2代表删除）',
+  `login_ip` varchar(128) DEFAULT '' COMMENT '最后登录IP',
+  `login_date` datetime DEFAULT NULL COMMENT '最后登录时间',
+  `pwd_update_date` datetime DEFAULT NULL COMMENT '密码最后更新时间',
+  `create_by` varchar(64) DEFAULT '' COMMENT '创建者',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
+  `update_time` datetime DEFAULT NULL COMMENT '更新时间',
+  `remark` varchar(500) DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=104 DEFAULT CHARSET=utf8mb3 COMMENT='用户信息表';
+
+-- ----------------------------
+-- Records of sys_user
+-- ----------------------------
+INSERT INTO `sys_user` VALUES ('1', '103', 'admin', 'zpz', '00', '2426481498@qq.com', '13733732086', '0', 'http://127.0.0.1:9000/edu-achievement/2026/03/03/ENDFIELD_SHARE_1770620948_20260303162138A009.png', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2026-03-16 16:14:45', '2026-03-02 22:42:14', 'admin', '2026-03-02 22:42:14', '', '2026-03-03 16:21:38', '管理员');
+INSERT INTO `sys_user` VALUES ('2', '105', 'ry', '若依', '00', 'ry@qq.com', '15666666666', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '2', '127.0.0.1', '2026-03-02 22:42:14', '2026-03-02 22:42:14', 'admin', '2026-03-02 22:42:14', 'admin', '2026-03-15 19:23:41', '测试员');
+INSERT INTO `sys_user` VALUES ('100', '103', 'teacher', '普通教师', '00', '', '', '0', 'http://127.0.0.1:9000/edu-achievement/2026/03/03/ENDFIELD_SHARE_1772350628_20260303200033A011.png', '$2a$10$Z99Utz1KvcRAUrki4kE72e4NJ5edbJH0x0JDVSlmKnO4pYUmPZAw6', '0', '0', '127.0.0.1', '2026-03-16 16:16:34', null, 'admin', '2026-03-03 15:41:22', 'admin', '2026-03-15 19:30:38', null);
+INSERT INTO `sys_user` VALUES ('101', '103', 'zpz', '管理员', '00', '', '', '0', '', '$2a$10$/uxUKk8jfbX4aRjpBNaU0eaKjEOAZRdS6blfhvnJ6489C9uHY3g.e', '0', '0', '127.0.0.1', '2026-03-03 20:04:58', null, 'admin', '2026-03-03 20:03:08', 'admin', '2026-03-16 15:32:17', null);
+INSERT INTO `sys_user` VALUES ('102', '103', 'collegeAudit', '学院审核', '00', '', '', '0', '', '$2a$10$edIKyALN2SoYyV5squnr1O4wySJk6dQBMM.c87SywEDSGKI5UgPRa', '0', '0', '127.0.0.1', '2026-03-16 16:13:42', null, 'admin', '2026-03-15 19:10:14', 'admin', '2026-03-16 15:32:01', null);
+INSERT INTO `sys_user` VALUES ('103', '103', 'schoolAudit', '学校审核', '00', '', '', '0', '', '$2a$10$r1MHno1QAD2AJzJLqu202eQLt8Zu1LFRATjtM4Eki1tQ4/5VRDFhq', '0', '0', '127.0.0.1', '2026-03-16 15:29:01', null, 'admin', '2026-03-15 19:10:30', 'admin', '2026-03-16 15:32:08', null);
+
+-- ----------------------------
+-- Table structure for sys_user_post
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_user_post`;
+CREATE TABLE `sys_user_post` (
+  `user_id` bigint NOT NULL COMMENT '用户ID',
+  `post_id` bigint NOT NULL COMMENT '岗位ID',
+  PRIMARY KEY (`user_id`,`post_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='用户与岗位关联表';
+
+-- ----------------------------
+-- Records of sys_user_post
+-- ----------------------------
+INSERT INTO `sys_user_post` VALUES ('1', '1');
+
+-- ----------------------------
+-- Table structure for sys_user_role
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_user_role`;
+CREATE TABLE `sys_user_role` (
+  `user_id` bigint NOT NULL COMMENT '用户ID',
+  `role_id` bigint NOT NULL COMMENT '角色ID',
+  PRIMARY KEY (`user_id`,`role_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='用户和角色关联表';
+
+-- ----------------------------
+-- Records of sys_user_role
+-- ----------------------------
+INSERT INTO `sys_user_role` VALUES ('1', '1');
+INSERT INTO `sys_user_role` VALUES ('100', '100');
+INSERT INTO `sys_user_role` VALUES ('101', '101');
+INSERT INTO `sys_user_role` VALUES ('102', '102');
+INSERT INTO `sys_user_role` VALUES ('103', '103');
