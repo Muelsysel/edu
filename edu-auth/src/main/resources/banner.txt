@@ -1,9 +1,9 @@
 Spring Boot Version: ${spring-boot.version}
 Spring Application Name: ${spring.application.name}
- ________  ________  _   _  _      _____
+ ______________   __ _      _____
 |___  /___  /| | | || |    |_   _|
    / /   / / | | | || |      | |
   / /   / /  | | | || |      | |
- / /__ / /__ | |_| || |____  | |
-/_____|_____| \___/ |______| |_|
+ / /__ / /__ | |_| || |___   | |
+/_____|_____| \___/ |_____||_____|
 :: Edu Achievement Management System ::
