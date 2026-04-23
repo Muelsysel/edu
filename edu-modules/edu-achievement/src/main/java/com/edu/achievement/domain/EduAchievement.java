@@ -41,6 +41,9 @@ public class EduAchievement extends BaseEntity
     /** 所属学院 ID（关联 sys_dept.dept_id） */
     private Long collegeId;
 
+    /** 审核时使用的部门范围起点，包含当前部门及其所有下级部门 */
+    private Long auditDeptId;
+
     /** 审核状态 (0:草稿 1:院级审核中 2:校级审核中 3:已通过 4:已驳回) */
     @Excel(name = "审核状态", readConverterExp = "0=草稿,1=院级审核中,2=校级审核中,3=已通过,4=已驳回")
     private String status;
@@ -134,6 +137,16 @@ public class EduAchievement extends BaseEntity
         return collegeId;
     }
 
+    public void setAuditDeptId(Long auditDeptId)
+    {
+        this.auditDeptId = auditDeptId;
+    }
+
+    public Long getAuditDeptId()
+    {
+        return auditDeptId;
+    }
+
     public void setStatus(String status)
     {
         this.status = status;
@@ -164,6 +177,7 @@ public class EduAchievement extends BaseEntity
             .append("teacherId", getTeacherId())
             .append("teacherName", getTeacherName())
             .append("collegeId", getCollegeId())
+            .append("auditDeptId", getAuditDeptId())
             .append("status", getStatus())
             .append("createBy", getCreateBy())
             .append("createTime", getCreateTime())

@@ -27,7 +27,7 @@
           </div>
         </div>
         <div class="left-footer">
-          <span>郑州轻工业大学 · 软件工程</span>
+          <span>郑州轻工业大学</span>
         </div>
         <!-- 几何装饰 -->
         <div class="geo-line geo-1"></div>
@@ -116,6 +116,7 @@ import { getCodeImg } from "@/api/login"
 import Cookies from "js-cookie"
 import { encrypt, decrypt } from '@/utils/jsencrypt'
 import defaultSettings from '@/settings'
+import { getLandingPathByRoles } from '@/utils/role-route'
 
 export default {
   name: "Login",
@@ -188,7 +189,12 @@ export default {
             Cookies.remove('rememberMe')
           }
           this.$store.dispatch("Login", this.loginForm).then(() => {
-            this.$router.push({ path: this.redirect || "/" }).catch(()=>{})
+            this.$store.dispatch("GetInfo").then((res) => {
+              const roles = res.roles || []
+              const fallback = getLandingPathByRoles(roles)
+              const redirect = this.redirect || fallback
+              this.$router.push({ path: redirect }).catch(() => {})
+            })
           }).catch(() => {
             this.loading = false
             if (this.captchaEnabled) {

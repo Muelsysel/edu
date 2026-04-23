@@ -272,6 +272,34 @@ public class EduAchievementController extends BaseController
     }
 
     /**
+     * 教师撤回申报（院审中/校审中可撤回为草稿）
+     */
+    @RequiresPermissions("achievement:achievement:teacherEdit")
+    @Log(title = "我的成果-撤回", businessType = BusinessType.UPDATE)
+    @PutMapping("/teacherWithdraw/{achievementId}")
+    public AjaxResult teacherWithdraw(@PathVariable("achievementId") Long achievementId)
+    {
+        EduAchievement existing = eduAchievementService.selectEduAchievementByAchievementId(achievementId);
+        if (existing == null)
+        {
+            return AjaxResult.error("成果不存在");
+        }
+        if (!existing.getTeacherId().equals(SecurityUtils.getUserId()))
+        {
+            return AjaxResult.error("无权操作他人成果");
+        }
+        if (!"1".equals(existing.getStatus()) && !"2".equals(existing.getStatus()))
+        {
+            return AjaxResult.error("仅院审中或校审中的成果可撤回");
+        }
+        EduAchievement update = new EduAchievement();
+        update.setAchievementId(achievementId);
+        update.setStatus("0");
+        update.setUpdateBy(SecurityUtils.getUsername());
+        return toAjax(eduAchievementService.updateEduAchievement(update));
+    }
+
+    /**
      * AI 查重/检测接口（预留，暂不实现）
      * 之后可对接外部查重 API，当前返回 501
      */

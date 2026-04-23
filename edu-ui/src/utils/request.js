@@ -88,12 +88,14 @@ service.interceptors.response.use(res => {
         MessageBox.confirm('登录状态已过期，您可以继续留在该页面，或者重新登录', '系统提示', { confirmButtonText: '重新登录', cancelButtonText: '取消', type: 'warning' }).then(() => {
           isRelogin.show = false
           store.dispatch('LogOut').then(() => {
-            location.href = '/index'
+            location.href = '/index' // 优化：建议跳回 /index，让路由守卫重新定向，避免跳到根目录出现空白
+          }).catch(() => {
+            location.href = '/index' // 优化：【兜底措施】即使退出接口严重报错，也必须强制刷新页面清空内存！
           })
-      }).catch(() => {
-        isRelogin.show = false
-      })
-    }
+        }).catch(() => {
+          isRelogin.show = false
+        })
+      }
       return Promise.reject('无效的会话，或者会话已过期，请重新登录。')
     } else if (code === 500) {
       Message({ message: msg, type: 'error' })
@@ -111,13 +113,33 @@ service.interceptors.response.use(res => {
   error => {
     console.log('err' + error)
     let { message } = error
-    if (message == "Network Error") {
-      message = "后端接口连接异常"
+
+    // 【核心修复】：拦截微服务网关 (Gateway) 直接抛出的 HTTP 401 状态码异常
+    if (error.response && error.response.status === 401) {
+      if (!isRelogin.show) {
+        isRelogin.show = true
+        MessageBox.confirm('登录状态已失效，请重新登录', '系统提示', { confirmButtonText: '重新登录', cancelButtonText: '取消', type: 'warning' }).then(() => {
+          isRelogin.show = false
+          store.dispatch('LogOut').then(() => {
+            location.href = '/index'
+          }).catch(() => {
+            location.href = '/index'
+          })
+        }).catch(() => {
+          isRelogin.show = false
+        })
+      }
+      return Promise.reject('无效的会话，或者会话已过期，请重新登录。')
+    }
+
+    if (message === "Network Error") {
+      message = "后端接口连接异常，请检查网络或服务状态"
     } else if (message.includes("timeout")) {
-      message = "系统接口请求超时"
+      message = "系统接口请求超时，请稍后重试"
     } else if (message.includes("Request failed with status code")) {
       message = "系统接口" + message.slice(-3) + "异常"
     }
+
     Message({ message: message, type: 'error', duration: 5 * 1000 })
     return Promise.reject(error)
   }

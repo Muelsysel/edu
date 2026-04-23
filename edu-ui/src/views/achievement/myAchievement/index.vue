@@ -35,7 +35,8 @@
               <span>审核通过</span>
             </div>
           </div>
-          <el-tag v-if="form.status === '4'" type="danger" effect="dark" size="small" style="margin-top: 8px;">该成果已被驳回，请修改后重新提交</el-tag>
+          <el-tag v-if="form.status === '4'" type="danger" effect="dark" size="small"
+            style="margin-top: 8px;">该成果已被驳回，请修改后重新提交</el-tag>
         </div>
 
         <el-divider v-if="form.achievementId" content-position="left">成果信息</el-divider>
@@ -46,16 +47,14 @@
 
         <el-form-item label="成果类型" prop="category">
           <el-radio-group v-model="form.category" :disabled="form.status === '3'">
-            <el-radio-button
-              v-for="dict in dict.type.edu_achievement_category"
-              :key="dict.value"
-              :label="dict.value"
-            >{{ dict.label }}</el-radio-button>
+            <el-radio-button v-for="dict in dict.type.edu_achievement_category" :key="dict.value" :label="dict.value">{{
+              dict.label }}</el-radio-button>
           </el-radio-group>
         </el-form-item>
 
         <el-form-item label="归属学院" prop="collegeId">
-          <el-select v-model="form.collegeId" placeholder="请选择学院" style="width: 100%" clearable :disabled="form.status === '3'">
+          <el-select v-model="form.collegeId" placeholder="请选择学院" style="width: 100%" clearable
+            :disabled="form.status === '3'">
             <el-option v-for="item in collegeOptions" :key="item.deptId" :label="item.deptName" :value="item.deptId" />
           </el-select>
         </el-form-item>
@@ -63,8 +62,9 @@
         <el-form-item label="证明材料" prop="fileUrl">
           <file-upload v-model="form.fileUrl" :limit="5" :fileSize="50" v-if="form.status !== '3'" />
           <div v-else class="file-preview">
-            <el-link v-for="(url, i) in (form.fileUrl || '').split(',')" :key="i" :href="url" target="_blank" type="primary" v-if="url" :underline="false" class="file-link">
-              <i class="el-icon-document"></i> 附件 {{i+1}}
+            <el-link v-for="(url, i) in (form.fileUrl || '').split(',')" :key="i" :href="url" target="_blank"
+              type="primary" v-if="url" :underline="false" class="file-link">
+              <i class="el-icon-document"></i> 附件 {{ i + 1 }}
             </el-link>
           </div>
         </el-form-item>
@@ -175,6 +175,7 @@ export default {
   box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
   overflow: hidden;
 }
+
 .form-header {
   background: linear-gradient(135deg, #0f172a 0%, #1e40af 100%);
   padding: 28px 32px;
@@ -182,20 +183,37 @@ export default {
   align-items: center;
   gap: 16px;
 }
+
 .form-header-icon {
-  width: 48px; height: 48px;
+  width: 48px;
+  height: 48px;
   background: rgba(212, 168, 83, 0.15);
   border: 1px solid rgba(212, 168, 83, 0.3);
   border-radius: 12px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 22px; color: #d4a853;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  color: #d4a853;
 }
+
 .form-header-text h3 {
-  color: #f1f5f9; margin: 0 0 4px; font-size: 18px;
-  font-family: 'Noto Serif SC', serif; font-weight: 700;
+  color: #f1f5f9;
+  margin: 0 0 4px;
+  font-size: 18px;
+  font-family: 'Noto Serif SC', serif;
+  font-weight: 700;
 }
-.form-header-text p { color: rgba(203, 213, 225, 0.7); margin: 0; font-size: 13px; }
-.modern-form { padding: 28px 32px; }
+
+.form-header-text p {
+  color: rgba(203, 213, 225, 0.7);
+  margin: 0;
+  font-size: 13px;
+}
+
+.modern-form {
+  padding: 28px 32px;
+}
 
 /* 审核进度 */
 .status-display {
@@ -205,24 +223,80 @@ export default {
   padding: 20px 24px;
   margin-bottom: 20px;
 }
-.status-steps { display: flex; align-items: center; justify-content: center; }
-.step { display: flex; flex-direction: column; align-items: center; gap: 6px; }
-.step-dot {
-  width: 14px; height: 14px; border-radius: 50%;
-  background: #cbd5e1; transition: all .3s;
+
+.status-steps {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.step span { font-size: 12px; color: #94a3b8; }
-.step-active .step-dot { background: #1e40af; box-shadow: 0 0 0 4px rgba(30, 64, 175, 0.12); }
-.step-active span { color: #1e40af; font-weight: 600; }
-.step-success .step-dot { background: #10b981; box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.12); }
-.step-success span { color: #10b981; }
-.step-error .step-dot { background: #ef4444; box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.12); }
-.step-error span { color: #ef4444; }
-.step-line { width: 60px; height: 2px; background: #e2e8f0; margin: 0 8px; margin-bottom: 20px; }
-.line-active { background: #1e40af; }
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.step-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #cbd5e1;
+  transition: all .3s;
+}
+
+.step span {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.step-active .step-dot {
+  background: #1e40af;
+  box-shadow: 0 0 0 4px rgba(30, 64, 175, 0.12);
+}
+
+.step-active span {
+  color: #1e40af;
+  font-weight: 600;
+}
+
+.step-success .step-dot {
+  background: #10b981;
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.12);
+}
+
+.step-success span {
+  color: #10b981;
+}
+
+.step-error .step-dot {
+  background: #ef4444;
+  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.12);
+}
+
+.step-error span {
+  color: #ef4444;
+}
+
+.step-line {
+  width: 60px;
+  height: 2px;
+  background: #e2e8f0;
+  margin: 0 8px;
+  margin-bottom: 20px;
+}
+
+.line-active {
+  background: #1e40af;
+}
 
 /* 附件 */
-.file-preview { display: flex; gap: 12px; flex-wrap: wrap; }
+.file-preview {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
 .file-link {
   padding: 6px 14px;
   background: rgba(30, 64, 175, 0.06);
