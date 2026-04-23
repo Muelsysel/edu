@@ -64,3 +64,5 @@ docker/redis/data/
 docker/nacos/logs/
 docker/nginx/logs/
 docker/minio/data/
+jar
+dockerfile
