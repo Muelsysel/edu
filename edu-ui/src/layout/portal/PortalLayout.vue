@@ -90,7 +90,7 @@
 import { mapGetters } from 'vuex'
 import { getToken } from '@/utils/auth'
 import request from '@/utils/request'
-import { updateNotice } from "@/api/system/notice"
+// import { updateNotice } from "@/api/system/notice"
 import { getPortalLandingPath, isAdminUser, isAuditorUser, isCollegeAuditor, isSchoolAuditor } from '@/utils/role-route'
 
 export default {
@@ -154,25 +154,35 @@ export default {
           this.noticeLoading = false;
         }).catch(() => { this.noticeLoading = false; });
     },
-    confirmNotice(item) {
-      this.$set(item, 'isRead', true);
-      updateNotice({ ...item, status: '1' }).then(() => {
-        setTimeout(() => {
-          this.noticeList = this.noticeList.filter(n => n.noticeId !== item.noticeId);
-          this.noticeCount = Math.max(0, this.noticeCount - 1);
-        }, 300);
-      });
-    },
-    confirmAllNotices() {
-      if (this.noticeList.length === 0) return;
-      this.noticeLoading = true;
-      const promises = this.noticeList.map(item => updateNotice({ ...item, status: '1' }));
-      Promise.all(promises).then(() => {
-        this.$message.success('全部已读');
-        this.loadNotices();
-        this.fetchNoticeCount();
-      }).finally(() => { this.noticeLoading = false; })
-    },
+     confirmNotice(item) {
+       this.$set(item, 'isRead', true);
+       request({ url: '/system/notice/read/' + item.noticeId, method: 'put' }).then(() => {
+         setTimeout(() => {
+           this.noticeList = this.noticeList.filter(n => n.noticeId !== item.noticeId);
+           this.noticeCount = Math.max(0, this.noticeCount - 1);
+         }, 300);
+       }).catch(error => {
+         // revert optimistic update
+         this.$set(item, 'isRead', false);
+         this.$message.error('标记失败，请重试');
+         console.error(error);
+       });
+     },
+     confirmAllNotices() {
+       if (this.noticeList.length === 0) return;
+       this.noticeLoading = true;
+       const promises = this.noticeList.map(item => request({ url: '/system/notice/read/' + item.noticeId, method: 'put' }));
+       Promise.all(promises).then(() => {
+         this.$message.success('全部已读');
+         this.noticeList = [];
+         this.noticeCount = 0;
+       }).catch(error => {
+         this.$message.error('部分标记失败，请重试');
+         console.error(error);
+         this.loadNotices();
+         this.fetchNoticeCount();
+       }).finally(() => { this.noticeLoading = false; })
+     },
     stripHtml(html) {
       if (!html) return '';
       let tmp = document.createElement("DIV"); tmp.innerHTML = html;

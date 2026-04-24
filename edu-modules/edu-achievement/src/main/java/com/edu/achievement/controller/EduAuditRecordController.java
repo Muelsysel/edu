@@ -119,12 +119,13 @@ public class EduAuditRecordController extends BaseController
         auditRecord.setCreateTime(DateUtils.getNowDate());
         eduAuditRecordService.insertEduAuditRecord(auditRecord);
 
-        sendAuditNotice(
-            achievement.getTeacherId(),
-            achievement.getTitle(),
-            resultText,
-            auditRecord.getAuditOpinion()
-        );
+        // 消息通知功能已取消
+        // sendAuditNotice(
+        //     achievement.getTeacherId(),
+        //     achievement.getTitle(),
+        //     resultText,
+        //     auditRecord.getAuditOpinion()
+        // );
 
         return success();
     }
@@ -169,12 +170,13 @@ public class EduAuditRecordController extends BaseController
         auditRecord.setCreateTime(DateUtils.getNowDate());
         eduAuditRecordService.insertEduAuditRecord(auditRecord);
 
-        sendAuditNotice(
-            achievement.getTeacherId(),
-            achievement.getTitle(),
-            resultText,
-            auditRecord.getAuditOpinion()
-        );
+        // 消息通知功能已取消
+        // sendAuditNotice(
+        //     achievement.getTeacherId(),
+        //     achievement.getTitle(),
+        //     resultText,
+        //     auditRecord.getAuditOpinion()
+        // );
 
         return success();
     }

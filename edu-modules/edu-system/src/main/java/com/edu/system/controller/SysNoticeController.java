@@ -89,4 +89,26 @@ public class SysNoticeController extends BaseController
     {
         return toAjax(noticeService.deleteNoticeByIds(noticeIds));
     }
+
+    /**
+     * 标记个人通知为已读（门户无权限校验，仅可操作 createBy 为 [-userId-] 的通知）
+     */
+    @PutMapping("/read/{noticeId}")
+    public AjaxResult readNotice(@PathVariable Long noticeId)
+    {
+        SysNotice notice = noticeService.selectNoticeById(noticeId);
+        if (notice == null)
+        {
+            return error("通知不存在");
+        }
+        String expectedMarker = "[-" + SecurityUtils.getUserId() + "-]";
+        if (notice.getCreateBy() == null || !notice.getCreateBy().equals(expectedMarker))
+        {
+            return error("无权操作");
+        }
+        SysNotice update = new SysNotice();
+        update.setNoticeId(noticeId);
+        update.setStatus("1");
+        return toAjax(noticeService.updateNotice(update));
+    }
 }
