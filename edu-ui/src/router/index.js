@@ -102,6 +102,12 @@ export const constantRoutes = [
         component: () => import('@/views/achievement/auditRecord/index'),
         name: 'PortalAuditRecords',
         meta: { title: '审核记录', requiresAuth: true, portalOnly: true }
+      },
+      {
+        path: 'profile',
+        component: () => import('@/views/portal/profile/index'),
+        name: 'PortalProfile',
+        meta: { title: '个人设置', requiresAuth: true }
       }
     ]
   },

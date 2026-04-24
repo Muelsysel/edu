@@ -58,7 +58,7 @@
                 <i class="el-icon-arrow-down el-icon--right"></i>
               </div>
               <el-dropdown-menu slot="dropdown" class="elegant-dropdown">
-                <router-link to="/user/profile">
+                <router-link to="/portal/profile">
                   <el-dropdown-item icon="el-icon-user">个人设置</el-dropdown-item>
                 </router-link>
                 <router-link v-if="isAdmin" to="/index">

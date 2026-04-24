@@ -43,7 +43,7 @@ const guardPortalAccess = (to, next, roles) => {
     next(getLandingPathByRoles(roles))
     return true
   }
-  if (!to.path.startsWith('/portal') && to.path !== '/' && to.path !== '/user/profile' && !to.path.startsWith('/redirect')) {
+  if (!to.path.startsWith('/portal') && to.path !== '/' && !to.path.startsWith('/redirect')) {
     next(getLandingPathByRoles(roles))
     return true
   }

@@ -1,7 +1,7 @@
 <h1 align="center">🎓 高校教学成果管理系统</h1>
 
 <p align="center">
-  <em>基于 RuoYi-Cloud 3.6.7 微服务架构的教学成果全生命周期管理平台</em>
+  <em>基于 Spring-Cloud 微服务架构的教学成果全生命周期管理平台</em>
 </p>
 
 <p align="center">
