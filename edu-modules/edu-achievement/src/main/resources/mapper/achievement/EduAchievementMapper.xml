@@ -157,7 +157,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
     <select id="countMonthPassed" resultType="int">
-        select count(*) from edu_achievement where del_flag = '0' and status = '3' and date_format(create_time, '%Y-%m') = date_format(curdate(), '%Y-%m')
+        select count(*) from edu_audit_record where audit_result = '1' and date_format(create_time, '%Y-%m') = date_format(curdate(), '%Y-%m')
     </select>
 
     <select id="countMonthRejected" resultType="int">

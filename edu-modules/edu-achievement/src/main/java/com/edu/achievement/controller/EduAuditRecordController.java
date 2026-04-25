@@ -131,7 +131,6 @@ public class EduAuditRecordController extends BaseController
         util.exportExcel(response, list, "audit_record");
     }
 
-    @RequiresPermissions("achievement:audit:school")
     @GetMapping("/statistics")
     public AjaxResult statistics(@RequestParam(value = "teacherId", required = false) Long teacherId)
     {
