@@ -31,7 +31,7 @@
       <div class="tab-item" :class="{ active: queryParams.status === '0' }" @click="switchStatus('0')">
         <i class="el-icon-edit-outline"></i> 草稿箱
       </div>
-      <div class="tab-item" :class="{ active: queryParams.status === '1' || queryParams.status === '2' }" @click="switchStatus('1,2')">
+      <div class="tab-item" :class="{ active: queryParams.status === '2' }" @click="switchStatus('2')">
         <i class="el-icon-loading"></i> 审核中
       </div>
       <div class="tab-item pass" :class="{ active: queryParams.status === '3' }" @click="switchStatus('3')">

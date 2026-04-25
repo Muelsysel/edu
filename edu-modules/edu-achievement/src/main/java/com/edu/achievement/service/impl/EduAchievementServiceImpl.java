@@ -82,6 +82,9 @@ public class EduAchievementServiceImpl implements IEduAchievementService
     @Override
     public int insertEduAchievement(EduAchievement eduAchievement)
     {
+        if (eduAchievement.getStatus() == null || !eduAchievement.getStatus().matches("[02]")) {
+            eduAchievement.setStatus("0");
+        }
         eduAchievement.setCreateTime(DateUtils.getNowDate());
         return eduAchievementMapper.insertEduAchievement(eduAchievement);
     }

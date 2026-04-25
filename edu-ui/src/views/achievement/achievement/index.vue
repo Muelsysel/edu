@@ -17,7 +17,7 @@
         <el-form-item label="审核状态" prop="status">
           <el-select v-model="queryParams.status" placeholder="全部状态" clearable style="width: 130px">
             <el-option label="草稿" value="0" />
-            <el-option label="待校审" value="2" />
+            <el-option label="审核中" value="2" />
             <el-option label="已通过" value="3" />
             <el-option label="已驳回" value="4" />
           </el-select>
@@ -314,7 +314,6 @@ export default {
   line-height: 20px;
 }
 .status-0 { background: #f4f4f5; color: #909399; }
-.status-1 { background: #fdf6ec; color: #e6a23c; }
 .status-2 { background: #fef0f0; color: #f56c6c; }
 .status-3 { background: #f0f9eb; color: #67c23a; }
 .status-4 { background: #fef0f0; color: #f56c6c; }

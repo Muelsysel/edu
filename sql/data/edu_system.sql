@@ -511,8 +511,8 @@ INSERT INTO `sys_dict_data` VALUES ('100', '1', '草稿', '0', 'achievement_stat
 INSERT INTO `sys_dict_data` VALUES ('102', '3', '校级审核中', '2', 'achievement_status', 'info', 'default', 'N', '0', 'admin', '2026-03-03 13:47:22', '', null, null);
 INSERT INTO `sys_dict_data` VALUES ('103', '4', '已通过', '3', 'achievement_status', 'success', 'default', 'N', '0', 'admin', '2026-03-03 13:47:38', '', null, null);
 INSERT INTO `sys_dict_data` VALUES ('104', '5', '已驳回', '4', 'achievement_status', 'danger', 'default', 'N', '0', 'admin', '2026-03-03 13:47:49', '', null, null);
-INSERT INTO `sys_dict_data` VALUES ('105', '1', '通过', '0', 'audit_result', 'success', 'default', 'N', '0', 'admin', '2026-03-03 13:48:11', '', null, null);
-INSERT INTO `sys_dict_data` VALUES ('106', '2', '驳回', '1', 'audit_result', 'danger', 'default', 'N', '0', 'admin', '2026-03-03 13:48:26', '', null, null);
+INSERT INTO `sys_dict_data` VALUES ('105', '1', '通过', '1', 'audit_result', 'success', 'default', 'N', '0', 'admin', '2026-03-03 13:48:11', '', null, null);
+INSERT INTO `sys_dict_data` VALUES ('106', '2', '驳回', '2', 'audit_result', 'danger', 'default', 'N', '0', 'admin', '2026-03-03 13:48:26', '', null, null);
 INSERT INTO `sys_dict_data` VALUES ('107', '1', '科研指导', '1', 'edu_achievement_category', null, 'default', 'N', '0', 'admin', '2026-03-03 16:08:13', 'admin', '2026-03-10 16:12:30', '期刊论文、专著等');
 INSERT INTO `sys_dict_data` VALUES ('108', '2', '教材建设', '2', 'edu_achievement_category', null, 'default', 'N', '0', 'admin', '2026-03-03 16:08:35', '', null, '规划教材、校本教材');
 INSERT INTO `sys_dict_data` VALUES ('109', '3', '竞赛指导', '3', 'edu_achievement_category', null, 'default', 'N', '0', 'admin', '2026-03-03 16:08:48', 'admin', '2026-03-10 16:12:41', '指导学生获奖或教师比赛');

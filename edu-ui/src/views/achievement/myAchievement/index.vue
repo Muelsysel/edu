@@ -15,25 +15,20 @@
         <!-- 审核状态展示（仅编辑时） -->
         <div v-if="form.achievementId" class="status-display">
           <div class="status-steps">
-            <div :class="['step', form.status >= '1' ? 'step-active' : '']">
-              <div class="step-dot"></div>
-              <span>提交申报</span>
-            </div>
-            <div class="step-line" :class="{ 'line-active': form.status >= '1' }"></div>
-            <div :class="['step', form.status >= '2' ? 'step-active' : '', form.status === '4' ? 'step-error' : '']">
-              <div class="step-dot"></div>
-              <span>审核中</span>
-            </div>
-            <div class="step-line" :class="{ 'line-active': form.status >= '2' }"></div>
-            <div :class="['step', form.status >= '3' ? 'step-active' : '', form.status === '4' ? 'step-error' : '']">
-              <div class="step-dot"></div>
-              <span>校级审核</span>
-            </div>
-            <div class="step-line" :class="{ 'line-active': form.status === '3' }"></div>
-            <div :class="['step', form.status === '3' ? 'step-active step-success' : '']">
-              <div class="step-dot"></div>
-              <span>审核通过</span>
-            </div>
+           <div :class="['step', form.status >= '2' ? 'step-active' : '']">
+             <div class="step-dot"></div>
+             <span>提交申报</span>
+           </div>
+           <div class="step-line" :class="{ 'line-active': form.status >= '2' }"></div>
+          <div :class="['step', form.status >= '2' ? 'step-active' : '', form.status === '4' ? 'step-error' : '']">
+            <div class="step-dot"></div>
+            <span>审核中</span>
+          </div>
+          <div class="step-line" :class="{ 'line-active': form.status >= '3' }"></div>
+          <div :class="['step', form.status >= '3' ? 'step-active step-success' : '']">
+            <div class="step-dot"></div>
+            <span>审核通过</span>
+          </div>
           </div>
           <el-tag v-if="form.status === '4'" type="danger" effect="dark" size="small"
             style="margin-top: 8px;">该成果已被驳回，请修改后重新提交</el-tag>
@@ -102,7 +97,7 @@ export default {
         collegeId: undefined,
         fileUrl: undefined,
         content: undefined,
-        status: '1'
+        status: '2'
       },
       rules: {
         title: [{ required: true, message: "标题必填", trigger: "blur" }],

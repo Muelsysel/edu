@@ -32,9 +32,9 @@ npm run build:prod # outputs to edu-ui/edu-admin
 ## Architecture Notes
 - **Gateway** (`edu-gateway`) is the single entry point. All frontend requests go through `localhost:8080`.
 - **Auth flow**: JWT (jjwt 0.9.1) + Redis sessions. `login_tokens:{uuid}` in Redis, TTL 720 min.
-- **Permission model**: `@RequiresPermissions("achievement:audit:college")` on controllers. Gateway `AuthFilter` validates token against Redis; downstream services use `HeaderInterceptor` + AOP (`PreAuthorizeAspect`).
+- **Permission model**: Gateway `AuthFilter` validates token against Redis; downstream services use `HeaderInterceptor` + AOP (`PreAuthorizeAspect`).
 - **Redis serialization**: `StringRedisSerializer` for keys, custom `FastJson2JsonRedisSerializer` for values. Auto-type whitelist restricted to `com.edu` package.
-- **Achievement status flow**: `0(draft) → 1(college audit) → 2(school audit) → 3(passed)`. Rejection goes to `4(rejected)`. Teachers can resubmit from `4` to `1`.
+- **Achievement status flow**: `0(draft) → 2(audit) → 3(passed)`. Rejection goes to `4(rejected)`. Teachers can resubmit from `4` to `2`.
 - **Data scope**: MyBatis interceptor for row-level filtering based on dept hierarchy.
 
 ## Monorepo Boundaries
@@ -72,7 +72,6 @@ edu-ui                     Vue 2 + Element UI + ECharts
 |------|----------|------------|
 | Admin | `admin` | `/admin/*`, all backend permissions |
 | Teacher | `teacher` | `/portal/declare`, `/portal/mine` |
-| College auditor | `CollegeAudit` | `/portal/audit/college` |
 | School auditor | `SchoolAudit` | `/portal/audit/school` |
 
 ## Important Constraints

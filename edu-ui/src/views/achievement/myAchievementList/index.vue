@@ -56,7 +56,7 @@
     <div class="list-card">
       <el-tabs v-model="activeTab" @tab-click="handleTabClick" class="modern-tabs">
         <el-tab-pane label="全部" name="all"></el-tab-pane>
-        <el-tab-pane label="审核中" name="1"></el-tab-pane>
+        <el-tab-pane label="审核中" name="2"></el-tab-pane>
         <el-tab-pane label="已通过" name="3"></el-tab-pane>
         <el-tab-pane label="已驳回" name="4"></el-tab-pane>
       </el-tabs>
@@ -146,12 +146,11 @@
       <!-- 审核进度条 -->
       <div v-if="form.status && form.status !== '0'" style="margin-top:16px;">
         <h4 style="margin-bottom:12px; font-family: 'Noto Serif SC', serif; color: #0f172a;">审核进度</h4>
-        <el-steps :active="stepActive" finish-status="success" align-center>
-          <el-step title="已提交" :description="parseTime(form.createTime, '{y}-{m}-{d}')"></el-step>
-          <el-step title="审核" :description="getStepDesc('1')" :status="getStepStatus('1')"></el-step>
-          <el-step title="校级审核" :description="getStepDesc('2')" :status="getStepStatus('2')"></el-step>
-          <el-step title="最终结果" :description="form.status === '3' ? '已通过' : (form.status === '4' ? '已驳回' : '等待中')" :status="form.status === '3' ? 'success' : (form.status === '4' ? 'error' : 'wait')"></el-step>
-        </el-steps>
+          <el-steps :active="stepActive" finish-status="success" align-center>
+            <el-step title="已提交" :description="parseTime(form.createTime, '{y}-{m}-{d}')"></el-step>
+            <el-step title="审核" :description="getStepDesc('2')" :status="getStepStatus('2')"></el-step>
+            <el-step title="最终结果" :description="form.status === '3' ? '已通过' : (form.status === '4' ? '已驳回' : '等待中')" :status="form.status === '3' ? 'success' : (form.status === '4' ? 'error' : 'wait')"></el-step>
+          </el-steps>
       </div>
       <div slot="footer"><el-button @click="viewOpen = false">关 闭</el-button></div>
     </el-dialog>
@@ -290,7 +289,7 @@ export default {
       listDept().then(response => { this.collegeOptions = response.data; });
     },
     statusFormat(status) {
-      const m = { '0': { label: '草稿', type: 'info' }, '1': { label: '审核中', type: 'warning' }, '2': { label: '审核中', type: 'warning' }, '3': { label: '已通过', type: 'success' }, '4': { label: '已驳回', type: 'danger' } };
+      const m = { '0': { label: '草稿', type: 'info' }, '2': { label: '审核中', type: 'warning' }, '3': { label: '已通过', type: 'success' }, '4': { label: '已驳回', type: 'danger' } };
       return m[status] || { label: '未知', type: '' };
     },
     handleTabClick(tab) {
@@ -394,9 +393,8 @@ export default {
     },
     stepActive() {
       const s = this.form.status;
-      if (s === '1') return 1;
-      if (s === '2') return 2;
-      if (s === '3' || s === '4') return 3;
+      if (s === '2') return 1;
+      if (s === '3' || s === '4') return 2;
       return 0;
     }
   }

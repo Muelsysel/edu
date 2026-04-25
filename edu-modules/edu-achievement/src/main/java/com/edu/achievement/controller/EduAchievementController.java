@@ -173,7 +173,10 @@ public class EduAchievementController extends BaseController
         if (!oldData.getTeacherId().equals(SecurityUtils.getUserId())) {
             return AjaxResult.error("你无权修改他人的成果");
         }
-        // 3. 状态检查：已通过(3)或审核中(2)不可修改
+        // 3. 状态检查：审核中(2)或已通过(3)不可修改
+        if ("2".equals(oldData.getStatus())) {
+            return AjaxResult.error("该成果审核中，不可修改");
+        }
         if ("3".equals(oldData.getStatus())) {
             return AjaxResult.error("该成果已通过审核，不可修改");
         }
