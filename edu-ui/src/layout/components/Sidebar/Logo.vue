@@ -51,7 +51,7 @@ export default {
   text-align: center;
   overflow: hidden;
   // 底部金色装饰线
-  border-bottom: 1px solid rgba(212, 168, 83, 0.15);
+  border-bottom: 1px solid #e2e8f0;
 
   & .sidebar-logo-link {
     height: 100%;
@@ -72,7 +72,7 @@ export default {
     & .sidebar-title {
       display: inline-block;
       margin: 0;
-      color: #f1f5f9;
+      color: #0f172a;
       font-weight: 700;
       font-size: 15px;
       font-family: 'Noto Serif SC', 'Inter', sans-serif;

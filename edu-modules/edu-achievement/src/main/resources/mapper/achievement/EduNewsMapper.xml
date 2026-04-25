@@ -20,6 +20,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updateBy" column="update_by" />
         <result property="updateTime" column="update_time" />
         <result property="delFlag" column="del_flag" />
+        <result property="noticeType" column="notice_type" />
     </resultMap>
 
     <sql id="selectEduNewsVo">
@@ -116,6 +117,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             and status = '0'
             <if test="keyword != null and keyword != ''">
                 and (title like concat('%', #{keyword}, '%') or summary like concat('%', #{keyword}, '%'))
+            </if>
+            <if test="noticeType != null and noticeType != ''">
+                and notice_type = #{noticeType}
             </if>
         </where>
         order by sort_weight desc, publish_time desc, news_id desc

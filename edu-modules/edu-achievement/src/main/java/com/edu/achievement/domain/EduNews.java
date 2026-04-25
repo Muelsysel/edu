@@ -59,6 +59,9 @@ public class EduNews extends BaseEntity {
     /** 删除标记(0存在 2删除) */
     private String delFlag;
 
+    /** 类型(1=通知公告 2=新闻动态) */
+    private String noticeType;
+
     /** 关键词搜索（非表字段） */
     private String keyword;
 
@@ -156,6 +159,14 @@ public class EduNews extends BaseEntity {
 
     public void setKeyword(String keyword) {
         this.keyword = keyword;
+    }
+
+    public String getNoticeType() {
+        return noticeType;
+    }
+
+    public void setNoticeType(String noticeType) {
+        this.noticeType = noticeType;
     }
 
     @Override

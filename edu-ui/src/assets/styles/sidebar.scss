@@ -94,7 +94,7 @@
 
       &:hover {
         background-color: $base-sub-menu-hover !important;
-        color: rgba(255, 255, 255, 0.95) !important;
+        color: #1e293b !important;
 
         .svg-icon {
           opacity: 1;
@@ -226,7 +226,7 @@
     margin: 2px 8px;
     &:hover {
       background-color: $base-sub-menu-hover !important;
-      color: #ffffff !important;
+      color: #1e293b !important;
     }
   }
   .el-menu-item.is-active {
@@ -240,7 +240,7 @@
     border-radius: 12px;
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
     border: 1px solid $gray-200;
-    background: $academic-navy;
+    background: #ffffff;
 
     &::-webkit-scrollbar-track-piece {
       background: $academic-slate;

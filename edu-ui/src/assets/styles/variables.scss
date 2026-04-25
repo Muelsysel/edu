@@ -37,18 +37,18 @@ $gray-800: #1e293b;
 $gray-900: #0f172a;
 
 // ---------- 侧边栏变量 ----------
-$base-menu-color:          rgba(203, 213, 225, 0.85);  // 菜单文字（浅灰白）
-$base-menu-color-active:   $academic-gold;               // 激活文字（金色）
-$base-menu-background:     $academic-navy;               // 侧栏底色
-$base-logo-title-color:    #ffffff;                      // Logo 文字
+$base-menu-color:          #334155;                      // 菜单文字
+$base-menu-color-active:   #2563eb;                      // 激活文字（学术蓝）
+$base-menu-background:     #ffffff;                      // 侧栏底色
+$base-logo-title-color:    #0f172a;                      // Logo 文字
 
 $base-menu-light-color:          $gray-600;
 $base-menu-light-background:     #ffffff;
 $base-logo-light-title-color:    $gray-900;
 
-$base-sub-menu-background:       $academic-navy;          // 子菜单底色
-$base-sub-menu-hover:            $academic-slate;         // 菜单悬浮底
-$base-menu-item-active-bg:       rgba(212, 168, 83, 0.12); // 激活底色（金色半透明）
+$base-sub-menu-background:       #ffffff;                  // 子菜单底色
+$base-sub-menu-hover:            #f1f5f9;                  // 菜单悬浮底
+$base-menu-item-active-bg:       rgba(37, 99, 235, 0.08);  // 激活底色（蓝色半透明）
 
 $base-sidebar-width: 230px;
 
