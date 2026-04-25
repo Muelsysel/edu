@@ -22,7 +22,7 @@
 
         <div class="user-actions">
           <template v-if="hasToken">
-            <el-popover placement="bottom-end" width="340" trigger="click" @show="loadNotices" popper-class="elegant-notice-popover">
+            <el-popover placement="bottom" width="300" trigger="click" @show="loadNotices" popper-class="elegant-notice-popover notice-popover-fix">
               <div class="notice-list-container">
                 <div class="notice-list-header">
                   <span class="notice-header-title">系统通知</span>
@@ -154,35 +154,35 @@ export default {
           this.noticeLoading = false;
         }).catch(() => { this.noticeLoading = false; });
     },
-     confirmNotice(item) {
-       this.$set(item, 'isRead', true);
-       request({ url: '/system/notice/read/' + item.noticeId, method: 'put' }).then(() => {
-         setTimeout(() => {
-           this.noticeList = this.noticeList.filter(n => n.noticeId !== item.noticeId);
-           this.noticeCount = Math.max(0, this.noticeCount - 1);
-         }, 300);
-       }).catch(error => {
-         // revert optimistic update
-         this.$set(item, 'isRead', false);
-         this.$message.error('标记失败，请重试');
-         console.error(error);
-       });
-     },
-     confirmAllNotices() {
-       if (this.noticeList.length === 0) return;
-       this.noticeLoading = true;
-       const promises = this.noticeList.map(item => request({ url: '/system/notice/read/' + item.noticeId, method: 'put' }));
-       Promise.all(promises).then(() => {
-         this.$message.success('全部已读');
-         this.noticeList = [];
-         this.noticeCount = 0;
-       }).catch(error => {
-         this.$message.error('部分标记失败，请重试');
-         console.error(error);
-         this.loadNotices();
-         this.fetchNoticeCount();
-       }).finally(() => { this.noticeLoading = false; })
-     },
+    confirmNotice(item) {
+      this.$set(item, 'isRead', true);
+      request({ url: '/system/notice/read/' + item.noticeId, method: 'put' }).then(() => {
+        setTimeout(() => {
+          this.noticeList = this.noticeList.filter(n => n.noticeId !== item.noticeId);
+          this.noticeCount = Math.max(0, this.noticeCount - 1);
+        }, 300);
+      }).catch(error => {
+        // revert optimistic update
+        this.$set(item, 'isRead', false);
+        this.$message.error('标记失败，请重试');
+        console.error(error);
+      });
+    },
+    confirmAllNotices() {
+      if (this.noticeList.length === 0) return;
+      this.noticeLoading = true;
+      const promises = this.noticeList.map(item => request({ url: '/system/notice/read/' + item.noticeId, method: 'put' }));
+      Promise.all(promises).then(() => {
+        this.$message.success('全部已读');
+        this.noticeList = [];
+        this.noticeCount = 0;
+      }).catch(error => {
+        this.$message.error('部分标记失败，请重试');
+        console.error(error);
+        this.loadNotices();
+        this.fetchNoticeCount();
+      }).finally(() => { this.noticeLoading = false; })
+    },
     stripHtml(html) {
       if (!html) return '';
       let tmp = document.createElement("DIV"); tmp.innerHTML = html;
@@ -328,4 +328,12 @@ export default {
 .fade-transform-leave-active, .fade-transform-enter-active { transition: all .3s; }
 .fade-transform-enter { opacity: 0; transform: translateX(-20px); }
 .fade-transform-leave-to { opacity: 0; transform: translateX(20px); }
+</style>
+
+<style>
+/* 修改 3: 全局修复 notice-popover 位置，强制提高层级 */
+.notice-popover-fix {
+  z-index: 2000 !important;
+  margin-top: 4px;
+}
 </style>

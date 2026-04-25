@@ -83,4 +83,16 @@ public interface IEduAchievementService
     public List<java.util.Map<String, Object>> countByCategoryForTeacher(Long teacherId);
 
     public int countTotalForTeacher(Long teacherId);
+
+    public int countTotalPending();
+
+    public int countTodayNew();
+
+    public int countWeekNew();
+
+    public int countMonthPassed();
+
+    public int countMonthRejected();
+
+    public int countTotalAuditRecords();
 }

@@ -153,4 +153,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="countTotalForTeacher" resultType="int">
         select count(*) from edu_achievement where del_flag = '0' and teacher_id = #{teacherId}
     </select>
+
+    <select id="countTotalPending" resultType="int">
+        select count(*) from edu_achievement where del_flag = '0' and status in ('1','2')
+    </select>
+
+    <select id="countTodayNew" resultType="int">
+        select count(*) from edu_achievement where del_flag = '0' and date(create_time) = curdate()
+    </select>
+
+    <select id="countWeekNew" resultType="int">
+        select count(*) from edu_achievement where del_flag = '0' and yearweek(create_time, 1) = yearweek(curdate(), 1)
+    </select>
+
+    <select id="countMonthPassed" resultType="int">
+        select count(*) from edu_achievement where del_flag = '0' and status = '3' and date_format(create_time, '%Y-%m') = date_format(curdate(), '%Y-%m')
+    </select>
+
+    <select id="countMonthRejected" resultType="int">
+        select count(*) from edu_audit_record where audit_result = '2' and date_format(create_time, '%Y-%m') = date_format(curdate(), '%Y-%m')
+    </select>
+
+    <select id="countTotalAuditRecords" resultType="int">
+        select count(*) from edu_audit_record
+    </select>
 </mapper>

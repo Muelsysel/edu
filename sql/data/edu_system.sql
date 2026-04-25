@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 80033
 File Encoding         : 65001
 
-Date: 2026-04-25 16:28:48
+Date: 2026-04-25 17:52:07
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -35,7 +35,7 @@ CREATE TABLE `edu_achievement` (
   `category` char(1) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT '1' COMMENT '成果类型（关联类型字典）',
   `level` varchar(30) DEFAULT NULL COMMENT '申报等级',
   PRIMARY KEY (`achievement_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb3 COMMENT='教学成果主表';
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb3 COMMENT='教学成果主表';
 
 -- ----------------------------
 -- Records of edu_achievement
@@ -43,8 +43,8 @@ CREATE TABLE `edu_achievement` (
 INSERT INTO `edu_achievement` VALUES ('3', '成果二 （1）11', '成果二', 'http://127.0.0.1:9000/edu-achievement/2026/03/03/张鹏展简历_20260303155917A005.docx,http://127.0.0.1:9000/edu-achievement/2026/03/03/张鹏展简历_20260303155920A006.pdf', '1', '100', '1', 'admin', '2026-03-03 15:59:37', 'admin', '2026-03-10 17:50:36', '0', '1', null);
 INSERT INTO `edu_achievement` VALUES ('4', '全国大学生竞赛三等奖', '获奖', 'http://127.0.0.1:9000/edu-achievement/2026/03/03/张鹏展简历_20260303161514A007.pdf', '1', '100', '3', 'admin', '2026-03-03 16:15:19', 'admin', '2026-03-03 18:24:35', '0', '3', null);
 INSERT INTO `edu_achievement` VALUES ('5', '竞赛奖', '测试', 'http://127.0.0.1:9000/edu-achievement/2026/03/03/职位证明参考模板_20260303162353A010.docx', '100', '101', '3', 'teacher', '2026-03-03 16:24:01', 'schoolAudit', '2026-03-16 15:29:43', '0', '3', null);
-INSERT INTO `edu_achievement` VALUES ('7', '2', '333', null, '1', '100', '2', 'admin', '2026-03-03 17:57:11', 'admin', '2026-03-03 18:24:43', '0', '2', null);
-INSERT INTO `edu_achievement` VALUES ('8', '4', '2232', null, '1', '101', '2', 'admin', '2026-03-03 17:57:18', 'admin', '2026-03-03 18:24:29', '0', '1', null);
+INSERT INTO `edu_achievement` VALUES ('7', '2', '333', null, '1', '100', '3', 'admin', '2026-03-03 17:57:11', 'schoolAudit', '2026-04-25 17:28:01', '0', '2', null);
+INSERT INTO `edu_achievement` VALUES ('8', '4', '2232', null, '1', '101', '3', 'admin', '2026-03-03 17:57:18', 'schoolAudit', '2026-04-25 17:19:14', '0', '1', null);
 INSERT INTO `edu_achievement` VALUES ('9', '1', '3', null, '100', '101', '1', 'teacher', '2026-03-03 17:58:59', 'admin', '2026-03-03 18:24:50', '0', '1', null);
 INSERT INTO `edu_achievement` VALUES ('10', '4', '123', null, '100', '102', '1', 'teacher', '2026-03-03 17:59:05', 'admin', '2026-03-03 18:24:24', '0', '2', null);
 INSERT INTO `edu_achievement` VALUES ('11', '123', '123', null, '100', '100', '1', 'teacher', '2026-03-03 18:05:07', '', null, '0', '4', null);
@@ -63,6 +63,21 @@ INSERT INTO `edu_achievement` VALUES ('25', 'cesss', '123', 'http://127.0.0.1:90
 INSERT INTO `edu_achievement` VALUES ('26', '123', '123', 'http://127.0.0.1:9000/edu-achievement/2026/04/22/虚拟机code_20260422150018A001.txt', '1', '103', '3', 'admin', '2026-04-22 15:00:27', 'admin', '2026-04-22 15:01:03', '0', '6', null);
 INSERT INTO `edu_achievement` VALUES ('27', '12312', '123123', 'http://127.0.0.1:9000/edu-achievement/2026/04/23/简历-张鹏展_20260423183556A001.pdf', '100', '100', '1', 'teacher', '2026-04-23 18:36:03', '', null, '0', '2', null);
 INSERT INTO `edu_achievement` VALUES ('28', '123', '123', 'http://127.0.0.1:9000/edu-achievement/2026/04/23/暑期实践证明_20260423205431A003.docx', '100', '101', '1', 'teacher', '2026-04-23 20:54:36', '', null, '0', '2', null);
+INSERT INTO `edu_achievement` VALUES ('29', '123', '1231', 'http://127.0.0.1:9000/edu-achievement/2026/04/25/张鹏展简历1     _20260425163244A001.pdf', '100', '102', '1', 'teacher', '2026-04-25 16:32:48', '', null, '0', '2', null);
+INSERT INTO `edu_achievement` VALUES ('30', '1', '123', null, '1', '101', '1', 'admin', '2026-04-25 17:21:47', '', null, '0', '1', null);
+INSERT INTO `edu_achievement` VALUES ('31', '123', '123w1', null, '1', '124', '3', 'admin', '2026-04-25 17:22:18', 'admin', '2026-04-25 17:22:43', '0', '1', null);
+INSERT INTO `edu_achievement` VALUES ('32', '123', '123', '', '100', '124', '1', 'teacher', '2026-04-25 17:26:40', '', null, '0', '1', '1');
+INSERT INTO `edu_achievement` VALUES ('33', '123', '123123', '', '100', '102', '1', 'teacher', '2026-04-25 17:26:59', '', null, '0', '1', '1');
+INSERT INTO `edu_achievement` VALUES ('34', '基于微服务架构的软件工程专业教学改革与实践', '<p>本项目针对当前高校软件工程专业教学中存在的\"重理论、轻实践\"问题，创新性地引入了基于Spring Cloud微服务架构的教学模式。通过构建一个由14个独立微服务组成的教学实验平台，学生在项目实训中能够直接参与真实的企业级系统开发。</p><p>项目自2024年9月启动以来，已覆盖3个年级、累计600余名学生，学生的工程项目实践能力显著提升。核心创新点包括：（1）将企业级微服务技术栈融入课堂教学；（2）设计分层递进的实训任务体系；（3）建立校企联动的成果评价机制。</p>', 'http://file.edu.cn/achievement/2025-001.pdf,http://file.edu.cn/achievement/2025-001-attach.docx', '2', '100', '1', 'teacher1', '2026-04-22 10:30:00', null, null, '0', '1', '1');
+INSERT INTO `edu_achievement` VALUES ('35', '以学生为中心的混合式教学模式创新——以大学英语为例', '<p>本项目探索了基于\"线上+线下\"混合式教学模式的大学英语课程改革。通过建设MOOC资源库、搭建智能学习分析平台，实现了个性化学习路径推荐和精准教学干预。</p><p>项目实践3个学期以来，学生的CET-4通过率从72%提升至89%，学习满意度和课堂参与度均有显著提升。项目成果已发表教学研究论文2篇，获得省级教学成果奖。</p>', '', '3', '101', '1', 'teacher2', '2026-04-23 14:00:00', null, null, '0', '2', '2');
+INSERT INTO `edu_achievement` VALUES ('36', '基于OBE理念的新工科计算机类人才培养模式探索', '<p>面向新工科建设需求，本项目提出了基于OBE（成果导向教育）理念的计算机类人才培养模式。主要包括：（1）以行业需求反向设计课程体系；（2）构建\"基础-核心-方向\"三级课程模块；（3）引入项目驱动和翻转课堂等教学方式。</p><p>经过2年实践，学生在全国大学生程序设计竞赛、数学建模竞赛等赛事中获奖数量同比增长40%。</p>', '', '2', '100', '1', 'teacher1', '2026-04-24 08:15:00', null, null, '0', '4', '1');
+INSERT INTO `edu_achievement` VALUES ('37', '《数据结构》课程思政教学改革的探索与成效', '<p>本项目将课程思政理念有机融入《数据结构》课程教学全过程。在讲授算法与数据结构知识的同时，通过案例教学引导学生理解\"算法公平\"、\"数据安全\"等社会议题，培养学生的科技伦理意识和社会责任感。</p><p>项目设计了12个思政教学案例，覆盖课程全部章节，获得校级课程思政示范课程认定。</p>', 'http://file.edu.cn/achievement/2025-ds-cs.pdf', '2', '100', '2', 'teacher1', '2026-04-18 16:00:00', null, null, '0', '1', '2');
+INSERT INTO `edu_achievement` VALUES ('38', '校企协同共建人工智能实践教学平台', '<p>本项目联合3家IT企业，共建了面向本科生的人工智能实践教学平台。平台集成了数据标注、模型训练、模型部署等全流程工具链，支持30个以上的实训项目。</p><p>平台投入使用后，AI相关课程的实验开出率达到100%，学生参与企业真实项目的比例从15%提升至60%。</p>', 'http://file.edu.cn/achievement/2025-ai.docx', '3', '101', '3', 'teacher2', '2026-04-20 09:45:00', 'schoolAudit', '2026-04-25 17:37:50', '0', '3', '2');
+INSERT INTO `edu_achievement` VALUES ('39', '基于项目驱动的创新创业教育模式研究', '<p>本项目构建了\"通识课程→专业融合→创业实战\"三阶段递进的创新创业教育模式。引入设计思维方法论，学生在完成专业课程学习的同时，通过跨学科团队完成创新项目孵化。</p><p>项目已培育出12个大学生创业团队，其中3个项目获得省级创业扶持资金，累计融资金额超过200万元。</p>', '', '2', '100', '3', 'teacher1', '2026-03-10 10:00:00', null, null, '0', '4', '1');
+INSERT INTO `edu_achievement` VALUES ('40', '高校体育课程\"俱乐部制\"教学模式改革实践', '<p>本项目打破了传统体育课以班级为单位的教学模式，引入俱乐部制管理模式。学生根据兴趣自主选择运动项目、教练和时间，通过积分制考核替代传统期末测试。</p><p>实施后，学生体育课出勤率从78%提升至95%，体质健康测试优秀率提高22个百分点。</p>', '', '3', '101', '3', 'teacher2', '2026-03-15 14:00:00', null, null, '0', '2', '3');
+INSERT INTO `edu_achievement` VALUES ('41', '大学物理实验教学数字化改革方案', '<p>本项目计划建设基于虚拟仿真技术的物理实验教学平台，将部分高危、高成本的实验转为虚拟仿真实验。</p>', '', '2', '100', '4', 'teacher1', '2026-04-10 11:00:00', null, null, '0', '1', '3');
+INSERT INTO `edu_achievement` VALUES ('42', '基于大语言模型的程序设计课程智能助教系统', '<p>本项目拟利用通用大语言模型技术，构建面向程序设计课程的智能助教系统，辅助教师进行代码批改并提供个性化学习建议。</p>', '', '2', '100', '0', 'teacher1', '2026-04-24 20:00:00', null, null, '0', '4', '0');
+INSERT INTO `edu_achievement` VALUES ('43', '新工科背景下物联网工程专业实践教学体系构建', '<p>面向物联网工程专业实践教学需求，构建了\"基础感知→网络传输→数据处理→应用开发\"四层递进的实践教学体系。</p>', '', '2', '100', '1', 'teacher1', '2026-04-25 17:37:15', null, null, '0', '3', '2');
 
 -- ----------------------------
 -- Table structure for edu_audit_record
@@ -80,7 +95,7 @@ CREATE TABLE `edu_audit_record` (
   PRIMARY KEY (`record_id`),
   KEY `idx_achievement_id` (`achievement_id`),
   KEY `idx_auditor_id` (`auditor_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb3 COMMENT='审核记录表';
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb3 COMMENT='审核记录表';
 
 -- ----------------------------
 -- Records of edu_audit_record
@@ -101,6 +116,11 @@ INSERT INTO `edu_audit_record` VALUES ('13', '25', '1', '1', '123', '1', 'admin'
 INSERT INTO `edu_audit_record` VALUES ('14', '25', '2', '1', '21312', '1', 'admin', '2026-04-21 18:21:35');
 INSERT INTO `edu_audit_record` VALUES ('15', '26', '1', '1', '', '1', 'admin', '2026-04-22 15:00:57');
 INSERT INTO `edu_audit_record` VALUES ('16', '26', '2', '1', '', '1', 'admin', '2026-04-22 15:01:03');
+INSERT INTO `edu_audit_record` VALUES ('17', '8', '2', '1', '123', '103', 'schoolAudit', '2026-04-25 17:19:14');
+INSERT INTO `edu_audit_record` VALUES ('18', '31', '1', '1', '123', '1', 'admin', '2026-04-25 17:22:25');
+INSERT INTO `edu_audit_record` VALUES ('19', '31', '2', '1', '1231', '1', 'admin', '2026-04-25 17:22:43');
+INSERT INTO `edu_audit_record` VALUES ('20', '7', '2', '1', '123', '103', 'schoolAudit', '2026-04-25 17:28:01');
+INSERT INTO `edu_audit_record` VALUES ('21', '38', '2', '1', '', '103', 'schoolAudit', '2026-04-25 17:37:50');
 
 -- ----------------------------
 -- Table structure for edu_news
@@ -126,7 +146,7 @@ CREATE TABLE `edu_news` (
   PRIMARY KEY (`news_id`),
   KEY `idx_publish` (`publish_portal`,`status`,`del_flag`),
   KEY `idx_sort_time` (`sort_weight`,`publish_time`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='门户新闻表';
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='门户新闻表';
 
 -- ----------------------------
 -- Records of edu_news
@@ -140,6 +160,14 @@ INSERT INTO `edu_news` VALUES ('6', '计算机学院成功举办\"AI+教育\"教
 INSERT INTO `edu_news` VALUES ('7', '教务处组织2026年春季学期期中教学检查', '本次检查覆盖全校18个教学单位，重点考察课堂教学质量和实践教学环节。', 'http://127.0.0.1:9000/edu-achievement/2026/04/23/ccb7e2ddbe13b53276_20260423205208A002.jpg', '<p>为进一步规范教学管理，提升教学质量，教务处于4月15日-17日组织开展了2026年春季学期期中教学检查工作。</p><p>本次检查采取学院自查与学校抽查相结合的方式，覆盖了全校18个教学单位。检查组深入课堂听课40余节，查阅教学档案200余份，并与各学院开展了专题座谈。</p><p>检查结果显示，本学期教学秩序整体良好，教师备课充分，学生到课率保持在95%以上。</p>', '2026-04-17 11:00:00', '145', '1', '85', '0', '2', 'admin', '2026-04-17 11:00:00', '', null, '0');
 INSERT INTO `edu_news` VALUES ('8', '我校获批4项省级教学改革研究重点项目', '涵盖课程思政、实践教学、创新创业教育等领域，资助经费总额达80万元。', 'http://127.0.0.1:9000/edu-achievement/2026/04/23/ccb7e2ddbe13b53276_20260423205208A002.jpg', '<p>近日，省教育厅公布了2026年度省级教学改革研究项目立项名单，我校共有4个项目获批为重点项目，涵盖课程思政建设、实践教学体系改革、创新创业教育模式探索、教学质量保障机制优化等领域，资助经费总额达80万元。</p><p>教务处负责人表示，学校将以此次立项为契机，进一步深化教育教学改革，推进一流本科教育建设。</p>', '2026-04-15 08:30:00', '194', '1', '80', '0', '2', 'admin', '2026-04-15 08:30:00', '', null, '0');
 INSERT INTO `edu_news` VALUES ('9', '外国语学院推出\"外语+\"复合型人才培养新模式', '融合外语与商务、法律、信息技术等专业知识，培养具有国际视野的高素质人才。', 'http://127.0.0.1:9000/edu-achievement/2026/04/23/ccb7e2ddbe13b53276_20260423205208A002.jpg', '<p>外国语学院近日正式发布\"外语+\"复合型人才培养方案，在传统外语专业基础上，新增商务英语、法律英语、科技翻译等交叉方向，通过校企合作、国际交流等多种途径，培养适应新时代需求的高素质复合型外语人才。</p><p>该方案已通过学校教学指导委员会审议，将于2026年秋季学期正式实施。</p>', '2026-04-14 09:00:00', '108', '1', '75', '0', '2', 'admin', '2026-04-14 09:00:00', '', null, '0');
+INSERT INTO `edu_news` VALUES ('10', '关于2026年度教学成果奖申报工作的通知', '2026年度校级教学成果奖申报工作即日启动，请各单位组织教师按时提交材料。', '', '<p>各学院、各单位：</p><p>根据学校工作安排，2026年度校级教学成果奖申报工作即日启动。现将有关事项通知如下：</p><p>一、申报范围：全校在职教师及教学管理人员。</p><p>二、申报时间：即日起至2026年5月31日。</p><p>三、申报方式：登录教学成果管理门户，在线提交申报材料。</p>', '2026-04-20 09:00:00', '156', '1', '100', '0', '1', 'admin', '2026-04-20 09:00:00', '', null, '0');
+INSERT INTO `edu_news` VALUES ('11', '关于调整院级审核评分细则的说明', '为进一步规范审核流程，教务处对院级审核评分标准进行了优化调整。', '', '<p>各学院审核员：</p><p>为提升教学成果审核的规范性与公正性，教务处对院级审核评分细则进行了以下调整：</p><p>1. 增加创新性权重，由原15%提升至25%；</p><p>2. 新增推广应用效果评估维度；</p><p>3. 细化教学改革类成果的评价指标。</p><p>请各院级审核员认真学习最新评分标准，确保审核工作质量。</p>', '2026-04-18 14:30:00', '89', '1', '95', '0', '1', 'admin', '2026-04-18 14:30:00', '', null, '0');
+INSERT INTO `edu_news` VALUES ('12', '关于系统升级维护的公告', '教学成果管理平台将于4月25日凌晨进行版本升级，届时将暂停服务约2小时。', '', '<p>各位用户：</p><p>为提升系统性能与用户体验，教学成果管理平台将于2026年4月25日（周六）凌晨2:00-4:00进行版本升级维护。维护期间系统将暂停服务。</p><p>升级内容包括：</p><p>1. 优化申报表单交互体验；</p><p>2. 新增批量审批功能；</p><p>3. 修复若干已知问题。</p><p>请您提前做好工作安排，如有紧急需求请联系教务处信息科。</p>', '2026-04-22 16:00:00', '234', '1', '90', '0', '1', 'admin', '2026-04-22 16:00:00', '', null, '0');
+INSERT INTO `edu_news` VALUES ('13', '我校在2026年度全国高校教学成果展中斩获佳绩', '我校选送的5项教学成果全部获奖，其中一等奖2项、二等奖3项，获奖总数位列全省高校前列。', '', '<p>近日，由教育部高等学校教学指导委员会主办的2026年度全国高校教学成果展在北京圆满落幕。我校选送的5项教学成果全部获奖，其中《基于OBE理念的新工科人才培养模式改革与实践》《以学生为中心的混合式教学模式创新》荣获一等奖；《校企协同育人机制探索》等3项成果荣获二等奖。</p><p>此次获奖充分展示了我校在教育教学改革方面的丰硕成果，为学校赢得了良好的社会声誉。</p>', '2026-04-21 10:00:00', '328', '1', '100', '0', '2', 'admin', '2026-04-21 10:00:00', '', null, '0');
+INSERT INTO `edu_news` VALUES ('14', '计算机学院成功举办\"AI+教育\"教学创新研讨会', '来自校内外80余名教师参加研讨，围绕人工智能技术在教学中的应用展开深入交流。', '', '<p>4月19日下午，计算机科学与技术学院在学术报告厅举办\"AI+教育\"教学创新研讨会。来自全校各学院及兄弟院校的80余名教师参加了本次研讨。</p><p>研讨会邀请了3位校外专家作主题报告，分别就大语言模型辅助教学、智能评测系统研发、自适应学习平台建设等前沿话题进行了分享。与会教师围绕AI技术在课程设计、教学实施、学习评价等环节的应用展开了热烈讨论。</p>', '2026-04-19 15:30:00', '217', '1', '95', '0', '2', 'admin', '2026-04-19 15:30:00', '', null, '0');
+INSERT INTO `edu_news` VALUES ('15', '教务处组织2026年春季学期期中教学检查', '本次检查覆盖全校18个教学单位，重点考察课堂教学质量和实践教学环节。', '', '<p>为进一步规范教学管理，提升教学质量，教务处于4月15日-17日组织开展了2026年春季学期期中教学检查工作。</p><p>本次检查采取学院自查与学校抽查相结合的方式，覆盖了全校18个教学单位。检查组深入课堂听课40余节，查阅教学档案200余份，并与各学院开展了专题座谈。</p><p>检查结果显示，本学期教学秩序整体良好，教师备课充分，学生到课率保持在95%以上。</p>', '2026-04-17 11:00:00', '145', '1', '85', '0', '2', 'admin', '2026-04-17 11:00:00', '', null, '0');
+INSERT INTO `edu_news` VALUES ('16', '我校获批4项省级教学改革研究重点项目', '涵盖课程思政、实践教学、创新创业教育等领域，资助经费总额达80万元。', '', '<p>近日，省教育厅公布了2026年度省级教学改革研究项目立项名单，我校共有4个项目获批为重点项目，涵盖课程思政建设、实践教学体系改革、创新创业教育模式探索、教学质量保障机制优化等领域，资助经费总额达80万元。</p><p>教务处负责人表示，学校将以此次立项为契机，进一步深化教育教学改革，推进一流本科教育建设。</p>', '2026-04-15 08:30:00', '192', '1', '80', '0', '2', 'admin', '2026-04-15 08:30:00', '', null, '0');
+INSERT INTO `edu_news` VALUES ('17', '外国语学院推出\"外语+\"复合型人才培养新模式', '融合外语与商务、法律、信息技术等专业知识，培养具有国际视野的高素质人才。', '', '<p>外国语学院近日正式发布\"外语+\"复合型人才培养方案，在传统外语专业基础上，新增商务英语、法律英语、科技翻译等交叉方向，通过校企合作、国际交流等多种途径，培养适应新时代需求的高素质复合型外语人才。</p><p>该方案已通过学校教学指导委员会审议，将于2026年秋季学期正式实施。</p>', '2026-04-14 09:00:00', '108', '1', '75', '0', '2', 'admin', '2026-04-14 09:00:00', '', null, '0');
 
 -- ----------------------------
 -- Table structure for gen_table
@@ -605,7 +633,7 @@ CREATE TABLE `sys_logininfor` (
   PRIMARY KEY (`info_id`),
   KEY `idx_sys_logininfor_s` (`status`),
   KEY `idx_sys_logininfor_lt` (`access_time`)
-) ENGINE=InnoDB AUTO_INCREMENT=318 DEFAULT CHARSET=utf8mb3 COMMENT='系统访问记录';
+) ENGINE=InnoDB AUTO_INCREMENT=332 DEFAULT CHARSET=utf8mb3 COMMENT='系统访问记录';
 
 -- ----------------------------
 -- Records of sys_logininfor
@@ -828,6 +856,20 @@ INSERT INTO `sys_logininfor` VALUES ('314', 'teacher', '127.0.0.1', '0', '退出
 INSERT INTO `sys_logininfor` VALUES ('315', 'admin', '127.0.0.1', '0', '登录成功', '2026-04-25 15:46:06');
 INSERT INTO `sys_logininfor` VALUES ('316', 'admin', '127.0.0.1', '0', '退出成功', '2026-04-25 15:46:30');
 INSERT INTO `sys_logininfor` VALUES ('317', 'teacher', '127.0.0.1', '0', '登录成功', '2026-04-25 15:46:37');
+INSERT INTO `sys_logininfor` VALUES ('318', 'teacher', '127.0.0.1', '0', '退出成功', '2026-04-25 17:02:06');
+INSERT INTO `sys_logininfor` VALUES ('319', 'SchoolAudit', '127.0.0.1', '0', '登录成功', '2026-04-25 17:02:23');
+INSERT INTO `sys_logininfor` VALUES ('320', 'schoolAudit', '127.0.0.1', '0', '退出成功', '2026-04-25 17:20:50');
+INSERT INTO `sys_logininfor` VALUES ('321', 'admin', '127.0.0.1', '0', '登录成功', '2026-04-25 17:20:59');
+INSERT INTO `sys_logininfor` VALUES ('322', 'admin', '127.0.0.1', '0', '退出成功', '2026-04-25 17:25:35');
+INSERT INTO `sys_logininfor` VALUES ('323', 'CollegeAudit', '127.0.0.1', '0', '登录成功', '2026-04-25 17:25:56');
+INSERT INTO `sys_logininfor` VALUES ('324', 'collegeAudit', '127.0.0.1', '0', '退出成功', '2026-04-25 17:26:16');
+INSERT INTO `sys_logininfor` VALUES ('325', 'teacher', '127.0.0.1', '0', '登录成功', '2026-04-25 17:26:26');
+INSERT INTO `sys_logininfor` VALUES ('326', 'teacher', '127.0.0.1', '0', '退出成功', '2026-04-25 17:27:01');
+INSERT INTO `sys_logininfor` VALUES ('327', 'CollegeAudit', '127.0.0.1', '0', '登录成功', '2026-04-25 17:27:10');
+INSERT INTO `sys_logininfor` VALUES ('328', 'collegeAudit', '127.0.0.1', '0', '退出成功', '2026-04-25 17:27:33');
+INSERT INTO `sys_logininfor` VALUES ('329', 'SchoolAudit', '127.0.0.1', '0', '登录成功', '2026-04-25 17:27:39');
+INSERT INTO `sys_logininfor` VALUES ('330', 'schoolAudit', '127.0.0.1', '0', '退出成功', '2026-04-25 17:39:17');
+INSERT INTO `sys_logininfor` VALUES ('331', 'CollegeAudit', '127.0.0.1', '0', '登录成功', '2026-04-25 17:39:30');
 
 -- ----------------------------
 -- Table structure for sys_menu
@@ -1032,7 +1074,7 @@ CREATE TABLE `sys_oper_log` (
   KEY `idx_sys_oper_log_bt` (`business_type`),
   KEY `idx_sys_oper_log_s` (`status`),
   KEY `idx_sys_oper_log_ot` (`oper_time`)
-) ENGINE=InnoDB AUTO_INCREMENT=473 DEFAULT CHARSET=utf8mb3 COMMENT='操作日志记录';
+) ENGINE=InnoDB AUTO_INCREMENT=483 DEFAULT CHARSET=utf8mb3 COMMENT='操作日志记录';
 
 -- ----------------------------
 -- Records of sys_oper_log
@@ -1410,6 +1452,16 @@ INSERT INTO `sys_oper_log` VALUES ('469', '通知公告', '3', 'com.edu.system.c
 INSERT INTO `sys_oper_log` VALUES ('470', '菜单管理', '2', 'com.edu.system.controller.SysMenuController.edit()', 'PUT', '1', 'admin', null, '/menu', '127.0.0.1', '', '{\"children\":[],\"component\":\"\",\"createTime\":\"2026-03-02 22:42:14\",\"icon\":\"log\",\"isCache\":\"0\",\"isFrame\":\"1\",\"menuId\":108,\"menuName\":\"日志管理\",\"menuType\":\"M\",\"orderNum\":9,\"params\":{},\"parentId\":1,\"path\":\"log\",\"perms\":\"\",\"query\":\"\",\"routeName\":\"\",\"status\":\"0\",\"updateBy\":\"admin\",\"visible\":\"0\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-04-25 00:33:46', '5');
 INSERT INTO `sys_oper_log` VALUES ('471', '通知公告', '3', 'com.edu.system.controller.SysNoticeController.remove()', 'DELETE', '1', 'admin', null, '/notice/11,12,13,14,15,16,17,18,19,20', '127.0.0.1', '', '[11,12,13,14,15,16,17,18,19,20] ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-04-25 00:34:33', '2');
 INSERT INTO `sys_oper_log` VALUES ('472', '通知公告', '3', 'com.edu.system.controller.SysNoticeController.remove()', 'DELETE', '1', 'admin', null, '/notice/21,22,23,24', '127.0.0.1', '', '[21,22,23,24] ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-04-25 00:34:38', '3');
+INSERT INTO `sys_oper_log` VALUES ('473', '我的成果-新增', '1', 'com.edu.achievement.controller.EduAchievementController.teacherAdd()', 'POST', '1', 'teacher', null, '/achievement/teacherAddAchievement', '127.0.0.1', '', '{\"achievementId\":29,\"category\":\"2\",\"collegeId\":102,\"content\":\"1231\",\"createBy\":\"teacher\",\"createTime\":\"2026-04-25 16:32:48\",\"fileUrl\":\"http://127.0.0.1:9000/edu-achievement/2026/04/25/张鹏展简历1     _20260425163244A001.pdf\",\"params\":{},\"status\":\"1\",\"teacherId\":100,\"title\":\"123\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-04-25 16:32:48', '49');
+INSERT INTO `sys_oper_log` VALUES ('474', 'School Audit', '2', 'com.edu.achievement.controller.EduAuditRecordController.schoolHandle()', 'POST', '1', 'schoolAudit', null, '/audit/school/handle', '127.0.0.1', '', '{\"achievementId\":8,\"achievementTitle\":\"4\",\"auditLevel\":\"2\",\"auditOpinion\":\"123\",\"auditResult\":\"1\",\"auditorId\":103,\"auditorName\":\"schoolAudit\",\"createTime\":\"2026-04-25 17:19:14\",\"params\":{},\"recordId\":17} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-04-25 17:19:14', '41');
+INSERT INTO `sys_oper_log` VALUES ('475', '我的成果-新增', '1', 'com.edu.achievement.controller.EduAchievementController.teacherAdd()', 'POST', '1', 'admin', null, '/achievement/teacherAddAchievement', '127.0.0.1', '', '{\"achievementId\":30,\"category\":\"1\",\"collegeId\":101,\"content\":\"123\",\"createBy\":\"admin\",\"createTime\":\"2026-04-25 17:21:47\",\"params\":{},\"status\":\"1\",\"teacherId\":1,\"title\":\"1\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-04-25 17:21:47', '7');
+INSERT INTO `sys_oper_log` VALUES ('476', '我的成果-新增', '1', 'com.edu.achievement.controller.EduAchievementController.teacherAdd()', 'POST', '1', 'admin', null, '/achievement/teacherAddAchievement', '127.0.0.1', '', '{\"achievementId\":31,\"category\":\"1\",\"collegeId\":124,\"content\":\"123w1\",\"createBy\":\"admin\",\"createTime\":\"2026-04-25 17:22:17\",\"params\":{},\"status\":\"1\",\"teacherId\":1,\"title\":\"123\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-04-25 17:22:17', '5');
+INSERT INTO `sys_oper_log` VALUES ('477', 'College Audit', '2', 'com.edu.achievement.controller.EduAuditRecordController.collegeHandle()', 'POST', '1', 'admin', null, '/audit/college/handle', '127.0.0.1', '', '{\"achievementId\":31,\"achievementTitle\":\"123\",\"auditLevel\":\"1\",\"auditOpinion\":\"123\",\"auditResult\":\"1\",\"auditorId\":1,\"auditorName\":\"admin\",\"createTime\":\"2026-04-25 17:22:24\",\"params\":{},\"recordId\":18} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-04-25 17:22:24', '7');
+INSERT INTO `sys_oper_log` VALUES ('478', 'School Audit', '2', 'com.edu.achievement.controller.EduAuditRecordController.schoolHandle()', 'POST', '1', 'admin', null, '/audit/school/handle', '127.0.0.1', '', '{\"achievementId\":31,\"achievementTitle\":\"123\",\"auditLevel\":\"2\",\"auditOpinion\":\"1231\",\"auditResult\":\"1\",\"auditorId\":1,\"auditorName\":\"admin\",\"createTime\":\"2026-04-25 17:22:43\",\"params\":{},\"recordId\":19} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-04-25 17:22:43', '6');
+INSERT INTO `sys_oper_log` VALUES ('479', '我的成果-新增', '1', 'com.edu.achievement.controller.EduAchievementController.teacherAdd()', 'POST', '1', 'teacher', null, '/achievement/teacherAddAchievement', '127.0.0.1', '', '{\"achievementId\":32,\"category\":\"1\",\"collegeId\":124,\"content\":\"123\",\"createBy\":\"teacher\",\"createTime\":\"2026-04-25 17:26:40\",\"fileUrl\":\"\",\"level\":\"1\",\"params\":{},\"status\":\"1\",\"teacherId\":100,\"title\":\"123\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-04-25 17:26:40', '3');
+INSERT INTO `sys_oper_log` VALUES ('480', '我的成果-新增', '1', 'com.edu.achievement.controller.EduAchievementController.teacherAdd()', 'POST', '1', 'teacher', null, '/achievement/teacherAddAchievement', '127.0.0.1', '', '{\"achievementId\":33,\"category\":\"1\",\"collegeId\":102,\"content\":\"123123\",\"createBy\":\"teacher\",\"createTime\":\"2026-04-25 17:26:58\",\"fileUrl\":\"\",\"level\":\"1\",\"params\":{},\"status\":\"1\",\"teacherId\":100,\"title\":\"123\"} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-04-25 17:26:58', '3');
+INSERT INTO `sys_oper_log` VALUES ('481', 'School Audit', '2', 'com.edu.achievement.controller.EduAuditRecordController.schoolHandle()', 'POST', '1', 'schoolAudit', null, '/audit/school/handle', '127.0.0.1', '', '{\"achievementId\":7,\"achievementTitle\":\"2\",\"auditLevel\":\"2\",\"auditOpinion\":\"123\",\"auditResult\":\"1\",\"auditorId\":103,\"auditorName\":\"schoolAudit\",\"createTime\":\"2026-04-25 17:28:00\",\"params\":{},\"recordId\":20} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-04-25 17:28:00', '4');
+INSERT INTO `sys_oper_log` VALUES ('482', 'School Audit', '2', 'com.edu.achievement.controller.EduAuditRecordController.schoolHandle()', 'POST', '1', 'schoolAudit', null, '/audit/school/handle', '127.0.0.1', '', '{\"achievementId\":38,\"achievementTitle\":\"校企协同共建人工智能实践教学平台\",\"auditLevel\":\"2\",\"auditOpinion\":\"\",\"auditResult\":\"1\",\"auditorId\":103,\"auditorName\":\"schoolAudit\",\"createTime\":\"2026-04-25 17:37:49\",\"params\":{},\"recordId\":21} ', '{\"msg\":\"操作成功\",\"code\":200}', '0', null, '2026-04-25 17:37:49', '39');
 
 -- ----------------------------
 -- Table structure for sys_post
@@ -1659,12 +1711,12 @@ CREATE TABLE `sys_user` (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES ('1', '124', 'admin', 'zpz', '00', '2426481498@qq.com', '13733732086', '0', 'http://127.0.0.1:9000/edu-achievement/2026/04/23/ccb7e2ddbe13b53276_20260423193543A001.jpg', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2026-04-25 15:46:07', '2026-03-02 22:42:14', 'admin', '2026-03-02 22:42:14', '', '2026-04-23 19:35:43', '管理员');
+INSERT INTO `sys_user` VALUES ('1', '124', 'admin', 'zpz', '00', '2426481498@qq.com', '13733732086', '0', 'http://127.0.0.1:9000/edu-achievement/2026/04/23/ccb7e2ddbe13b53276_20260423193543A001.jpg', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2026-04-25 17:20:59', '2026-03-02 22:42:14', 'admin', '2026-03-02 22:42:14', '', '2026-04-23 19:35:43', '管理员');
 INSERT INTO `sys_user` VALUES ('2', '124', 'ry', '若依', '00', 'ry@qq.com', '15666666666', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '2', '127.0.0.1', '2026-03-02 22:42:14', '2026-03-02 22:42:14', 'admin', '2026-03-02 22:42:14', 'admin', '2026-03-15 19:23:41', '测试员');
-INSERT INTO `sys_user` VALUES ('100', '124', 'teacher', '普通教师', '00', '', '', '0', 'http://127.0.0.1:9000/edu-achievement/2026/03/03/ENDFIELD_SHARE_1772350628_20260303200033A011.png', '$2a$10$Z99Utz1KvcRAUrki4kE72e4NJ5edbJH0x0JDVSlmKnO4pYUmPZAw6', '0', '0', '127.0.0.1', '2026-04-25 15:46:38', null, 'admin', '2026-03-03 15:41:22', 'admin', '2026-04-22 15:10:14', null);
+INSERT INTO `sys_user` VALUES ('100', '124', 'teacher', '普通教师', '00', '', '', '0', 'http://127.0.0.1:9000/edu-achievement/2026/03/03/ENDFIELD_SHARE_1772350628_20260303200033A011.png', '$2a$10$Z99Utz1KvcRAUrki4kE72e4NJ5edbJH0x0JDVSlmKnO4pYUmPZAw6', '0', '0', '127.0.0.1', '2026-04-25 17:26:26', null, 'admin', '2026-03-03 15:41:22', 'admin', '2026-04-22 15:10:14', null);
 INSERT INTO `sys_user` VALUES ('101', '124', 'zpz', '管理员', '00', '', '', '0', '', '$2a$10$/uxUKk8jfbX4aRjpBNaU0eaKjEOAZRdS6blfhvnJ6489C9uHY3g.e', '0', '0', '127.0.0.1', '2026-03-03 20:04:58', null, 'admin', '2026-03-03 20:03:08', 'admin', '2026-04-22 15:10:18', null);
-INSERT INTO `sys_user` VALUES ('102', '124', 'collegeAudit', '学院审核', '00', '', '', '0', '', '$2a$10$edIKyALN2SoYyV5squnr1O4wySJk6dQBMM.c87SywEDSGKI5UgPRa', '0', '0', '127.0.0.1', '2026-04-24 18:20:16', null, 'admin', '2026-03-15 19:10:14', 'admin', '2026-04-22 15:10:24', null);
-INSERT INTO `sys_user` VALUES ('103', '1112', 'schoolAudit', '学校审核', '00', '', '', '0', '', '$2a$10$r1MHno1QAD2AJzJLqu202eQLt8Zu1LFRATjtM4Eki1tQ4/5VRDFhq', '0', '0', '127.0.0.1', '2026-04-21 17:52:21', null, 'admin', '2026-03-15 19:10:30', 'admin', '2026-04-22 15:10:27', null);
+INSERT INTO `sys_user` VALUES ('102', '124', 'collegeAudit', '学院审核', '00', '', '', '0', '', '$2a$10$edIKyALN2SoYyV5squnr1O4wySJk6dQBMM.c87SywEDSGKI5UgPRa', '0', '0', '127.0.0.1', '2026-04-25 17:39:30', null, 'admin', '2026-03-15 19:10:14', 'admin', '2026-04-22 15:10:24', null);
+INSERT INTO `sys_user` VALUES ('103', '1112', 'schoolAudit', '学校审核', '00', '', '', '0', '', '$2a$10$r1MHno1QAD2AJzJLqu202eQLt8Zu1LFRATjtM4Eki1tQ4/5VRDFhq', '0', '0', '127.0.0.1', '2026-04-25 17:27:39', null, 'admin', '2026-03-15 19:10:30', 'admin', '2026-04-22 15:10:27', null);
 
 -- ----------------------------
 -- Table structure for sys_user_post

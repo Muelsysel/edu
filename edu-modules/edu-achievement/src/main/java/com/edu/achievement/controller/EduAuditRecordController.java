@@ -277,6 +277,12 @@ public class EduAuditRecordController extends BaseController
 
         AjaxResult ajax = AjaxResult.success();
         ajax.put("total", total);
+        ajax.put("totalCount", eduAchievementService.countTotalAuditRecords());
+        ajax.put("totalPending", eduAchievementService.countTotalPending());
+        ajax.put("todayNew", eduAchievementService.countTodayNew());
+        ajax.put("weekNew", eduAchievementService.countWeekNew());
+        ajax.put("monthPassed", eduAchievementService.countMonthPassed());
+        ajax.put("monthRejected", eduAchievementService.countMonthRejected());
         ajax.put("statusData", statusMap);
         ajax.put("categoryData", categoryMap);
         ajax.put("collegeData", collegeMap);

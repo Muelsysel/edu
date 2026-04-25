@@ -168,4 +168,22 @@ public class EduAchievementServiceImpl implements IEduAchievementService
     public int countTotalForTeacher(Long teacherId) {
         return eduAchievementMapper.countTotalForTeacher(teacherId);
     }
+
+    @Override
+    public int countTotalPending() { return eduAchievementMapper.countTotalPending(); }
+
+    @Override
+    public int countTodayNew() { return eduAchievementMapper.countTodayNew(); }
+
+    @Override
+    public int countWeekNew() { return eduAchievementMapper.countWeekNew(); }
+
+    @Override
+    public int countMonthPassed() { return eduAchievementMapper.countMonthPassed(); }
+
+    @Override
+    public int countMonthRejected() { return eduAchievementMapper.countMonthRejected(); }
+
+    @Override
+    public int countTotalAuditRecords() { return eduAchievementMapper.countTotalAuditRecords(); }
 }

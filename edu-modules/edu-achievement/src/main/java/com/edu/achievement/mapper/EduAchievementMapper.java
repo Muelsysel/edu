@@ -85,4 +85,22 @@ public interface EduAchievementMapper
     public List<java.util.Map<String, Object>> countByCategoryForTeacher(Long teacherId);
 
     public int countTotalForTeacher(Long teacherId);
+
+    /** 审核看板：待审核总数 */
+    public int countTotalPending();
+
+    /** 审核看板：今日新增 */
+    public int countTodayNew();
+
+    /** 审核看板：本周新增 */
+    public int countWeekNew();
+
+    /** 审核看板：本月通过 */
+    public int countMonthPassed();
+
+    /** 审核看板：本月驳回数（按 audit_record 统计） */
+    public int countMonthRejected();
+
+    /** 审核看板：审核记录总数 */
+    public int countTotalAuditRecords();
 }
