@@ -55,6 +55,10 @@ public class EduAchievement extends BaseEntity
     @Excel(name = "成果类型", readConverterExp = "1=论文,2=教材,3=竞赛,4=教改")
     private String category;
 
+    /** 申报等级 (如特等奖、一等奖等，字典 edu_achievement_level) */
+    @Excel(name = "申报等级")
+    private String level;
+
     /**
      * 非数据库字段：教师姓名（通过 LEFT JOIN sys_user 查询获得）
      * 用于前端显示和 Excel 导出
@@ -75,6 +79,14 @@ public class EduAchievement extends BaseEntity
     }
     public String getCategory() {
         return category;
+    }
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
     }
 
     public void setAchievementId(Long achievementId)
@@ -185,6 +197,7 @@ public class EduAchievement extends BaseEntity
             .append("updateTime", getUpdateTime())
             .append("delFlag", getDelFlag())
             .append("category", getCategory())
+            .append("level", getLevel())
             .toString();
     }
 }

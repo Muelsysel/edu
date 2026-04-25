@@ -18,12 +18,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updateTime"    column="update_time"    />
         <result property="delFlag"    column="del_flag"    />
         <result property="category"    column="category"    />
+        <result property="level"       column="level"       />
         <result property="teacherName"  column="nick_name"    />
     </resultMap>
 
     <sql id="selectEduAchievementVo">
         select a.achievement_id, a.title, a.content, a.file_url, a.teacher_id, a.college_id,
-               a.status, a.create_by, a.create_time, a.update_by, a.update_time, a.del_flag, a.category,
+               a.status, a.create_by, a.create_time, a.update_by, a.update_time, a.del_flag, a.category, a.level,
                u.nick_name
         from edu_achievement a
         left join sys_user u on a.teacher_id = u.user_id
@@ -47,7 +48,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                     )
                 )
             </if>
-            <if test="status != null  and status != ''"> and a.status = #{status}</if>
+            <if test="status != null  and status != ''"> and find_in_set(a.status, #{status})</if>
             <if test="category != null  and category != ''"> and a.category = #{category}</if>
         </where>
         order by a.create_time desc, a.achievement_id desc
@@ -73,6 +74,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateTime != null">update_time,</if>
             <if test="delFlag != null">del_flag,</if>
             <if test="category != null">category,</if>
+            <if test="level != null">level,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="title != null and title != ''">#{title},</if>
@@ -87,6 +89,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateTime != null">#{updateTime},</if>
             <if test="delFlag != null">#{delFlag},</if>
             <if test="category != null">#{category},</if>
+            <if test="level != null">#{level},</if>
          </trim>
     </insert>
 
@@ -105,6 +108,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="updateTime != null">update_time = #{updateTime},</if>
             <if test="delFlag != null">del_flag = #{delFlag},</if>
             <if test="category != null">category = #{category},</if>
+            <if test="level != null">level = #{level},</if>
         </trim>
         where achievement_id = #{achievementId}
     </update>

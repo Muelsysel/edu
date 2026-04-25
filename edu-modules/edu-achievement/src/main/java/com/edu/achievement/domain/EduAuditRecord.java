@@ -54,6 +54,18 @@ public class EduAuditRecord extends BaseEntity
     /** 非数据库字段：学院ID */
     private Long collegeId;
 
+    /** 前端别名：审核结果（映射 auditResult） */
+    private String auditStatus;
+
+    /** 前端别名：审核意见（映射 auditOpinion） */
+    private String auditComment;
+
+    /** 前端别名：审核人姓名（映射 auditorName） */
+    private String auditBy;
+
+    /** 前端别名：审核时间（映射 createTime） */
+    private String auditTime;
+
     public Long getRecordId() {
         return recordId;
     }
@@ -132,6 +144,38 @@ public class EduAuditRecord extends BaseEntity
 
     public void setCollegeId(Long collegeId) {
         this.collegeId = collegeId;
+    }
+
+    public String getAuditStatus() {
+        return auditStatus;
+    }
+
+    public void setAuditStatus(String auditStatus) {
+        this.auditStatus = auditStatus;
+    }
+
+    public String getAuditComment() {
+        return auditComment;
+    }
+
+    public void setAuditComment(String auditComment) {
+        this.auditComment = auditComment;
+    }
+
+    public String getAuditBy() {
+        return auditBy;
+    }
+
+    public void setAuditBy(String auditBy) {
+        this.auditBy = auditBy;
+    }
+
+    public String getAuditTime() {
+        return auditTime;
+    }
+
+    public void setAuditTime(String auditTime) {
+        this.auditTime = auditTime;
     }
 
     @Override

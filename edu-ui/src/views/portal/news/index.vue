@@ -1,13 +1,14 @@
 <template>
   <div class="news-container">
     <div class="elegant-panel search-header">
-      <el-input v-model="queryParams.keyword" placeholder="搜索新闻标题或摘要..." clearable prefix-icon="el-icon-search" class="search-input" @keyup.enter.native="handleQuery">
+      <h2 class="page-title">{{ pageTitle }}</h2>
+      <el-input v-model="queryParams.keyword" placeholder="搜索标题或摘要..." clearable prefix-icon="el-icon-search" class="search-input" @keyup.enter.native="handleQuery">
         <el-button slot="append" icon="el-icon-search" @click="handleQuery"></el-button>
       </el-input>
     </div>
 
     <div class="news-grid">
-      <el-empty v-if="!list.length" description="暂无新闻资讯" class="elegant-panel empty-box" />
+      <el-empty v-if="!list.length" :description="emptyText" class="elegant-panel empty-box" />
       <div v-for="item in list" :key="item.newsId" class="elegant-panel news-card" @click="goDetail(item.newsId)">
         <div class="news-cover">
           <el-image :src="item.coverImage" fit="cover" lazy>
@@ -16,7 +17,7 @@
         </div>
         <div class="news-body">
           <h3 class="news-title" :title="item.title">{{ item.title }}</h3>
-          <p class="news-summary">{{ item.summary || '这是一条校园动态新闻，点击查看详情...' }}</p>
+          <p class="news-summary">{{ item.summary || '点击查看详情...' }}</p>
           <div class="news-footer">
             <span class="news-date"><i class="el-icon-date"></i> {{ parseTime(item.publishTime, '{y}-{m}-{d}') }}</span>
             <span class="news-views"><i class="el-icon-view"></i> {{ item.viewCount || 0 }}</span>
@@ -35,8 +36,28 @@
 import { portalNewsList } from '@/api/achievement/portal'
 export default {
   name: 'PortalNewsList',
-  data() { return { total: 0, list: [], queryParams: { pageNum: 1, pageSize: 12, keyword: undefined } } },
+  data() {
+    const type = this.$route.query.type || '2'
+    return {
+      total: 0,
+      list: [],
+      currentType: type,
+      queryParams: { pageNum: 1, pageSize: 12, keyword: undefined, noticeType: type }
+    }
+  },
+  computed: {
+    pageTitle() { return this.currentType === '1' ? '通知公告' : '新闻动态' },
+    emptyText() { return this.currentType === '1' ? '暂无通知公告' : '暂无新闻动态' }
+  },
   created() { this.getList() },
+  watch: {
+    '$route.query.type'(val) {
+      this.currentType = val || '2'
+      this.queryParams.noticeType = this.currentType
+      this.queryParams.pageNum = 1
+      this.getList()
+    }
+  },
   methods: {
     getList() { portalNewsList(this.queryParams).then(res => { this.list = res.rows || []; this.total = res.total || 0 }) },
     handleQuery() { this.queryParams.pageNum = 1; this.getList() },
@@ -47,11 +68,11 @@ export default {
 
 <style scoped>
 .news-container { padding: 24px; max-width: 1200px; margin: 0 auto; }
+.page-title { font-size: 24px; color: #1e293b; margin: 0 0 20px 0; font-weight: 600; }
 .elegant-panel { background: #fff; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid #f1f5f9; }
-.search-header { padding: 24px; margin-bottom: 24px; text-align: center; }
+.search-header { padding: 32px 24px 24px; margin-bottom: 24px; text-align: center; }
 .search-input { max-width: 600px; margin: 0 auto; }
 .search-input ::v-deep .el-input-group__append { background-color: #2563eb; color: white; border-color: #2563eb; border-radius: 0 6px 6px 0;}
-/* 网格布局 */
 .news-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(500px, 1fr)); gap: 24px; }
 .empty-box { grid-column: 1 / -1; }
 .news-card { display: flex; padding: 16px; gap: 20px; cursor: pointer; transition: transform 0.3s, box-shadow 0.3s; }

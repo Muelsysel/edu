@@ -16,6 +16,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="achievementTitle"  column="title"              />
         <result property="category"          column="category"           />
         <result property="collegeId"         column="college_id"         />
+        <!-- 前端别名映射 -->
+        <result property="auditStatus"       column="audit_result"       />
+        <result property="auditComment"      column="audit_opinion"      />
+        <result property="auditBy"           column="auditor_name"       />
+        <result property="auditTime"         column="create_time"        />
     </resultMap>
 
     <sql id="selectEduAuditRecordVo">
