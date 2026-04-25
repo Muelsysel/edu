@@ -23,8 +23,8 @@ public class EduAuditRecord extends BaseEntity
     @Excel(name = "关联成果 ID")
     private Long achievementId;
 
-    /** 审核级别 (1:院级审核 2:校级审核) */
-    @Excel(name = "审核级别", readConverterExp = "1=院级审核,2=校级审核")
+    /** 审核级别 (2:审核) */
+    @Excel(name = "审核级别", readConverterExp = "2=审核")
     private String auditLevel;
 
     /** 审核结果 (1:通过 2:驳回) */

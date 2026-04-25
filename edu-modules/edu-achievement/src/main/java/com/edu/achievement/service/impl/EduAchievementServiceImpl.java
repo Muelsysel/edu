@@ -73,7 +73,7 @@ public class EduAchievementServiceImpl implements IEduAchievementService
      * 新增教学成果
      *
      * <p>教师提交成果申报时调用。自动设置创建时间为当前系统时间。
-     * 新增时 status 应为 "0"（草稿）或 "1"（直接提交院审），
+     * 新增时 status 应为 "0"（草稿）或 "2"（直接提交审核），
      * 由 Controller 层根据业务需求决定。</p>
      *
      * @param eduAchievement 待新增的教学成果对象，必须包含 title、teacherId、collegeId

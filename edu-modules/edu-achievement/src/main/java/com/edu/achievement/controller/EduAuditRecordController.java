@@ -40,17 +40,6 @@ public class EduAuditRecordController extends BaseController
     @Autowired
     private IEduAuditRecordService eduAuditRecordService;
 
-    @RequiresPermissions("achievement:audit:college")
-    @GetMapping("/college/list")
-    public TableDataInfo collegeList(EduAchievement eduAchievement)
-    {
-        startPage();
-        eduAchievement.setStatus("1");
-        eduAchievement.setAuditDeptId(SecurityUtils.getLoginUser().getSysUser().getDeptId());
-        List<EduAchievement> list = eduAchievementService.selectEduAchievementList(eduAchievement);
-        return getDataTable(list);
-    }
-
     @RequiresPermissions("achievement:audit:school")
     @GetMapping("/school/list")
     public TableDataInfo schoolList(EduAchievement eduAchievement)
@@ -66,68 +55,6 @@ public class EduAuditRecordController extends BaseController
     public AjaxResult getDetail(@PathVariable("achievementId") Long achievementId)
     {
         return success(eduAchievementService.selectEduAchievementByAchievementId(achievementId));
-    }
-
-    @RequiresPermissions("achievement:audit:college")
-    @Log(title = "College Audit", businessType = BusinessType.UPDATE)
-    @PostMapping("/college/handle")
-    public AjaxResult collegeHandle(@RequestBody EduAuditRecord auditRecord)
-    {
-        EduAchievement achievement = eduAchievementService.selectEduAchievementByAchievementId(auditRecord.getAchievementId());
-        if (achievement == null)
-        {
-            return AjaxResult.error("Achievement does not exist");
-        }
-
-        Long deptId = SecurityUtils.getLoginUser().getSysUser().getDeptId();
-        EduAchievement scopeQuery = new EduAchievement();
-        scopeQuery.setAchievementId(auditRecord.getAchievementId());
-        scopeQuery.setStatus("1");
-        scopeQuery.setAuditDeptId(deptId);
-        List<EduAchievement> scopedAchievements = eduAchievementService.selectEduAchievementList(scopeQuery);
-        if (scopedAchievements.isEmpty())
-        {
-            return AjaxResult.error("You can only audit achievements from your college scope");
-        }
-
-        if (!"1".equals(achievement.getStatus()))
-        {
-            return AjaxResult.error("Current status does not allow college audit");
-        }
-
-        EduAchievement update = new EduAchievement();
-        update.setAchievementId(auditRecord.getAchievementId());
-
-        String resultText;
-        if ("1".equals(auditRecord.getAuditResult()))
-        {
-            update.setStatus("2");
-            resultText = "has passed the college audit and entered the school audit stage";
-        }
-        else
-        {
-            update.setStatus("4");
-            resultText = "did not pass the college audit";
-        }
-
-        update.setUpdateBy(SecurityUtils.getUsername());
-        eduAchievementService.updateEduAchievement(update);
-
-        auditRecord.setAuditLevel("1");
-        auditRecord.setAuditorId(SecurityUtils.getUserId());
-        auditRecord.setAuditorName(SecurityUtils.getUsername());
-        auditRecord.setCreateTime(DateUtils.getNowDate());
-        eduAuditRecordService.insertEduAuditRecord(auditRecord);
-
-        // 消息通知功能已取消
-        // sendAuditNotice(
-        //     achievement.getTeacherId(),
-        //     achievement.getTitle(),
-        //     resultText,
-        //     auditRecord.getAuditOpinion()
-        // );
-
-        return success();
     }
 
     @RequiresPermissions("achievement:audit:school")
@@ -229,7 +156,6 @@ public class EduAuditRecordController extends BaseController
 
         Map<String, Long> statusMap = new HashMap<>();
         statusMap.put("draft", 0L);
-        statusMap.put("collegeAudit", 0L);
         statusMap.put("schoolAudit", 0L);
         statusMap.put("passed", 0L);
         statusMap.put("rejected", 0L);
@@ -241,9 +167,6 @@ public class EduAuditRecordController extends BaseController
             {
                 case "0":
                     statusMap.put("draft", value);
-                    break;
-                case "1":
-                    statusMap.put("collegeAudit", value);
                     break;
                 case "2":
                     statusMap.put("schoolAudit", value);

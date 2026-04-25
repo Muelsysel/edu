@@ -200,7 +200,6 @@ export default {
   },
   computed: {
     timelineNodes() {
-      // (保持原有神仙时间线逻辑完全不变)
       const status = this.detail.status;
       const records = this.auditRecords || [];
       const findRecord = (auditLevel) => records.find(r => r.auditLevel === auditLevel);
@@ -208,23 +207,13 @@ export default {
 
       nodes.push({ name: '教师发起申报', time: this.detail.createTime, color: '#10b981', icon: 'el-icon-check', statusLabel: '已提交', statusType: 'success' });
 
-      const collegeRecord = findRecord('1');
-      if (collegeRecord) {
-        const isPass = collegeRecord.auditStatus === '1';
-        nodes.push({ name: '院级初审', time: collegeRecord.auditTime, auditor: collegeRecord.auditBy, color: isPass ? '#10b981' : '#ef4444', icon: isPass ? 'el-icon-check' : 'el-icon-close', statusLabel: isPass ? '已通过' : '已驳回', statusType: isPass ? 'success' : 'danger', comment: collegeRecord.auditComment, isRejected: !isPass });
-      } else {
-        if (status === '1') nodes.push({ name: '院级初审', color: '#2563eb', isActive: true, isWaiting: true });
-        else if (status === '0') nodes.push({ name: '院级初审 (待提交)', color: '#cbd5e1' });
-        else nodes.push({ name: '院级初审', color: '#cbd5e1' });
-      }
-
       const schoolRecord = findRecord('2');
       if (schoolRecord) {
         const isPass = schoolRecord.auditStatus === '1';
-        nodes.push({ name: '校级复审', time: schoolRecord.auditTime, auditor: schoolRecord.auditBy, color: isPass ? '#10b981' : '#ef4444', icon: isPass ? 'el-icon-check' : 'el-icon-close', statusLabel: isPass ? '审核通过并归档' : '已驳回', statusType: isPass ? 'success' : 'danger', comment: schoolRecord.auditComment, isRejected: !isPass });
+        nodes.push({ name: '审核', time: schoolRecord.auditTime, auditor: schoolRecord.auditBy, color: isPass ? '#10b981' : '#ef4444', icon: isPass ? 'el-icon-check' : 'el-icon-close', statusLabel: isPass ? '审核通过并归档' : '已驳回', statusType: isPass ? 'success' : 'danger', comment: schoolRecord.auditComment, isRejected: !isPass });
       } else {
-        if (status === '2') nodes.push({ name: '校级复审', color: '#2563eb', isActive: true, isWaiting: true });
-        else nodes.push({ name: '校级复审', color: '#cbd5e1' });
+        if (status === '2') nodes.push({ name: '审核', color: '#2563eb', isActive: true, isWaiting: true });
+        else nodes.push({ name: '审核', color: '#cbd5e1' });
       }
       return nodes;
     }
@@ -265,9 +254,9 @@ export default {
       return `card-status-${status}`;
     },
 
-    statusLabel(status) { const map = { '0': '草稿箱', '1': '院审中', '2': '校审中', '3': '已通过', '4': '被驳回' }; return map[status] || '未知' },
+    statusLabel(status) { const map = { '0': '草稿箱', '2': '审核中', '3': '已通过', '4': '被驳回' }; return map[status] || '未知' },
     canEdit(status) { return status === '0' || status === '4' },
-    canWithdraw(status) { return status === '1' || status === '2' },
+    canWithdraw(status) { return status === '2' },
 
     viewDetail(row) {
       this.detailOpen = true;

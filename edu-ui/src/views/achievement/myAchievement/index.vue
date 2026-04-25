@@ -22,7 +22,7 @@
             <div class="step-line" :class="{ 'line-active': form.status >= '1' }"></div>
             <div :class="['step', form.status >= '2' ? 'step-active' : '', form.status === '4' ? 'step-error' : '']">
               <div class="step-dot"></div>
-              <span>院级审核</span>
+              <span>审核中</span>
             </div>
             <div class="step-line" :class="{ 'line-active': form.status >= '2' }"></div>
             <div :class="['step', form.status >= '3' ? 'step-active' : '', form.status === '4' ? 'step-error' : '']">

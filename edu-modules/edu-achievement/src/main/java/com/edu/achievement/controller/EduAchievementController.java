@@ -105,8 +105,8 @@ public class EduAchievementController extends BaseController
             if ("3".equals(oldData.getStatus())) {
                 return AjaxResult.error("该成果已通过审核，不可修改");
             }
-            // 教师修改后，强制重置为"待审核(1)"
-            eduAchievement.setStatus("1");
+            // 教师修改后，强制重置为"审核中(2)"
+            eduAchievement.setStatus("2");
         } else {
             // 如果是管理员修改，保留原状态，除非前端传了新状态
             if (eduAchievement.getStatus() == null) {
@@ -173,7 +173,7 @@ public class EduAchievementController extends BaseController
         if (!oldData.getTeacherId().equals(SecurityUtils.getUserId())) {
             return AjaxResult.error("你无权修改他人的成果");
         }
-        // 3. 状态检查：已通过(3)或审核中(1,2)不可修改
+        // 3. 状态检查：已通过(3)或审核中(2)不可修改
         if ("3".equals(oldData.getStatus())) {
             return AjaxResult.error("该成果已通过审核，不可修改");
         }
@@ -226,7 +226,7 @@ public class EduAchievementController extends BaseController
             String status = item.getStatus();
             if ("3".equals(status)) {
                 passCount++;
-            } else if ("1".equals(status) || "2".equals(status)) {
+            } else if ("2".equals(status)) {
                 auditCount++;
             } else if ("4".equals(status)) {
                 rejectCount++;
@@ -245,7 +245,7 @@ public class EduAchievementController extends BaseController
 
     /**
      * 教师重新提交成果（被驳回后重新编辑提交）
-     * 校验成果必须属于当前教师且状态为已驳回(4)，然后重置为院审中(1)
+     * 校验成果必须属于当前教师且状态为已驳回(4)，然后重置为审核中(2)
      */
     @RequiresPermissions("achievement:achievement:teacherEdit")
     @Log(title = "我的成果-重新提交", businessType = BusinessType.UPDATE)
@@ -266,13 +266,13 @@ public class EduAchievementController extends BaseController
         }
         // 更新内容
         eduAchievement.setTeacherId(SecurityUtils.getUserId());
-        eduAchievement.setStatus("1"); // 重新进入院级审核
+        eduAchievement.setStatus("2"); // 重新进入审核
         eduAchievement.setUpdateBy(SecurityUtils.getUsername());
         return toAjax(eduAchievementService.updateEduAchievement(eduAchievement));
     }
 
     /**
-     * 教师撤回申报（院审中/校审中可撤回为草稿）
+     * 教师撤回申报（审核中可撤回为草稿）
      */
     @RequiresPermissions("achievement:achievement:teacherEdit")
     @Log(title = "我的成果-撤回", businessType = BusinessType.UPDATE)
@@ -288,9 +288,9 @@ public class EduAchievementController extends BaseController
         {
             return AjaxResult.error("无权操作他人成果");
         }
-        if (!"1".equals(existing.getStatus()) && !"2".equals(existing.getStatus()))
+        if (!"2".equals(existing.getStatus()))
         {
-            return AjaxResult.error("仅院审中或校审中的成果可撤回");
+            return AjaxResult.error("仅审核中的成果可撤回");
         }
         EduAchievement update = new EduAchievement();
         update.setAchievementId(achievementId);

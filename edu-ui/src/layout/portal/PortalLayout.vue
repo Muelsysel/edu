@@ -15,8 +15,7 @@
           <router-link to="/portal/news">新闻动态</router-link>
           <router-link v-if="isTeacher" to="/portal/declare">教师申报</router-link>
           <router-link v-if="isTeacher" to="/portal/mine">我的申报</router-link>
-          <router-link v-if="isCollegeAuditor" to="/portal/audit/college">院级初审</router-link>
-          <router-link v-if="isSchoolAuditor" to="/portal/audit/school">校级复审</router-link>
+          <router-link v-if="isSchoolAuditor" to="/portal/audit/school">审核工作台</router-link>
           <router-link v-if="isAuditor" to="/portal/audit/records">审核档案</router-link>
         </nav>
 
@@ -91,7 +90,7 @@ import { mapGetters } from 'vuex'
 import { getToken } from '@/utils/auth'
 import request from '@/utils/request'
 // import { updateNotice } from "@/api/system/notice"
-import { getPortalLandingPath, isAdminUser, isAuditorUser, isCollegeAuditor, isSchoolAuditor } from '@/utils/role-route'
+import { getPortalLandingPath, isAdminUser, isAuditorUser, isSchoolAuditor } from '@/utils/role-route'
 
 export default {
   name: 'PortalLayout',
@@ -109,7 +108,6 @@ export default {
     hasToken() { return !!getToken() },
     isAdmin() { return isAdminUser(this.roles) },
     isAuditor() { return isAuditorUser(this.roles) },
-    isCollegeAuditor() { return isCollegeAuditor(this.roles) },
     isSchoolAuditor() { return isSchoolAuditor(this.roles) },
     isTeacher() { return this.hasToken && !this.isAuditor && !this.isAdmin }
   },

@@ -17,7 +17,6 @@
         <el-form-item label="审核状态" prop="status">
           <el-select v-model="queryParams.status" placeholder="全部状态" clearable style="width: 130px">
             <el-option label="草稿" value="0" />
-            <el-option label="待院审" value="1" />
             <el-option label="待校审" value="2" />
             <el-option label="已通过" value="3" />
             <el-option label="已驳回" value="4" />
@@ -96,8 +95,7 @@
               <span class="audit-label">审核状态控制</span>
               <el-radio-group v-model="form.status" size="small">
                 <el-radio-button label="0">草稿</el-radio-button>
-                <el-radio-button label="1">待院审</el-radio-button>
-                <el-radio-button label="2">待校审</el-radio-button>
+                <el-radio-button label="2">审核中</el-radio-button>
                 <el-radio-button label="3">已通过</el-radio-button>
                 <el-radio-button label="4">已驳回</el-radio-button>
               </el-radio-group>
@@ -194,7 +192,7 @@ export default {
       return college ? college.deptName : row.collegeId;
     },
     statusLabelFormat(status) {
-      const map = { '0': '草稿', '1': '待院审', '2': '待校审', '3': '已通过', '4': '已驳回' };
+      const map = { '0': '草稿', '2': '审核中', '3': '已通过', '4': '已驳回' };
       return map[status] || '未知';
     },
     getList() {

@@ -11,12 +11,8 @@ export function isSchoolAuditor(roles = []) {
   return roles.includes('SchoolAudit')
 }
 
-export function isCollegeAuditor(roles = []) {
-  return roles.includes('CollegeAudit')
-}
-
 export function isAuditorUser(roles = []) {
-  return isSchoolAuditor(roles) || isCollegeAuditor(roles) || roles.includes('auditor')
+  return isSchoolAuditor(roles) || roles.includes('auditor')
 }
 
 export function isPortalUser(roles = []) {
@@ -26,9 +22,6 @@ export function isPortalUser(roles = []) {
 export function canAccessPortalRoute(path, roles = []) {
   if (path === '/portal/declare' || path === '/portal/mine') {
     return isTeacherUser(roles)
-  }
-  if (path.startsWith('/portal/audit/college')) {
-    return isCollegeAuditor(roles)
   }
   if (path.startsWith('/portal/audit/school')) {
     return isSchoolAuditor(roles)
@@ -45,9 +38,6 @@ export function getPortalLandingPath(roles = []) {
   }
   if (isSchoolAuditor(roles)) {
     return '/portal/audit/school'
-  }
-  if (isCollegeAuditor(roles)) {
-    return '/portal/audit/college'
   }
   if (isAuditorUser(roles)) {
     return '/portal/audit/records'

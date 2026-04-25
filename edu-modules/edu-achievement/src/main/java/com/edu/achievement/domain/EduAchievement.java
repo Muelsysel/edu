@@ -11,8 +11,7 @@ import com.edu.common.core.web.domain.BaseEntity;
  * <p>对应数据库表 {@code edu_achievement}，存储教师申报的教学成果信息，
  * 包含成果标题、内容、佐证材料路径、所属教师/学院、审核状态等字段。</p>
  *
- * <p>审核状态流转：草稿(0) → 院级审核中(1) → 校级审核中(2) → 已通过(3)；
- * 任一级审核驳回则状态变为已驳回(4)。</p>
+ * <p>审核状态流转：草稿(0) → 审核中(2) → 已通过(3)；</p>
  *
  * @author zpz
  * @date 2026-03-03
@@ -44,8 +43,8 @@ public class EduAchievement extends BaseEntity
     /** 审核时使用的部门范围起点，包含当前部门及其所有下级部门 */
     private Long auditDeptId;
 
-    /** 审核状态 (0:草稿 1:院级审核中 2:校级审核中 3:已通过 4:已驳回) */
-    @Excel(name = "审核状态", readConverterExp = "0=草稿,1=院级审核中,2=校级审核中,3=已通过,4=已驳回")
+    /** 审核状态 (0:草稿 2:审核中 3:已通过 4:已驳回) */
+    @Excel(name = "审核状态", readConverterExp = "0=草稿,2=审核中,3=已通过,4=已驳回")
     private String status;
 
     /** 删除标志 (0:存在 2:已删除) */

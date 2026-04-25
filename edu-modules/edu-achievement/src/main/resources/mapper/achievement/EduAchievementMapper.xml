@@ -155,7 +155,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
     <select id="countTotalPending" resultType="int">
-        select count(*) from edu_achievement where del_flag = '0' and status in ('1','2')
+        select count(*) from edu_achievement where del_flag = '0' and status = '2'
     </select>
 
     <select id="countTodayNew" resultType="int">

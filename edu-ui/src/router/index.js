@@ -86,16 +86,10 @@ export const constantRoutes = [
         meta: { title: '我的申报', requiresAuth: true, portalOnly: true }
       },
       {
-        path: 'audit/college',
-        component: () => import('@/views/achievement/collegeAudit/index'),
-        name: 'PortalCollegeAudit',
-        meta: { title: '院级审核', requiresAuth: true, portalOnly: true }
-      },
-      {
         path: 'audit/school',
-        component: () => import('@/views/achievement/schoolAudit/index'),
+        component: () => import('@/views/achievement/collegeAudit/index'),
         name: 'PortalSchoolAudit',
-        meta: { title: '校级审核', requiresAuth: true, portalOnly: true }
+        meta: { title: '审核工作台', requiresAuth: true, portalOnly: true }
       },
       {
         path: 'audit/records',

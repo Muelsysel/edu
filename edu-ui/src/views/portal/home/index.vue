@@ -108,15 +108,6 @@
             </div>
           </el-col>
 
-          <el-col :xs="12" :sm="8" :md="6" v-if="isCollegeRole">
-            <div class="quick-card orange-card" @click="goWithAuth('/portal/audit/college')">
-              <div class="card-icon"><i class="el-icon-s-check"></i></div>
-              <div class="card-text">
-                <h4>院级审核</h4>
-                <p>学院负责人初审工作台</p>
-              </div>
-            </div>
-          </el-col>
           <el-col :xs="12" :sm="8" :md="6" v-if="isSchoolRole">
             <div class="quick-card red-card" @click="goWithAuth('/portal/audit/school')">
               <div class="card-icon"><i class="el-icon-office-building"></i></div>
@@ -126,7 +117,7 @@
               </div>
             </div>
           </el-col>
-          <el-col :xs="12" :sm="8" :md="6" v-if="isCollegeRole || isSchoolRole">
+          <el-col :xs="12" :sm="8" :md="6" v-if="isSchoolRole">
             <div class="quick-card purple-card" @click="goWithAuth('/portal/audit/records')">
               <div class="card-icon"><i class="el-icon-collection"></i></div>
               <div class="card-text">
@@ -181,8 +172,7 @@ export default {
     primaryAction() {
       const path = getPortalLandingPath(this.roles)
       const labelMap = {
-        '/portal/audit/college': '进入院级审核',
-        '/portal/audit/school': '进入校级审核',
+        '/portal/audit/school': '进入审核工作台',
         '/portal/audit/records': '查看审核记录',
         '/portal/declare': '开始成果申报',
         '/portal/mine': '查看我的申报'
@@ -191,10 +181,7 @@ export default {
     },
     // 安全地推断当前用户的角色权限，用于动态渲染快捷入口
     isTeacherRole() {
-      return !this.roles.includes('admin') && !this.roles.includes('CollegeAudit') && !this.roles.includes('SchoolAudit') && !this.roles.includes('auditor');
-    },
-    isCollegeRole() {
-      return this.roles.includes('CollegeAudit') || this.roles.includes('auditor');
+      return !this.roles.includes('admin') && !this.roles.includes('SchoolAudit') && !this.roles.includes('auditor');
     },
     isSchoolRole() {
       return this.roles.includes('SchoolAudit') || this.roles.includes('auditor');

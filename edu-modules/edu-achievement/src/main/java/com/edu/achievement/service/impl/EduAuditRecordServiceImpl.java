@@ -52,7 +52,7 @@ public class EduAuditRecordServiceImpl implements IEduAuditRecordService
     /**
      * 新增审核记录
      *
-     * <p>在院级或校级审核操作后调用，将审核结果、审核意见、审核人等信息持久化。
+     * <p>在审核操作后调用，将审核结果、审核意见、审核人等信息持久化。
      * 自动设置创建时间为当前系统时间。</p>
      *
      * @param eduAuditRecord 待插入的审核记录对象

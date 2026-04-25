@@ -193,15 +193,15 @@ export default {
           this.$message.warning('请完善必填信息后再提交');
           return;
         }
-        this.$confirm('确认提交该成果吗？提交后将流转至学院进行初审，在此期间您无法修改内容。', '提交确认', {
+        this.$confirm('确认提交该成果吗？提交后将进入审核流程，在此期间您无法修改内容。', '提交确认', {
           confirmButtonText: '确认提交',
           cancelButtonText: '再检查一下',
           type: 'warning',
           customClass: 'elegant-confirm-box'
         }).then(() => {
           this.submitting = true
-          teacherAddAchievement({ ...this.form, status: '1' }).then(() => {
-            this.$message.success('申报提交成功！请耐心等待学院审核。')
+          teacherAddAchievement({ ...this.form, status: '2' }).then(() => {
+            this.$message.success('申报提交成功！请耐心等待审核结果。')
             localStorage.removeItem(DRAFT_KEY)
             this.$router.push('/portal/mine')
           }).finally(() => { this.submitting = false })

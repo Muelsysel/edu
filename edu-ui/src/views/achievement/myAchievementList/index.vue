@@ -148,7 +148,7 @@
         <h4 style="margin-bottom:12px; font-family: 'Noto Serif SC', serif; color: #0f172a;">审核进度</h4>
         <el-steps :active="stepActive" finish-status="success" align-center>
           <el-step title="已提交" :description="parseTime(form.createTime, '{y}-{m}-{d}')"></el-step>
-          <el-step title="院级审核" :description="getStepDesc('1')" :status="getStepStatus('1')"></el-step>
+          <el-step title="审核" :description="getStepDesc('1')" :status="getStepStatus('1')"></el-step>
           <el-step title="校级审核" :description="getStepDesc('2')" :status="getStepStatus('2')"></el-step>
           <el-step title="最终结果" :description="form.status === '3' ? '已通过' : (form.status === '4' ? '已驳回' : '等待中')" :status="form.status === '3' ? 'success' : (form.status === '4' ? 'error' : 'wait')"></el-step>
         </el-steps>
@@ -161,7 +161,7 @@
       <el-steps :active="progressStepActive" finish-status="success" direction="vertical" style="min-height:200px;">
         <el-step title="教师提交" :description="progressAchievement.createTime ? parseTime(progressAchievement.createTime, '{y}-{m}-{d} {h}:{i}') : ''" status="finish"></el-step>
         <el-step v-for="(record, i) in progressRecords" :key="i"
-          :title="record.auditLevel === '1' ? '院级审核' : '校级审核'"
+          :title="'审核'"
           :description="(record.auditorName || '') + ' · ' + (record.auditResult === '1' ? '通过' : '驳回') + (record.auditOpinion ? ' · ' + record.auditOpinion : '') + ' · ' + parseTime(record.createTime, '{y}-{m}-{d} {h}:{i}')"
           :status="record.auditResult === '1' ? 'finish' : 'error'"
         ></el-step>
@@ -290,7 +290,7 @@ export default {
       listDept().then(response => { this.collegeOptions = response.data; });
     },
     statusFormat(status) {
-      const m = { '0': { label: '草稿', type: 'info' }, '1': { label: '待院审', type: 'warning' }, '2': { label: '待校审', type: 'warning' }, '3': { label: '已通过', type: 'success' }, '4': { label: '已驳回', type: 'danger' } };
+      const m = { '0': { label: '草稿', type: 'info' }, '1': { label: '审核中', type: 'warning' }, '2': { label: '审核中', type: 'warning' }, '3': { label: '已通过', type: 'success' }, '4': { label: '已驳回', type: 'danger' } };
       return m[status] || { label: '未知', type: '' };
     },
     handleTabClick(tab) {
@@ -350,7 +350,7 @@ export default {
         if (valid) {
           if (this.form.achievementId != null && this.form.status === '4') {
             teacherResubmit(this.form).then(() => {
-              this.$modal.msgSuccess("重新提交成功，已进入院级审核"); this.editOpen = false; this.getList(); this.getAllList();
+              this.$modal.msgSuccess("重新提交成功，已进入审核流程"); this.editOpen = false; this.getList(); this.getAllList();
             });
           } else if (this.form.achievementId != null) {
             teacherUpdateAchievement(this.form).then(() => {

@@ -109,7 +109,7 @@ export default {
       return this.roles.includes("admin") || this.roles.includes("admin1");
     },
     isAuditor() {
-      return this.roles.includes("CollegeAudit") || this.roles.includes("SchoolAudit") || this.roles.includes("auditor");
+      return this.roles.includes("SchoolAudit") || this.roles.includes("auditor");
     },
     roleName() {
       if (this.isAdmin) return "系统管理员";
@@ -122,12 +122,12 @@ export default {
         return [
           { title: "全校总成果", icon: "education", count: this.stats.total || 0, color: "#1e40af" },
           { title: "已通过", icon: "validCode", count: s.passed || 0, color: "#10b981" },
-          { title: "审核中", icon: "time-range", count: (s.collegeAudit || 0) + (s.schoolAudit || 0), color: "#f59e0b" },
+          { title: "审核中", icon: "time-range", count: (s.schoolAudit || 0), color: "#f59e0b" },
           { title: "已驳回", icon: "message", count: s.rejected || 0, color: "#ef4444" }
         ];
       } else if (this.isAuditor) {
         return [
-          { title: "待我审核", icon: "peoples", count: (s.collegeAudit || 0) + (s.schoolAudit || 0), color: "#ef4444" },
+          { title: "待我审核", icon: "peoples", count: (s.schoolAudit || 0), color: "#ef4444" },
           { title: "本级已通过", icon: "validCode", count: s.passed || 0, color: "#10b981" },
           { title: "成果总数", icon: "form", count: this.stats.total || 0, color: "#6366f1" },
           { title: "已驳回", icon: "message", count: s.rejected || 0, color: "#f59e0b" }
@@ -135,7 +135,7 @@ export default {
       } else {
         return [
           { title: "我的申报", icon: "form", count: this.stats.total || 0, color: "#1e40af" },
-          { title: "审核中", icon: "time-range", count: (s.collegeAudit || 0) + (s.schoolAudit || 0), color: "#f59e0b" },
+          { title: "审核中", icon: "time-range", count: (s.schoolAudit || 0), color: "#f59e0b" },
           { title: "已通过", icon: "validCode", count: s.passed || 0, color: "#10b981" },
           { title: "已被驳回", icon: "message", count: s.rejected || 0, color: "#ef4444" }
         ];
@@ -213,9 +213,9 @@ export default {
       this.charts.push(chart);
       const s = this.stats.statusData || {};
 
-      let chartCategories = ['草稿', '院审中', '校审中', '已通过', '已驳回'];
-      let chartData = [s.draft || 0, s.collegeAudit || 0, s.schoolAudit || 0, s.passed || 0, s.rejected || 0];
-      let chartColors = ['#94a3b8', '#f59e0b', '#6366f1', '#10b981', '#ef4444'];
+      let chartCategories = ['草稿', '审核中', '已通过', '已驳回'];
+      let chartData = [s.draft || 0, (s.schoolAudit || 0), s.passed || 0, s.rejected || 0];
+      let chartColors = ['#94a3b8', '#6366f1', '#10b981', '#ef4444'];
 
       if (!this.isTeacher) {
         chartCategories = chartCategories.slice(1);

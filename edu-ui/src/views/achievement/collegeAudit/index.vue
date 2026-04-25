@@ -19,21 +19,8 @@
 
     <div class="inbox-toolbar">
       <div class="capsule-tabs">
-        <div
-          v-if="isCollegeRole"
-          class="capsule"
-          :class="{ active: activeTab === 'college' }"
-          @click="switchTab('college')"
-        >
-          <i class="el-icon-school"></i> 院级初审队列
-        </div>
-        <div
-          v-if="isSchoolRole"
-          class="capsule"
-          :class="{ active: activeTab === 'school' }"
-          @click="switchTab('school')"
-        >
-          <i class="el-icon-office-building"></i> 校级终审队列
+        <div class="capsule active">
+          <i class="el-icon-office-building"></i> 审核队列
         </div>
       </div>
 
@@ -77,7 +64,7 @@
         <div class="task-tags">
           <dict-tag :options="dict.type.edu_achievement_level" :value="item.level" class="tag-level"/>
           <dict-tag :options="dict.type.edu_achievement_category" :value="item.category" class="tag-category"/>
-          <span class="tag-college" v-if="activeTab === 'school'">
+          <span class="" v-if="activeTab === 'school'">
             <i class="el-icon-location-information"></i> {{ collegeNameById(item.collegeId) }}
           </span>
         </div>
@@ -197,8 +184,8 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { isCollegeAuditor, isSchoolAuditor } from '@/utils/role-route'
-import { collegeAuditList, collegeAuditHandle, schoolAuditList, schoolAuditHandle, getAuditDetail, getStatistics, getAuditProgress } from "@/api/achievement/audit";
+import { isSchoolAuditor } from '@/utils/role-route'
+import { schoolAuditList, schoolAuditHandle, getAuditDetail, getStatistics, getAuditProgress } from "@/api/achievement/audit";
 import { listDept } from "@/api/system/dept";
 
 export default {
@@ -206,7 +193,7 @@ export default {
   dicts: ['edu_achievement_category', 'edu_achievement_level'],
   data() {
     return {
-      activeTab: 'college',
+      activeTab: 'school',
       loading: true, detailLoading: false, submitLoading: false,
       total: 0,
       achievementList: [],
@@ -233,7 +220,6 @@ export default {
   },
   computed: {
     ...mapGetters(['roles', 'name', 'nickName']),
-    isCollegeRole() { return isCollegeAuditor(this.roles) || this.roles.includes('auditor') || this.roles.includes('admin'); },
     isSchoolRole() { return isSchoolAuditor(this.roles) || this.roles.includes('auditor') || this.roles.includes('admin'); },
 
     // 生成时间线逻辑
@@ -245,22 +231,13 @@ export default {
 
       nodes.push({ name: '教师发起申报', time: this.viewForm.createTime, color: '#10b981', icon: 'el-icon-check', statusLabel: '已提交', statusClass: 'text-green' });
 
-      const cr = findRecord('1');
-      if (cr) {
-        const isPass = cr.auditStatus === '1';
-        nodes.push({ name: '院级初审', time: cr.auditTime, color: isPass ? '#10b981' : '#ef4444', icon: isPass ? 'el-icon-check' : 'el-icon-close', statusLabel: isPass ? '已通过' : '已驳回', statusClass: isPass ? 'text-green' : 'text-red', comment: cr.auditComment });
-      } else {
-        if (status === '1') nodes.push({ name: '院级初审 (当前阶段)', color: '#2563eb', icon: 'el-icon-loading' });
-        else nodes.push({ name: '院级初审', color: '#cbd5e1' });
-      }
-
       const sr = findRecord('2');
       if (sr) {
         const isPass = sr.auditStatus === '1';
-        nodes.push({ name: '校级复审', time: sr.auditTime, color: isPass ? '#10b981' : '#ef4444', icon: isPass ? 'el-icon-check' : 'el-icon-close', statusLabel: isPass ? '审核通过' : '已驳回', statusClass: isPass ? 'text-green' : 'text-red', comment: sr.auditComment });
+        nodes.push({ name: '审核', time: sr.auditTime, color: isPass ? '#10b981' : '#ef4444', icon: isPass ? 'el-icon-check' : 'el-icon-close', statusLabel: isPass ? '审核通过' : '已驳回', statusClass: isPass ? 'text-green' : 'text-red', comment: sr.auditComment });
       } else {
-        if (status === '2') nodes.push({ name: '校级复审 (当前阶段)', color: '#2563eb', icon: 'el-icon-loading' });
-        else nodes.push({ name: '校级复审', color: '#cbd5e1' });
+        if (status === '2') nodes.push({ name: '审核 (当前阶段)', color: '#2563eb', icon: 'el-icon-loading' });
+        else nodes.push({ name: '审核', color: '#cbd5e1' });
       }
       return nodes;
     }
@@ -273,27 +250,17 @@ export default {
   },
   watch: {
     '$route.path'(newPath) {
-      if (newPath.includes('school')) this.activeTab = 'school';
-      else if (newPath.includes('college')) this.activeTab = 'college';
       this.resetQuery();
     }
   },
   methods: {
     initActiveTab() {
-      const path = this.$route.path;
-      if (path.includes('school') && this.isSchoolRole) this.activeTab = 'school';
-      else if (path.includes('college') && this.isCollegeRole) this.activeTab = 'college';
-      else this.activeTab = this.isCollegeRole ? 'college' : 'school';
-    },
-    switchTab(tab) {
-      this.$router.push(`/portal/audit/${tab}`).catch(()=>{});
-      this.resetQuery();
+      this.activeTab = 'school';
     },
     fetchStats() { getStatistics({}).then(res => { this.stats = res || {}; }).catch(()=>{}); },
     getList() {
       this.loading = true;
-      const apiMethod = this.activeTab === 'college' ? collegeAuditList : schoolAuditList;
-      apiMethod(this.queryParams).then(res => {
+      schoolAuditList(this.queryParams).then(res => {
         this.achievementList = res.rows || [];
         this.total = res.total || 0;
       }).finally(() => { this.loading = false; });
@@ -336,8 +303,7 @@ export default {
           customClass: 'elegant-confirm-box'
         }).then(() => {
           this.submitLoading = true;
-          const apiMethod = this.activeTab === 'college' ? collegeAuditHandle : schoolAuditHandle;
-          apiMethod(this.auditForm).then(() => {
+          schoolAuditHandle(this.auditForm).then(() => {
             this.$message.success("处理完成！");
             this.reviewOpen = false;
             this.getList();
@@ -497,7 +463,6 @@ $danger: #ef4444;
   display: flex; flex-wrap: wrap; gap: 8px;
 }
 .task-tags ::v-deep .el-tag { border: none; border-radius: 6px; padding: 0 10px; height: 26px; line-height: 26px; font-weight: 500;}
-.tag-college { font-size: 12px; color: $text-light; background: #f1f5f9; padding: 4px 10px; border-radius: 6px; }
 
 .pagination-wrapper { margin-top: 40px; display: flex; justify-content: center; }
 

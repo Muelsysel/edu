@@ -31,7 +31,6 @@
         </el-form-item>
         <el-form-item label="审核级别" prop="auditLevel">
           <el-select v-model="queryParams.auditLevel" placeholder="全部级别" clearable popper-class="elegant-select-dropdown" style="width: 130px">
-            <el-option label="院级审核" value="1" />
             <el-option label="校级审核" value="2" />
           </el-select>
         </el-form-item>
@@ -70,10 +69,10 @@
         <el-table-column label="审核级别" align="center" width="110">
           <template slot-scope="scope">
             <el-tag
-              :class="['elegant-tag', scope.row.auditLevel === '1' ? 'tag-college' : 'tag-school']"
+              class="elegant-tag tag-school"
               size="mini"
             >
-              {{ scope.row.auditLevel === '1' ? '院级初审' : '校级复审' }}
+              审核
             </el-tag>
           </template>
         </el-table-column>
@@ -271,7 +270,7 @@ $border-color: #e2e8f0;
 
 /* 审核级别标签定制 */
 .elegant-tag { border: none; font-weight: 600; border-radius: 4px; }
-.tag-college { background: #eff6ff; color: $primary-blue; }
+
 .tag-school { background: #f5f3ff; color: $school-purple; }
 
 /* 审核结果指示灯 */
