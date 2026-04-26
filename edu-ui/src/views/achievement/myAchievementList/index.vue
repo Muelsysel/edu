@@ -299,7 +299,7 @@ export default {
     handleQuery() { this.queryParams.pageNum = 1; this.getList(); },
     resetQuery() { this.resetForm("queryForm"); this.handleQuery(); },
     reset() {
-      this.form = { achievementId: null, title: null, category: null, fileUrl: null, content: null, status: "1" };
+      this.form = { achievementId: null, title: null, category: null, fileUrl: null, content: null, status: "2" };
       this.resetForm("editForm");
     },
     loadProgress(achievementId) {

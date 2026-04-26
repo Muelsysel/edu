@@ -109,7 +109,7 @@
 
 <script>
 import { listDept } from '@/api/system/dept'
-import { teacherAddAchievement } from '@/api/achievement/achievement'
+import { teacherAddAchievement, teacherGetAchievement, teacherUpdateAchievement, teacherResubmit } from '@/api/achievement/achievement'
 
 const DRAFT_KEY = 'edu-ui-portal-achievement-draft'
 
@@ -125,6 +125,7 @@ export default {
       autoSaveTimer: null,
       collegeOptions: [],
       form: {
+        achievementId: undefined,
         title: '',
         category: '',
         level: '', // 新增等级字段
@@ -144,7 +145,12 @@ export default {
   },
   created() {
     this.getCollegeList();
-    this.restoreDraft();
+    const id = this.$route.query.id;
+    if (id) {
+        this.loadAchievement(id);
+    } else {
+        this.restoreDraft();
+    }
     this.startAutoSave();
   },
   beforeDestroy() {
@@ -168,6 +174,24 @@ export default {
           localStorage.removeItem(DRAFT_KEY)
         }
       }
+    },
+    loadAchievement(id) {
+      teacherGetAchievement(id).then(res => {
+        const data = res.data || {};
+        this.form = {
+          achievementId: data.achievementId,
+          title: data.title || '',
+          category: data.category || '',
+          level: data.level || '',
+          collegeId: data.collegeId || '',
+          fileUrl: data.fileUrl || '',
+          content: data.content || '',
+          status: data.status || '2'
+        };
+        this.draftRestored = true;
+      }).catch(() => {
+        this.$message.error('加载成果失败');
+      });
     },
     persistDraft() {
       localStorage.setItem(DRAFT_KEY, JSON.stringify(this.form))
@@ -200,8 +224,16 @@ export default {
           customClass: 'elegant-confirm-box'
         }).then(() => {
           this.submitting = true
-          teacherAddAchievement({ ...this.form, status: '2' }).then(() => {
-            this.$message.success('申报提交成功！请耐心等待审核结果。')
+          let apiCall;
+          if (this.form.achievementId && this.form.status === '4') {
+            apiCall = teacherResubmit(this.form);
+          } else if (this.form.achievementId) {
+            apiCall = teacherUpdateAchievement(this.form);
+          } else {
+            apiCall = teacherAddAchievement(this.form);
+          }
+          apiCall.then(() => {
+            this.$message.success(this.form.achievementId ? '修改成功！' : '申报提交成功！');
             localStorage.removeItem(DRAFT_KEY)
             this.$router.push('/portal/mine')
           }).finally(() => { this.submitting = false })

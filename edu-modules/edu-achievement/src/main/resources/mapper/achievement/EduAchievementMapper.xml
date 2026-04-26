@@ -33,6 +33,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectEduAchievementList" parameterType="EduAchievement" resultMap="EduAchievementResult">
         <include refid="selectEduAchievementVo"/>
         <where>  
+            and a.del_flag = '0'
             <if test="title != null  and title != ''"> and a.title like concat('%', #{title}, '%')</if>
             <if test="teacherId != null "> and a.teacher_id = #{teacherId}</if>
             <if test="teacherName != null and teacherName != ''"> and u.nick_name like concat('%', #{teacherName}, '%')</if>
@@ -46,7 +47,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <select id="selectEduAchievementByAchievementId" parameterType="Long" resultMap="EduAchievementResult">
         <include refid="selectEduAchievementVo"/>
-        where a.achievement_id = #{achievementId}
+        where a.achievement_id = #{achievementId} and a.del_flag = '0'
     </select>
 
     <insert id="insertEduAchievement" parameterType="EduAchievement" useGeneratedKeys="true" keyProperty="achievementId">
@@ -103,16 +104,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where achievement_id = #{achievementId}
     </update>
 
-    <delete id="deleteEduAchievementByAchievementId" parameterType="Long">
-        delete from edu_achievement where achievement_id = #{achievementId}
-    </delete>
+    <update id="deleteEduAchievementByAchievementId" parameterType="Long">
+        update edu_achievement set del_flag = '2', update_time = sysdate() where achievement_id = #{achievementId}
+    </update>
 
-    <delete id="deleteEduAchievementByAchievementIds" parameterType="String">
-        delete from edu_achievement where achievement_id in 
+    <update id="deleteEduAchievementByAchievementIds" parameterType="String">
+        update edu_achievement set del_flag = '2', update_time = sysdate() where achievement_id in
         <foreach item="achievementId" collection="array" open="(" separator="," close=")">
             #{achievementId}
         </foreach>
-    </delete>
+    </update>
 
     <!-- 统计聚合查询 -->
     <select id="countByStatus" resultType="java.util.Map">
@@ -157,11 +158,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
     <select id="countMonthPassed" resultType="int">
-        select count(*) from edu_audit_record where audit_result = '1' and date_format(create_time, '%Y-%m') = date_format(curdate(), '%Y-%m')
+        select count(*) from edu_audit_record where audit_result = '1'
     </select>
 
     <select id="countMonthRejected" resultType="int">
-        select count(*) from edu_audit_record where audit_result = '2' and date_format(create_time, '%Y-%m') = date_format(curdate(), '%Y-%m')
+        select count(*) from edu_audit_record where audit_result = '2'
     </select>
 
     <select id="countTotalAuditRecords" resultType="int">

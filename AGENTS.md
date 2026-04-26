@@ -35,6 +35,7 @@ npm run build:prod # outputs to edu-ui/edu-admin
 - **Permission model**: Gateway `AuthFilter` validates token against Redis; downstream services use `HeaderInterceptor` + AOP (`PreAuthorizeAspect`).
 - **Redis serialization**: `StringRedisSerializer` for keys, custom `FastJson2JsonRedisSerializer` for values. Auto-type whitelist restricted to `com.edu` package.
 - **Achievement status flow**: `0(draft) → 2(audit) → 3(passed)`. Rejection goes to `4(rejected)`. Teachers can resubmit from `4` to `2`.
+  Deprecated status values: 1 (old college audit), 5 (old return-for-revision). Only 0,2,3,4 are valid.
 - **Data scope**: MyBatis interceptor for row-level filtering based on dept hierarchy.
 
 ## Monorepo Boundaries

@@ -11,14 +11,14 @@
       <div class="stat-card bg-green">
         <div class="stat-icon"><i class="el-icon-circle-check"></i></div>
         <div class="stat-info">
-          <p>本月审核通过</p>
+          <p>审核通过</p>
           <h3>{{ stats.monthPassed || 0 }}</h3>
         </div>
       </div>
       <div class="stat-card bg-red">
         <div class="stat-icon"><i class="el-icon-warning-outline"></i></div>
         <div class="stat-info">
-          <p>本月予以驳回</p>
+          <p>予以驳回</p>
           <h3>{{ stats.monthRejected || 0 }}</h3>
         </div>
       </div>
@@ -166,7 +166,7 @@ export default {
     },
     fetchStats() {
       getStatistics({}).then(res => {
-        this.stats = res.data || {};
+        this.stats = res || {};
       });
     },
     getCollegeList() {

@@ -94,6 +94,9 @@ public class EduAchievementController extends BaseController
     {
         // 1. 先从数据库查出旧数据
         EduAchievement oldData = eduAchievementService.selectEduAchievementByAchievementId(eduAchievement.getAchievementId());
+        if (oldData == null) {
+            return AjaxResult.error("成果不存在");
+        }
 
         // 安全校验：非管理员需要进行权限和状态检查
         if (!SecurityUtils.isAdmin(SecurityUtils.getUserId())) {
@@ -194,6 +197,12 @@ public class EduAchievementController extends BaseController
     @Log(title = "我的成果-删除", businessType = BusinessType.DELETE)
     @DeleteMapping("/teacherDelAchievement/{achievementIds}")
     public AjaxResult teacherRemove(@PathVariable Long[] achievementIds) {
+        for (Long id : achievementIds) {
+            EduAchievement existing = eduAchievementService.selectEduAchievementByAchievementId(id);
+            if (existing == null || !existing.getTeacherId().equals(SecurityUtils.getUserId())) {
+                return AjaxResult.error("无权删除他人成果");
+            }
+        }
         return toAjax(eduAchievementService.deleteEduAchievementByAchievementIds(achievementIds));
     }
 

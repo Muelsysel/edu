@@ -314,7 +314,7 @@ export default {
   line-height: 20px;
 }
 .status-0 { background: #f4f4f5; color: #909399; }
-.status-2 { background: #fef0f0; color: #f56c6c; }
+.status-2 { background: rgba(37, 99, 235, 0.08); color: #2563eb; }
 .status-3 { background: #f0f9eb; color: #67c23a; }
 .status-4 { background: #fef0f0; color: #f56c6c; }
 

@@ -80,7 +80,7 @@
 </template>
 
 <script>
-import { teacherAddAchievement, teacherListAchievement, teacherUpdateAchievement } from "@/api/achievement/achievement";
+import { teacherAddAchievement, teacherListAchievement, teacherUpdateAchievement, teacherGetAchievement } from "@/api/achievement/achievement";
 import { listDept } from "@/api/system/dept";
 
 export default {
@@ -93,7 +93,7 @@ export default {
       form: {
         achievementId: undefined,
         title: undefined,
-        category: '1',
+        category: '',
         collegeId: undefined,
         fileUrl: undefined,
         content: undefined,
@@ -117,7 +117,7 @@ export default {
   methods: {
     handleGetDetail(id) {
       this.loading = true;
-      teacherListAchievement(id).then(response => {
+      teacherGetAchievement(id).then(response => {
         this.form = response.data;
         this.loading = false;
       });
@@ -153,7 +153,7 @@ export default {
     reset() {
       this.form = {
         achievementId: undefined, title: undefined, category: '1',
-        collegeId: undefined, fileUrl: undefined, content: undefined, status: '1'
+        collegeId: undefined, fileUrl: undefined, content: undefined, status: '2'
       };
       this.resetForm("form");
     }

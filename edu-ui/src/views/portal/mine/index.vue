@@ -406,7 +406,7 @@ $border-color: #e2e8f0;
 
 /* 状态动态着色 */
 .dot-0 { background: #cbd5e1; }
-.dot-1, .dot-2 { background: $warning; box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2); animation: pulse 2s infinite;}
+.dot-2 { background: $warning; box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2); animation: pulse 2s infinite;}
 .dot-3 { background: $success; }
 .dot-4 { background: $danger; }
 
@@ -451,7 +451,7 @@ $border-color: #e2e8f0;
 .action-btn.withdraw { color: $danger; }
 
 /* 卡片边框状态修饰 */
-.card-status-1, .card-status-2 { border-left: 4px solid $warning; }
+.card-status-2 { border-left: 4px solid $warning; }
 .card-status-3 { border-left: 4px solid $success; }
 .card-status-4 { border-left: 4px solid $danger; background: #fffcfc;}
 
