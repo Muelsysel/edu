@@ -35,9 +35,6 @@ cp ../edu-modules/edu-file/target/edu-modules-file.jar ./edu/modules/file/jar
 echo "begin copy edu-modules-job "
 cp ../edu-modules/edu-job/target/edu-modules-job.jar ./edu/modules/job/jar
 
-echo "begin copy edu-modules-gen "
-cp ../edu-modules/edu-gen/target/edu-modules-gen.jar ./edu/modules/gen/jar
-
 echo "begin copy edu-modules-achievement "
 cp ../edu-modules/edu-achievement/target/edu-modules-achievement.jar ./edu/modules/achievement/jar
 

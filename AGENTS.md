@@ -47,7 +47,6 @@ edu-modules/
   edu-achievement  (9205)  achievement CRUD, audit flow, news, statistics
   edu-file         (9300)  upload/download (local/MinIO/FastDFS)
   edu-job          (9203)  Quartz scheduling
-  edu-gen          (9202)  Velocity code generator
 edu-common/
   edu-common-core, redis, security, log, datascope, datasource, seata, swagger, sensitive
 edu-api/

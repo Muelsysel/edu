@@ -106,17 +106,6 @@ services:
     links:
       - edu-redis
       - edu-mysql
-  edu-modules-gen:
-    container_name: edu-modules-gen
-    build:
-      context: ./edu/modules/gen
-      dockerfile: dockerfile
-    ports:
-      - "9202:9202"
-    depends_on:
-      - edu-mysql
-    links:
-      - edu-mysql
   edu-modules-job:
     container_name: edu-modules-job
     build:

@@ -47,7 +47,6 @@ edu-achievement-master
 ├── edu-modules              # 业务微服务
 │   ├── edu-achievement      # 教学成果、审核、门户新闻等业务
 │   ├── edu-file             # 文件服务
-│   ├── edu-gen              # 代码生成
 │   ├── edu-job              # 定时任务
 │   └── edu-system           # 系统管理
 ├── edu-ui                   # Vue 前端
@@ -66,7 +65,6 @@ edu-achievement-master
 | edu-achievement | 教学成果申报、审核、统计、门户新闻 | 9205 |
 | edu-file | 文件上传下载 | 9300 |
 | edu-job | 定时任务 | 9203 |
-| edu-gen | 代码生成 | 9202 |
 | edu-ui | 前端项目 | 80 |
 
 ## 环境要求
@@ -110,11 +108,10 @@ mvn spring-boot:run -pl edu-modules/edu-achievement
 mvn spring-boot:run -pl edu-modules/edu-file
 ```
 
-如需启动定时任务和代码生成服务：
+如需启动定时任务服务：
 
 ```bash
 mvn spring-boot:run -pl edu-modules/edu-job
-mvn spring-boot:run -pl edu-modules/edu-gen
 ```
 
 ## 前端启动
