@@ -60,6 +60,7 @@ public class EduNews extends BaseEntity {
     private String delFlag;
 
     /** 类型(1=通知公告 2=新闻动态) */
+    @Excel(name = "类型", readConverterExp = "1=通知公告,2=新闻动态")
     private String noticeType;
 
     /** 关键词搜索（非表字段） */
@@ -182,6 +183,7 @@ public class EduNews extends BaseEntity {
                 .append("publishPortal", getPublishPortal())
                 .append("sortWeight", getSortWeight())
                 .append("status", getStatus())
+                .append("noticeType", getNoticeType())
                 .append("createBy", getCreateBy())
                 .append("createTime", getCreateTime())
                 .append("updateBy", getUpdateBy())

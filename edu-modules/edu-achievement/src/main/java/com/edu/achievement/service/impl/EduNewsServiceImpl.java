@@ -44,6 +44,10 @@ public class EduNewsServiceImpl implements IEduNewsService
         {
             eduNews.setPublishPortal("0");
         }
+        if (eduNews.getNoticeType() == null)
+        {
+            eduNews.setNoticeType("2");
+        }
         if (eduNews.getStatus() == null)
         {
             eduNews.setStatus("0");

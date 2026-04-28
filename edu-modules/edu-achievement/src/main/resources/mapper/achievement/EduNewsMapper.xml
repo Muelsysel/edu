@@ -38,6 +38,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 and (title like concat('%', #{keyword}, '%') or summary like concat('%', #{keyword}, '%'))
             </if>
             <if test="publishPortal != null and publishPortal != ''"> and publish_portal = #{publishPortal}</if>
+            <if test="noticeType != null and noticeType != ''"> and notice_type = #{noticeType}</if>
             <if test="status != null and status != ''"> and status = #{status}</if>
         </where>
         order by sort_weight desc, publish_time desc, news_id desc

@@ -144,7 +144,7 @@ CREATE TABLE `edu_news` (
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `del_flag` char(1) DEFAULT '0' COMMENT '删除标记(0存在 2删除)',
   PRIMARY KEY (`news_id`),
-  KEY `idx_publish` (`publish_portal`,`status`,`del_flag`),
+  KEY `idx_publish` (`publish_portal`,`notice_type`,`status`,`del_flag`),
   KEY `idx_sort_time` (`sort_weight`,`publish_time`)
 ) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='门户新闻表';
 
@@ -379,7 +379,7 @@ CREATE TABLE `sys_dict_data` (
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`dict_code`)
-) ENGINE=InnoDB AUTO_INCREMENT=118 DEFAULT CHARSET=utf8mb3 COMMENT='字典数据表';
+) ENGINE=InnoDB AUTO_INCREMENT=120 DEFAULT CHARSET=utf8mb3 COMMENT='字典数据表';
 
 -- ----------------------------
 -- Records of sys_dict_data
@@ -430,6 +430,8 @@ INSERT INTO `sys_dict_data` VALUES ('114', '2', '一等奖', '1', 'edu_achieveme
 INSERT INTO `sys_dict_data` VALUES ('115', '3', '二等奖', '2', 'edu_achievement_level', 'warning', 'default', 'N', '0', 'admin', '2026-04-25 16:27:54', '', null, '');
 INSERT INTO `sys_dict_data` VALUES ('116', '4', '三等奖', '3', 'edu_achievement_level', 'info', 'default', 'N', '0', 'admin', '2026-04-25 16:27:54', '', null, '');
 INSERT INTO `sys_dict_data` VALUES ('117', '5', '优秀奖', '4', 'edu_achievement_level', '', 'default', 'N', '0', 'admin', '2026-04-25 16:27:54', '', null, '');
+INSERT INTO `sys_dict_data` VALUES ('118', '1', '通知公告', '1', 'edu_news_type', '', 'warning', 'N', '0', 'admin', '2026-04-28 15:30:00', '', null, '门户通知公告');
+INSERT INTO `sys_dict_data` VALUES ('119', '2', '新闻动态', '2', 'edu_news_type', '', 'primary', 'N', '0', 'admin', '2026-04-28 15:30:00', '', null, '门户新闻动态');
 
 -- ----------------------------
 -- Table structure for sys_dict_type
@@ -447,7 +449,7 @@ CREATE TABLE `sys_dict_type` (
   `remark` varchar(500) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`dict_id`),
   UNIQUE KEY `dict_type` (`dict_type`)
-) ENGINE=InnoDB AUTO_INCREMENT=105 DEFAULT CHARSET=utf8mb3 COMMENT='字典类型表';
+) ENGINE=InnoDB AUTO_INCREMENT=106 DEFAULT CHARSET=utf8mb3 COMMENT='字典类型表';
 
 -- ----------------------------
 -- Records of sys_dict_type
@@ -467,6 +469,7 @@ INSERT INTO `sys_dict_type` VALUES ('101', '审核结果', 'audit_result', '0', 
 INSERT INTO `sys_dict_type` VALUES ('102', '学院', 'college', '0', 'admin', '2026-03-03 13:53:29', '', null, null);
 INSERT INTO `sys_dict_type` VALUES ('103', '成果类型', 'edu_achievement_category', '0', 'admin', '2026-03-03 16:07:17', '', null, null);
 INSERT INTO `sys_dict_type` VALUES ('104', '申报等级', 'edu_achievement_level', '0', 'admin', '2026-04-25 16:27:54', '', null, '教学成果申报等级');
+INSERT INTO `sys_dict_type` VALUES ('105', '门户内容分类', 'edu_news_type', '0', 'admin', '2026-04-28 15:30:00', '', null, '门户新闻与通知分类');
 
 -- ----------------------------
 -- Table structure for sys_job

@@ -66,6 +66,10 @@ public class EduNewsController extends BaseController
     @PostMapping
     public AjaxResult add(@RequestBody EduNews eduNews)
     {
+        if (!isValidNoticeType(eduNews.getNoticeType()))
+        {
+            return AjaxResult.error("请选择正确的新闻/通知分类");
+        }
         eduNews.setCreateBy(SecurityUtils.getUsername());
         return toAjax(eduNewsService.insertEduNews(eduNews));
     }
@@ -75,6 +79,10 @@ public class EduNewsController extends BaseController
     @PutMapping
     public AjaxResult edit(@RequestBody EduNews eduNews)
     {
+        if (!isValidNoticeType(eduNews.getNoticeType()))
+        {
+            return AjaxResult.error("请选择正确的新闻/通知分类");
+        }
         eduNews.setUpdateBy(SecurityUtils.getUsername());
         return toAjax(eduNewsService.updateEduNews(eduNews));
     }
@@ -85,5 +93,10 @@ public class EduNewsController extends BaseController
     public AjaxResult remove(@PathVariable Long[] newsIds)
     {
         return toAjax(eduNewsService.deleteEduNewsByNewsIds(newsIds));
+    }
+
+    private boolean isValidNoticeType(String noticeType)
+    {
+        return noticeType == null || "".equals(noticeType) || "1".equals(noticeType) || "2".equals(noticeType);
     }
 }
