@@ -1,116 +1,93 @@
 <template>
-  <div class="audit-archive-container">
-    <div class="stats-overview">
-      <div class="stat-card bg-blue">
-        <div class="stat-icon"><i class="el-icon-collection"></i></div>
-        <div class="stat-info">
-          <p>总审核档案数</p>
-          <h3>{{ stats.totalCount || total }}</h3>
+  <div class="portal-record-page">
+    <section class="record-head">
+      <div>
+        <span>Audit Archive</span>
+        <h1>审核档案</h1>
+        <p>查询学校审核办理记录与成果归档信息。</p>
+      </div>
+      <div class="head-stats">
+        <div>
+          <strong>{{ stats.totalCount || total || 0 }}</strong>
+          <span>记录总数</span>
+        </div>
+        <div>
+          <strong>{{ stats.monthPassed || 0 }}</strong>
+          <span>本月通过</span>
+        </div>
+        <div>
+          <strong>{{ stats.monthRejected || 0 }}</strong>
+          <span>本月驳回</span>
         </div>
       </div>
-      <div class="stat-card bg-green">
-        <div class="stat-icon"><i class="el-icon-circle-check"></i></div>
-        <div class="stat-info">
-          <p>审核通过</p>
-          <h3>{{ stats.monthPassed || 0 }}</h3>
-        </div>
-      </div>
-      <div class="stat-card bg-red">
-        <div class="stat-icon"><i class="el-icon-warning-outline"></i></div>
-        <div class="stat-info">
-          <p>予以驳回</p>
-          <h3>{{ stats.monthRejected || 0 }}</h3>
-        </div>
-      </div>
-    </div>
+    </section>
 
-    <div class="elegant-panel search-panel">
-      <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" class="clean-form">
+    <section class="record-filter">
+      <el-form :model="queryParams" ref="queryForm" :inline="true" size="small">
         <el-form-item label="成果标题" prop="achievementTitle">
-          <el-input v-model="queryParams.achievementTitle" placeholder="关键词检索" clearable class="round-input" @keyup.enter.native="handleQuery" />
+          <el-input v-model="queryParams.achievementTitle" placeholder="请输入关键词" clearable @keyup.enter.native="handleQuery" />
         </el-form-item>
-        <el-form-item label="审核级别" prop="auditLevel">
-          <el-select v-model="queryParams.auditLevel" placeholder="全部级别" clearable popper-class="elegant-select-dropdown" style="width: 130px">
-            <el-option label="校级审核" value="2" />
+        <el-form-item label="审核层级" prop="auditLevel">
+          <el-select v-model="queryParams.auditLevel" placeholder="全部" clearable>
+            <el-option label="学校审核" value="2" />
           </el-select>
         </el-form-item>
-        <el-form-item label="结果" prop="auditResult">
-          <el-select v-model="queryParams.auditResult" placeholder="全部结果" clearable popper-class="elegant-select-dropdown" style="width: 110px">
+        <el-form-item label="审核结果" prop="auditResult">
+          <el-select v-model="queryParams.auditResult" placeholder="全部" clearable>
             <el-option label="通过" value="1" />
             <el-option label="驳回" value="2" />
           </el-select>
         </el-form-item>
         <el-form-item label="审核人" prop="auditorName">
-          <el-input v-model="queryParams.auditorName" placeholder="姓名" clearable class="round-input" style="width: 130px" @keyup.enter.native="handleQuery" />
+          <el-input v-model="queryParams.auditorName" placeholder="审核人" clearable @keyup.enter.native="handleQuery" />
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="handleQuery" round class="search-btn">查 询</el-button>
-          <el-button @click="resetQuery" round>重 置</el-button>
+          <el-button type="primary" icon="el-icon-search" @click="handleQuery">查询</el-button>
+          <el-button icon="el-icon-refresh" @click="resetQuery">重置</el-button>
         </el-form-item>
       </el-form>
-    </div>
+    </section>
 
-    <div class="elegant-panel table-panel">
-      <el-table
-        v-loading="loading"
-        :data="recordList"
-        class="clean-table"
-        :row-class-name="tableRowClassName"
-        stripe
-      >
-        <el-table-column label="NO." type="index" width="60" align="center" />
-
+    <section class="record-table">
+      <el-table v-loading="loading" :data="recordList" :row-class-name="tableRowClassName" stripe>
+        <el-table-column label="序号" type="index" width="70" align="center" />
         <el-table-column label="成果标题" align="left" prop="achievementTitle" :show-overflow-tooltip="true" min-width="240">
           <template slot-scope="scope">
             <span class="cell-title">{{ scope.row.achievementTitle }}</span>
           </template>
         </el-table-column>
-
-        <el-table-column label="审核级别" align="center" width="110">
-          <template slot-scope="scope">
-            <el-tag
-              class="elegant-tag tag-school"
-              size="mini"
-            >
-              审核
-            </el-tag>
+        <el-table-column label="审核层级" align="center" width="110">
+          <template>
+            <el-tag size="mini" class="level-tag">学校审核</el-tag>
           </template>
         </el-table-column>
-
-        <el-table-column label="审核结果" align="center" width="100">
+        <el-table-column label="审核结果" align="center" width="110">
           <template slot-scope="scope">
-            <div class="result-indicator">
-              <span :class="['dot', scope.row.auditResult === '1' ? 'dot-pass' : 'dot-reject']"></span>
-              <span :class="['text', scope.row.auditResult === '1' ? 'text-green' : 'text-red']">
-                {{ scope.row.auditResult === '1' ? '通过' : '驳回' }}
-              </span>
-            </div>
+            <span :class="['result-dot', scope.row.auditResult === '1' ? 'pass' : 'reject']"></span>
+            <span :class="scope.row.auditResult === '1' ? 'text-pass' : 'text-reject'">
+              {{ scope.row.auditResult === '1' ? '通过' : '驳回' }}
+            </span>
           </template>
         </el-table-column>
-
         <el-table-column label="审核意见" align="left" prop="auditOpinion" :show-overflow-tooltip="true" min-width="180">
           <template slot-scope="scope">
-            <span class="opinion-text">{{ scope.row.auditOpinion || '（未填写意见）' }}</span>
+            <span>{{ scope.row.auditOpinion || scope.row.auditComment || '无审核意见' }}</span>
           </template>
         </el-table-column>
-
-        <el-table-column label="归属学院" align="center" prop="collegeId" :formatter="collegeFormat" width="150" />
-
+        <el-table-column label="所属学院" align="center" prop="collegeId" :formatter="collegeFormat" width="150" />
         <el-table-column label="成果类型" align="center" width="120">
           <template slot-scope="scope">
             <dict-tag :options="dict.type.edu_achievement_category" :value="scope.row.category" />
           </template>
         </el-table-column>
-
-        <el-table-column label="审核人" align="center" width="100">
+        <el-table-column label="审核人" align="center" width="110">
           <template slot-scope="scope">
-            <span class="auditor-name">{{ scope.row.auditorName }}</span>
+            <span>{{ scope.row.auditorName || '-' }}</span>
           </template>
         </el-table-column>
-
-        <el-table-column label="办理时间" align="center" prop="createTime" width="160">
+        <el-table-column label="审核时间" align="center" prop="createTime" width="170">
           <template slot-scope="scope">
-            <span class="cell-time">{{ parseTime(scope.row.createTime, '{y}-{m}-{d} {h}:{i}') }}</span>
+            <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d} {h}:{i}') }}</span>
           </template>
         </el-table-column>
       </el-table>
@@ -122,16 +99,16 @@
         :limit.sync="queryParams.pageSize"
         @pagination="getList"
       />
-    </div>
+    </section>
   </div>
 </template>
 
 <script>
-import { listAuditRecord, getStatistics } from "@/api/achievement/audit";
-import { listDept } from "@/api/system/dept";
+import { listAuditRecord, getStatistics } from '@/api/achievement/audit'
+import { listDept } from '@/api/system/dept'
 
 export default {
-  name: "AuditRecord",
+  name: 'AuditRecord',
   dicts: ['edu_achievement_category'],
   data() {
     return {
@@ -148,146 +125,207 @@ export default {
         auditResult: null,
         auditorName: null
       }
-    };
+    }
   },
   created() {
-    this.getCollegeList();
-    this.getList();
-    this.fetchStats();
+    this.getCollegeList()
+    this.getList()
+    this.fetchStats()
   },
   methods: {
     getList() {
-      this.loading = true;
+      this.loading = true
       listAuditRecord(this.queryParams).then(response => {
-        this.recordList = response.rows;
-        this.total = response.total;
-        this.loading = false;
-      });
+        this.recordList = response.rows
+        this.total = response.total
+        this.loading = false
+      })
     },
     fetchStats() {
       getStatistics({}).then(res => {
-        this.stats = res || {};
-      });
+        this.stats = res || {}
+      })
     },
     getCollegeList() {
       listDept().then(response => {
-        this.collegeOptions = response.data || [];
-      });
+        this.collegeOptions = response.data || []
+      })
     },
     collegeFormat(row) {
-      if (!row.collegeId) return '-';
-      const c = this.collegeOptions.find(item => item.deptId == row.collegeId);
-      return c ? c.deptName : row.collegeId;
+      if (!row.collegeId) return '-'
+      const c = this.collegeOptions.find(item => item.deptId == row.collegeId)
+      return c ? c.deptName : row.collegeId
     },
-    // 为驳回行添加特殊的背景类名
-    tableRowClassName({row}) {
+    tableRowClassName({ row }) {
       if (row.auditResult === '2') {
-        return 'row-reject';
+        return 'row-reject'
       }
-      return '';
+      return ''
     },
-    handleQuery() { this.queryParams.pageNum = 1; this.getList(); },
+    handleQuery() {
+      this.queryParams.pageNum = 1
+      this.getList()
+    },
     resetQuery() {
-      this.queryParams = { pageNum: 1, pageSize: 10, achievementTitle: null, auditLevel: null, auditResult: null, auditorName: null };
-      this.handleQuery();
+      this.queryParams = {
+        pageNum: 1,
+        pageSize: 10,
+        achievementTitle: null,
+        auditLevel: null,
+        auditResult: null,
+        auditorName: null
+      }
+      this.handleQuery()
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
-$primary-blue: #2563eb;
-$success: #10b981;
-$danger: #ef4444;
-$school-purple: #8b5cf6;
-$bg-light: #f8fafc;
-$text-dark: #0f172a;
-$border-color: #e2e8f0;
-
-.audit-archive-container { padding: 24px; max-width: 1440px; margin: 0 auto; }
-
-/* 1. 统计概览区样式 */
-.stats-overview {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-  margin-bottom: 24px;
+.portal-record-page {
+  max-width: 1460px;
+  margin: 0 auto;
+  padding: 28px 20px 60px;
 }
-.stat-card {
-  padding: 24px;
-  border-radius: 16px;
-  color: #fff;
+
+.record-head {
+  min-height: 176px;
+  padding: 32px 38px;
   display: flex;
   align-items: center;
-  gap: 20px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-  transition: transform 0.3s;
-  &:hover { transform: translateY(-4px); }
+  justify-content: space-between;
+  gap: 24px;
+  color: #173b63;
+  background:
+    linear-gradient(90deg, rgba(249, 253, 255, 0.95), rgba(231, 245, 255, 0.88)),
+    url('~@/assets/images/portal-hero-ink.png') center 62% / cover;
+  border: 1px solid #d7e6f4;
+  border-bottom: 4px solid #d6a23a;
 }
-.bg-blue { background: linear-gradient(135deg, #3b82f6, #1d4ed8); }
-.bg-green { background: linear-gradient(135deg, #10b981, #059669); }
-.bg-red { background: linear-gradient(135deg, #f87171, #dc2626); }
 
-.stat-icon {
-  width: 56px; height: 56px;
-  border-radius: 14px;
-  background: rgba(255, 255, 255, 0.2);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 28px;
+.record-head span:first-child {
+  display: block;
+  margin-bottom: 10px;
+  color: #0b5c95;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
-.stat-info p { margin: 0 0 4px 0; font-size: 14px; opacity: 0.9; }
-.stat-info h3 { margin: 0; font-size: 32px; font-weight: 700; }
 
-/* 2. 搜索面板 */
-.elegant-panel {
+.record-head h1 {
+  margin: 0;
+  font-size: 32px;
+}
+
+.record-head p {
+  margin: 12px 0 0;
+  color: #4f6f8b;
+}
+
+.head-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 96px);
+  gap: 1px;
+  background: #d7e6f4;
+  border: 1px solid #d7e6f4;
+}
+
+.head-stats div {
+  padding: 16px 10px;
+  background: rgba(255, 255, 255, 0.8);
+  text-align: center;
+}
+
+.head-stats strong {
+  display: block;
+  font-size: 26px;
+}
+
+.head-stats span {
+  display: block;
+  margin-top: 6px;
+  color: #6c8299;
+  font-size: 13px;
+}
+
+.record-filter,
+.record-table {
   background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
-  border: 1px solid #f1f5f9;
-  padding: 20px;
-  margin-bottom: 20px;
+  border: 1px solid #dbe6f2;
+  box-shadow: 0 12px 28px rgba(18, 70, 122, 0.08);
 }
-.search-panel { padding-bottom: 4px; }
-.round-input ::v-deep .el-input__inner { border-radius: 8px; }
-.search-btn { padding: 8px 24px; }
 
-/* 3. 表格定制 */
-.clean-table ::v-deep .el-table__header th {
-  background-color: $bg-light !important;
-  color: #475569;
+.record-filter {
+  margin-top: 22px;
+  padding: 18px 22px 0;
+}
+
+.record-filter ::v-deep .el-input__inner,
+.record-filter .el-button {
+  border-radius: 0;
+}
+
+.record-table {
+  margin-top: 18px;
+  padding: 22px;
+}
+
+.record-table ::v-deep .el-table__header th {
+  background: #f4f8fc !important;
+  color: #173b63;
+  font-weight: 700;
+}
+
+.cell-title {
+  color: #173b63;
   font-weight: 600;
-  border-bottom: none;
-}
-.clean-table ::v-deep .el-table__row td { border-bottom: 1px solid #f1f5f9; padding: 12px 0; }
-
-/* 驳回行高亮逻辑 */
-.clean-table ::v-deep .row-reject {
-  background-color: #fff8f8 !important;
 }
 
-.cell-title { font-weight: 600; color: $text-dark; }
-.cell-time { color: #94a3b8; font-size: 13px; }
-
-/* 审核级别标签定制 */
-.elegant-tag { border: none; font-weight: 600; border-radius: 4px; }
-
-.tag-school { background: #f5f3ff; color: $school-purple; }
-
-/* 审核结果指示灯 */
-.result-indicator {
-  display: flex; align-items: center; justify-content: center; gap: 8px;
-  .dot { width: 8px; height: 8px; border-radius: 50%; }
-  .dot-pass { background: $success; box-shadow: 0 0 8px rgba(16, 185, 129, 0.5); }
-  .dot-reject { background: $danger; box-shadow: 0 0 8px rgba(239, 68, 68, 0.5); }
-  .text { font-size: 13px; font-weight: 700; }
-  .text-green { color: $success; }
-  .text-red { color: $danger; }
+.level-tag {
+  color: #0b4f93;
+  border-color: #9bc3e9;
+  background: #edf6ff;
 }
 
-.opinion-text { font-size: 13px; color: #64748b; }
-.auditor-name { font-weight: 500; color: #334155; background: #f1f5f9; padding: 2px 8px; border-radius: 4px;}
+.result-dot {
+  width: 7px;
+  height: 7px;
+  display: inline-block;
+  margin-right: 6px;
+  border-radius: 50%;
+}
 
-@media (max-width: 992px) {
-  .stats-overview { grid-template-columns: 1fr; }
+.result-dot.pass {
+  background: #15935f;
+}
+
+.result-dot.reject {
+  background: #d14545;
+}
+
+.text-pass {
+  color: #15935f;
+}
+
+.text-reject {
+  color: #d14545;
+}
+
+.record-table ::v-deep .row-reject td {
+  background: #fff8f8;
+}
+
+::v-deep .pagination-container {
+  margin-top: 22px;
+}
+
+@media (max-width: 900px) {
+  .record-head {
+    display: block;
+  }
+
+  .head-stats {
+    margin-top: 20px;
+  }
 }
 </style>

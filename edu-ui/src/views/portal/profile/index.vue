@@ -1,121 +1,108 @@
 <template>
-  <div class="portal-profile">
-    <div class="profile-header">
-      <h2 class="profile-title">
-        <i class="el-icon-user"></i> 个人设置
-      </h2>
-      <p class="profile-subtitle">管理您的个人信息、修改密码和头像</p>
-    </div>
+  <div class="portal-profile-page">
+    <section class="profile-head">
+      <div>
+        <span>User Center</span>
+        <h1>个人中心</h1>
+        <p>维护账号资料、头像与登录密码。</p>
+      </div>
+    </section>
 
-    <el-row :gutter="24">
-      <!-- 左侧：个人信息卡片 -->
-      <el-col :span="8" :xs="24">
-        <div class="profile-card info-card">
-          <div class="card-header">
-            <span>个人信息</span>
-          </div>
-          <div class="card-body">
-            <div class="avatar-section">
-              <div class="avatar-wrapper" @click="editCropper">
-                <img :src="options.img" class="avatar-img" />
-                <div class="avatar-overlay">
-                  <i class="el-icon-camera"></i>
-                  <span>更换头像</span>
-                </div>
-              </div>
-              <h3 class="user-name">{{ user.nickName || user.userName }}</h3>
+    <section class="profile-layout">
+      <aside class="identity-panel">
+        <div class="avatar-section">
+          <div class="avatar-wrapper" @click="editCropper">
+            <img :src="options.img" class="avatar-img" />
+            <div class="avatar-overlay">
+              <i class="el-icon-camera" />
+              <span>更换头像</span>
             </div>
-            <ul class="info-list">
-              <li>
-                <i class="el-icon-user"></i>
-                <span class="info-label">用户名称</span>
-                <span class="info-value">{{ user.userName }}</span>
-              </li>
-              <li>
-                <i class="el-icon-phone-outline"></i>
-                <span class="info-label">手机号码</span>
-                <span class="info-value">{{ user.phonenumber || '未设置' }}</span>
-              </li>
-              <li>
-                <i class="el-icon-message"></i>
-                <span class="info-label">用户邮箱</span>
-                <span class="info-value">{{ user.email || '未设置' }}</span>
-              </li>
-              <li>
-                <i class="el-icon-office-building"></i>
-                <span class="info-label">所属部门</span>
-                <span class="info-value">{{ user.dept ? user.dept.deptName : '未分配' }}</span>
-              </li>
-              <li>
-                <i class="el-icon-s-custom"></i>
-                <span class="info-label">所属角色</span>
-                <span class="info-value">{{ roleGroup || '未分配' }}</span>
-              </li>
-              <li>
-                <i class="el-icon-date"></i>
-                <span class="info-label">创建日期</span>
-                <span class="info-value">{{ user.createTime }}</span>
-              </li>
-            </ul>
           </div>
+          <h2>{{ user.nickName || user.userName }}</h2>
+          <p>{{ roleGroup || '暂无角色' }}</p>
         </div>
-      </el-col>
 
-      <!-- 右侧：编辑区域 -->
-      <el-col :span="16" :xs="24">
-        <div class="profile-card edit-card">
-          <el-tabs v-model="activeTab" class="profile-tabs">
-            <el-tab-pane label="基本资料" name="userinfo">
-              <el-form ref="infoForm" :model="infoForm" :rules="infoRules" label-width="100px" class="profile-form">
-                <el-form-item label="用户昵称" prop="nickName">
-                  <el-input v-model="infoForm.nickName" placeholder="请输入用户昵称" maxlength="30" />
-                </el-form-item>
-                <el-form-item label="手机号码" prop="phonenumber">
-                  <el-input v-model="infoForm.phonenumber" placeholder="请输入手机号码" maxlength="11" />
-                </el-form-item>
-                <el-form-item label="邮箱" prop="email">
-                  <el-input v-model="infoForm.email" placeholder="请输入邮箱" maxlength="50" />
-                </el-form-item>
-                <el-form-item label="性别">
-                  <el-radio-group v-model="infoForm.sex">
-                    <el-radio label="0">男</el-radio>
-                    <el-radio label="1">女</el-radio>
-                  </el-radio-group>
-                </el-form-item>
-                <el-form-item>
-                  <el-button type="primary" @click="submitInfo">保存修改</el-button>
-                  <el-button @click="resetInfo">重置</el-button>
-                </el-form-item>
-              </el-form>
-            </el-tab-pane>
+        <ul class="info-list">
+          <li>
+            <i class="el-icon-user" />
+            <label>用户名</label>
+            <span>{{ user.userName }}</span>
+          </li>
+          <li>
+            <i class="el-icon-phone-outline" />
+            <label>手机号</label>
+            <span>{{ user.phonenumber || '未设置' }}</span>
+          </li>
+          <li>
+            <i class="el-icon-message" />
+            <label>邮箱</label>
+            <span>{{ user.email || '未设置' }}</span>
+          </li>
+          <li>
+            <i class="el-icon-office-building" />
+            <label>部门</label>
+            <span>{{ user.dept ? user.dept.deptName : '未分配' }}</span>
+          </li>
+          <li>
+            <i class="el-icon-date" />
+            <label>创建日期</label>
+            <span>{{ user.createTime || '-' }}</span>
+          </li>
+        </ul>
+      </aside>
 
-            <el-tab-pane label="修改密码" name="resetPwd">
-              <el-form ref="pwdForm" :model="pwdForm" :rules="pwdRules" label-width="100px" class="profile-form">
-                <el-form-item label="旧密码" prop="oldPassword">
-                  <el-input v-model="pwdForm.oldPassword" placeholder="请输入旧密码" type="password" show-password />
-                </el-form-item>
-                <el-form-item label="新密码" prop="newPassword">
-                  <el-input v-model="pwdForm.newPassword" placeholder="请输入新密码" type="password" show-password />
-                </el-form-item>
-                <el-form-item label="确认密码" prop="confirmPassword">
-                  <el-input v-model="pwdForm.confirmPassword" placeholder="请确认新密码" type="password" show-password />
-                </el-form-item>
-                <el-form-item>
-                  <el-button type="primary" @click="submitPwd">保存修改</el-button>
-                  <el-button @click="resetPwd">重置</el-button>
-                </el-form-item>
-              </el-form>
-            </el-tab-pane>
-          </el-tabs>
-        </div>
-      </el-col>
-    </el-row>
+      <main class="settings-panel">
+        <el-tabs v-model="activeTab" class="profile-tabs">
+          <el-tab-pane label="基本资料" name="userinfo">
+            <el-form ref="infoForm" :model="infoForm" :rules="infoRules" label-width="96px" class="profile-form">
+              <el-form-item label="用户昵称" prop="nickName">
+                <el-input v-model="infoForm.nickName" placeholder="请输入用户昵称" maxlength="30" />
+              </el-form-item>
+              <el-form-item label="手机号码" prop="phonenumber">
+                <el-input v-model="infoForm.phonenumber" placeholder="请输入手机号码" maxlength="11" />
+              </el-form-item>
+              <el-form-item label="邮箱" prop="email">
+                <el-input v-model="infoForm.email" placeholder="请输入邮箱" maxlength="50" />
+              </el-form-item>
+              <el-form-item label="性别">
+                <el-radio-group v-model="infoForm.sex">
+                  <el-radio label="0">男</el-radio>
+                  <el-radio label="1">女</el-radio>
+                </el-radio-group>
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" @click="submitInfo">保存修改</el-button>
+                <el-button @click="resetInfo">重置</el-button>
+              </el-form-item>
+            </el-form>
+          </el-tab-pane>
 
-    <!-- 头像裁剪弹窗 -->
+          <el-tab-pane label="修改密码" name="resetPwd">
+            <el-form ref="pwdForm" :model="pwdForm" :rules="pwdRules" label-width="96px" class="profile-form">
+              <el-form-item label="旧密码" prop="oldPassword">
+                <el-input v-model="pwdForm.oldPassword" placeholder="请输入旧密码" type="password" show-password />
+              </el-form-item>
+              <el-form-item label="新密码" prop="newPassword">
+                <el-input v-model="pwdForm.newPassword" placeholder="请输入新密码" type="password" show-password />
+              </el-form-item>
+              <el-form-item label="确认密码" prop="confirmPassword">
+                <el-input v-model="pwdForm.confirmPassword" placeholder="请确认新密码" type="password" show-password />
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" @click="submitPwd">保存修改</el-button>
+                <el-button @click="resetPwd">重置</el-button>
+              </el-form-item>
+            </el-form>
+          </el-tab-pane>
+        </el-tabs>
+      </main>
+    </section>
+
     <el-dialog title="修改头像" :visible.sync="cropperOpen" width="800px" append-to-body @opened="modalOpened" @close="closeDialog">
       <el-row>
-        <el-col :xs="24" :md="12" :style="{height: '350px'}">
+        <el-col :xs="24" :md="12" :style="{ height: '350px' }">
           <vue-cropper
+            v-if="cropperVisible"
             ref="cropper"
             :img="options.img"
             :info="true"
@@ -125,36 +112,35 @@
             :fixedBox="options.fixedBox"
             :outputType="options.outputType"
             @realTime="realTime"
-            v-if="cropperVisible"
           />
         </el-col>
-        <el-col :xs="24" :md="12" :style="{height: '350px'}">
+        <el-col :xs="24" :md="12" :style="{ height: '350px' }">
           <div class="avatar-upload-preview">
             <img :src="previews.url" :style="previews.img" />
           </div>
         </el-col>
       </el-row>
       <br />
-      <el-row>
-        <el-col :lg="2" :sm="3" :xs="3">
+      <el-row class="crop-actions">
+        <el-col :lg="2" :sm="3" :xs="4">
           <el-upload action="#" :http-request="requestUpload" :show-file-list="false" :before-upload="beforeUpload">
-            <el-button size="small">选择 <i class="el-icon-upload el-icon--right"></i></el-button>
+            <el-button size="small">选择 <i class="el-icon-upload el-icon--right" /></el-button>
           </el-upload>
         </el-col>
-        <el-col :lg="{span: 1, offset: 2}" :sm="2" :xs="2">
-          <el-button icon="el-icon-plus" size="small" @click="changeScale(1)"></el-button>
+        <el-col :lg="{ span: 1, offset: 2 }" :sm="2" :xs="3">
+          <el-button icon="el-icon-plus" size="small" @click="changeScale(1)" />
         </el-col>
-        <el-col :lg="{span: 1, offset: 1}" :sm="2" :xs="2">
-          <el-button icon="el-icon-minus" size="small" @click="changeScale(-1)"></el-button>
+        <el-col :lg="{ span: 1, offset: 1 }" :sm="2" :xs="3">
+          <el-button icon="el-icon-minus" size="small" @click="changeScale(-1)" />
         </el-col>
-        <el-col :lg="{span: 1, offset: 1}" :sm="2" :xs="2">
-          <el-button icon="el-icon-refresh-left" size="small" @click="rotateLeft"></el-button>
+        <el-col :lg="{ span: 1, offset: 1 }" :sm="2" :xs="3">
+          <el-button icon="el-icon-refresh-left" size="small" @click="rotateLeft" />
         </el-col>
-        <el-col :lg="{span: 1, offset: 1}" :sm="2" :xs="2">
-          <el-button icon="el-icon-refresh-right" size="small" @click="rotateRight"></el-button>
+        <el-col :lg="{ span: 1, offset: 1 }" :sm="2" :xs="3">
+          <el-button icon="el-icon-refresh-right" size="small" @click="rotateRight" />
         </el-col>
-        <el-col :lg="{span: 2, offset: 6}" :sm="2" :xs="2">
-          <el-button type="primary" size="small" @click="uploadImg">提 交</el-button>
+        <el-col :lg="{ span: 2, offset: 6 }" :sm="3" :xs="5">
+          <el-button type="primary" size="small" @click="uploadImg">提交</el-button>
         </el-col>
       </el-row>
     </el-dialog>
@@ -189,7 +175,6 @@ export default {
         newPassword: undefined,
         confirmPassword: undefined
       },
-      // 头像裁剪
       cropperOpen: false,
       cropperVisible: false,
       options: {
@@ -203,7 +188,6 @@ export default {
       },
       previews: {},
       resizeHandler: null,
-      // 表单校验
       infoRules: {
         nickName: [
           { required: true, message: '用户昵称不能为空', trigger: 'blur' }
@@ -224,7 +208,7 @@ export default {
         newPassword: [
           { required: true, message: '新密码不能为空', trigger: 'blur' },
           { min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur' },
-          { pattern: /^[^<>"'|\\]+$/, message: "不能包含非法字符：< > \" ' \\ |", trigger: 'blur' }
+          { pattern: /^[^<>"'|\\]+$/, message: '不能包含非法字符：< > " \' \\ |', trigger: 'blur' }
         ],
         confirmPassword: [
           { required: true, message: '确认密码不能为空', trigger: 'blur' },
@@ -237,7 +221,6 @@ export default {
     this.getUser()
   },
   methods: {
-    /** 获取用户信息 */
     getUser() {
       getUserProfile().then(response => {
         this.user = response.data
@@ -252,9 +235,8 @@ export default {
         }
       })
     },
-    /** 提交基本资料 */
     submitInfo() {
-      this.$refs['infoForm'].validate(valid => {
+      this.$refs.infoForm.validate(valid => {
         if (valid) {
           updateUserProfile(this.infoForm).then(() => {
             this.$message.success('修改成功')
@@ -263,7 +245,6 @@ export default {
         }
       })
     },
-    /** 重置基本资料 */
     resetInfo() {
       this.infoForm = {
         nickName: this.user.nickName,
@@ -272,9 +253,8 @@ export default {
         sex: this.user.sex
       }
     },
-    /** 提交密码修改 */
     submitPwd() {
-      this.$refs['pwdForm'].validate(valid => {
+      this.$refs.pwdForm.validate(valid => {
         if (valid) {
           updateUserPwd(this.pwdForm.oldPassword, this.pwdForm.newPassword).then(() => {
             this.$message.success('密码修改成功')
@@ -283,25 +263,31 @@ export default {
         }
       })
     },
-    /** 重置密码表单 */
     resetPwd() {
       this.pwdForm = { oldPassword: undefined, newPassword: undefined, confirmPassword: undefined }
     },
-    // ========== 头像裁剪相关 ==========
     editCropper() {
       this.cropperOpen = true
     },
     modalOpened() {
       this.cropperVisible = true
       if (!this.resizeHandler) {
-        this.resizeHandler = debounce(() => { this.$refs.cropper && this.$refs.cropper.refresh() }, 100)
+        this.resizeHandler = debounce(() => {
+          this.$refs.cropper && this.$refs.cropper.refresh()
+        }, 100)
       }
       window.addEventListener('resize', this.resizeHandler)
     },
     requestUpload() {},
-    rotateLeft() { this.$refs.cropper.rotateLeft() },
-    rotateRight() { this.$refs.cropper.rotateRight() },
-    changeScale(num) { this.$refs.cropper.changeScale(num || 1) },
+    rotateLeft() {
+      this.$refs.cropper.rotateLeft()
+    },
+    rotateRight() {
+      this.$refs.cropper.rotateRight()
+    },
+    changeScale(num) {
+      this.$refs.cropper.changeScale(num || 1)
+    },
     beforeUpload(file) {
       if (file.type.indexOf('image/') === -1) {
         this.$message.error('文件格式错误，请上传 JPG、PNG 等图片文件')
@@ -316,7 +302,7 @@ export default {
     },
     uploadImg() {
       this.$refs.cropper.getCropBlob(data => {
-        let formData = new FormData()
+        const formData = new FormData()
         formData.append('avatarfile', data, this.options.filename)
         uploadAvatar(formData).then(response => {
           this.cropperOpen = false
@@ -327,7 +313,9 @@ export default {
         })
       })
     },
-    realTime(data) { this.previews = data },
+    realTime(data) {
+      this.previews = data
+    },
     closeDialog() {
       this.options.img = this.user.avatar || store.getters.avatar
       this.cropperVisible = false
@@ -337,233 +325,194 @@ export default {
 }
 </script>
 
-<style scoped>
-.portal-profile {
-  max-width: 1100px;
+<style lang="scss" scoped>
+.portal-profile-page {
+  max-width: 1380px;
   margin: 0 auto;
+  padding: 28px 20px 60px;
 }
 
-.profile-header {
-  margin-bottom: 28px;
-}
-
-.profile-title {
-  font-size: 22px;
-  font-weight: 600;
-  color: #0f172a;
-  margin: 0 0 8px 0;
+.profile-head {
+  min-height: 156px;
+  padding: 30px 38px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  color: #173b63;
+  background:
+    linear-gradient(90deg, rgba(249, 253, 255, 0.95), rgba(231, 245, 255, 0.88)),
+    url('~@/assets/images/portal-hero-ink.png') center 62% / cover;
+  border: 1px solid #d7e6f4;
+  border-bottom: 4px solid #d6a23a;
 }
 
-.profile-title i {
-  color: #2563eb;
-  font-size: 24px;
+.profile-head span {
+  display: block;
+  margin-bottom: 10px;
+  color: #0b5c95;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
-.profile-subtitle {
-  font-size: 14px;
-  color: #64748b;
+.profile-head h1 {
   margin: 0;
+  font-size: 32px;
 }
 
-/* 卡片通用样式 */
-.profile-card {
+.profile-head p {
+  margin: 12px 0 0;
+  color: #4f6f8b;
+}
+
+.profile-layout {
+  margin-top: 22px;
+  display: grid;
+  grid-template-columns: 360px minmax(0, 1fr);
+  gap: 22px;
+}
+
+.identity-panel,
+.settings-panel {
   background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.02);
-  border: 1px solid rgba(226, 232, 240, 0.8);
-  overflow: hidden;
-  transition: box-shadow 0.3s;
+  border: 1px solid #dbe6f2;
+  box-shadow: 0 12px 28px rgba(18, 70, 122, 0.08);
 }
 
-.profile-card:hover {
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+.identity-panel {
+  padding: 30px 28px;
 }
 
-.card-header {
-  padding: 16px 24px;
-  border-bottom: 1px solid #f1f5f9;
-  font-size: 16px;
-  font-weight: 600;
-  color: #1e293b;
-}
-
-.card-body {
-  padding: 24px;
-}
-
-/* 头像区域 */
 .avatar-section {
   text-align: center;
-  margin-bottom: 24px;
   padding-bottom: 24px;
-  border-bottom: 1px solid #f1f5f9;
+  border-bottom: 1px solid #e7eef7;
 }
 
 .avatar-wrapper {
   position: relative;
-  display: inline-block;
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  overflow: hidden;
+  width: 112px;
+  height: 112px;
+  margin: 0 auto 16px;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
-  transition: transform 0.3s;
 }
 
-.avatar-wrapper:hover {
-  transform: scale(1.05);
+.avatar-img {
+  width: 112px;
+  height: 112px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #edf5fd;
+}
+
+.avatar-overlay {
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: #fff;
+  background: rgba(6, 45, 86, 0.66);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  font-size: 12px;
 }
 
 .avatar-wrapper:hover .avatar-overlay {
   opacity: 1;
 }
 
-.avatar-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.avatar-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-
-.avatar-overlay i {
+.avatar-section h2 {
+  margin: 0;
+  color: #0d3564;
   font-size: 22px;
-  margin-bottom: 4px;
 }
 
-.avatar-overlay span {
-  font-size: 12px;
+.avatar-section p {
+  margin: 8px 0 0;
+  color: #6c7f92;
 }
 
-.user-name {
-  margin: 14px 0 0 0;
-  font-size: 18px;
-  color: #1e293b;
-  font-weight: 600;
-}
-
-/* 信息列表 */
 .info-list {
   list-style: none;
+  margin: 22px 0 0;
   padding: 0;
-  margin: 0;
 }
 
 .info-list li {
-  display: flex;
+  display: grid;
+  grid-template-columns: 22px 72px minmax(0, 1fr);
+  gap: 8px;
   align-items: center;
   padding: 12px 0;
-  border-bottom: 1px solid #f8fafc;
-  font-size: 14px;
-  transition: background 0.2s;
+  color: #51677e;
+  border-bottom: 1px solid #f0f4f8;
 }
 
-.info-list li:last-child {
-  border-bottom: none;
+.info-list label {
+  color: #7b8da1;
 }
 
-.info-list li:hover {
-  background: #f8fafc;
-  margin: 0 -24px;
-  padding: 12px 24px;
+.info-list span {
+  min-width: 0;
+  color: #173b63;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.info-list li i {
-  color: #2563eb;
-  font-size: 16px;
-  width: 20px;
-  margin-right: 10px;
-  flex-shrink: 0;
+.settings-panel {
+  padding: 28px 34px 36px;
 }
 
-.info-label {
-  color: #64748b;
-  width: 70px;
-  flex-shrink: 0;
+.profile-tabs ::v-deep .el-tabs__item {
+  color: #51677e;
+  font-weight: 600;
 }
 
-.info-value {
-  color: #1e293b;
-  margin-left: auto;
-  text-align: right;
-  word-break: break-all;
+.profile-tabs ::v-deep .el-tabs__item.is-active {
+  color: #0b4f93;
 }
 
-/* 编辑卡片 */
-.edit-card {
-  padding: 8px 24px 24px;
-}
-
-.profile-tabs >>> .el-tabs__header {
-  margin-bottom: 24px;
-}
-
-.profile-tabs >>> .el-tabs__item {
-  font-size: 15px;
-  font-weight: 500;
-}
-
-.profile-tabs >>> .el-tabs__active-bar {
-  background-color: #2563eb;
-}
-
-.profile-tabs >>> .el-tabs__item.is-active {
-  color: #2563eb;
+.profile-tabs ::v-deep .el-tabs__active-bar {
+  background: #d6a23a;
 }
 
 .profile-form {
-  max-width: 500px;
+  max-width: 760px;
+  padding-top: 18px;
 }
 
-.profile-form >>> .el-form-item__label {
-  font-weight: 500;
-  color: #475569;
+.profile-form ::v-deep .el-input__inner {
+  border-radius: 0;
+  border-color: #cfddeb;
 }
 
-/* 头像裁剪预览 */
+.profile-form .el-button {
+  border-radius: 0;
+}
+
+.profile-form .el-button--primary {
+  background: #0b4f93;
+  border-color: #0b4f93;
+}
+
 .avatar-upload-preview {
-  position: relative;
+  position: absolute;
   top: 50%;
-  transform: translateY(-50%);
+  transform: translate(50%, -50%);
   width: 200px;
   height: 200px;
   border-radius: 50%;
-  box-shadow: 0 0 4px #ccc;
   overflow: hidden;
-  margin: 0 auto;
+  box-shadow: 0 0 4px #ccc;
 }
 
-/* 响应式 */
-@media (max-width: 768px) {
-  .profile-card {
-    margin-bottom: 16px;
-  }
-
-  .edit-card {
-    padding: 8px 16px 16px;
-  }
-
-  .info-list li:hover {
-    margin: 0;
-    padding: 12px 0;
+@media (max-width: 900px) {
+  .profile-layout {
+    grid-template-columns: 1fr;
   }
 }
 </style>
