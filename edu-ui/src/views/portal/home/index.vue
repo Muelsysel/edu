@@ -8,9 +8,6 @@
               <el-tag size="medium" effect="dark" class="banner-tag" v-if="banner.tag">{{ banner.tag }}</el-tag>
               <h2 class="banner-title">{{ banner.title }}</h2>
               <p class="banner-subtitle">{{ banner.subtitle }}</p>
-              <el-button type="primary" round size="medium" class="banner-btn" @click="goWithAuth(primaryAction.path)">
-                {{ primaryAction.label }}
-              </el-button>
             </div>
           </div>
         </el-carousel-item>
@@ -136,7 +133,6 @@
 import { mapGetters } from 'vuex'
 import { portalNewsList } from '@/api/achievement/portal'
 import { getToken } from '@/utils/auth'
-import { getPortalLandingPath } from '@/utils/role-route'
 
 export default {
   name: 'PortalHome',
@@ -169,16 +165,6 @@ export default {
   },
   computed: {
     ...mapGetters(['roles']),
-    primaryAction() {
-      const path = getPortalLandingPath(this.roles)
-      const labelMap = {
-        '/portal/audit/school': '进入审核工作台',
-        '/portal/audit/records': '查看审核记录',
-        '/portal/declare': '开始成果申报',
-        '/portal/mine': '查看我的申报'
-      }
-      return { path, label: labelMap[path] || '进入工作台' }
-    },
     // 安全地推断当前用户的角色权限，用于动态渲染快捷入口
     isTeacherRole() {
       return !this.roles.includes('admin') && !this.roles.includes('SchoolAudit') && !this.roles.includes('auditor');
@@ -263,6 +249,10 @@ $hover-shadow: 0 12px 24px rgba(37, 99, 235, 0.08);
   color: #ffffff;
   text-align: center;
 }
+.banner-content ::v-deep .el-button,
+.banner-content .el-button {
+  display: none !important;
+}
 .banner-tag {
   background: rgba(255,255,255,0.2);
   border: none;
@@ -285,17 +275,6 @@ $hover-shadow: 0 12px 24px rgba(37, 99, 235, 0.08);
   margin: 0 auto 32px auto;
   line-height: 1.8;
 }
-.banner-btn {
-  padding: 14px 36px;
-  font-size: 16px;
-  font-weight: 500;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
-  transition: transform 0.3s;
-  &:hover {
-    transform: translateY(-2px);
-  }
-}
-
 /* 主体内容包裹区 */
 .main-wrapper {
   max-width: 1240px;

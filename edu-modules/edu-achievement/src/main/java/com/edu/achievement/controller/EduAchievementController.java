@@ -156,6 +156,9 @@ public class EduAchievementController extends BaseController
     public AjaxResult teacherAdd(@RequestBody EduAchievement eduAchievement) {
         // 强制绑定当前登录用户的ID，作为该成果的所有者
         eduAchievement.setTeacherId(SecurityUtils.getUserId());
+        if (!"2".equals(eduAchievement.getStatus())) {
+            eduAchievement.setStatus("0");
+        }
         eduAchievement.setCreateBy(SecurityUtils.getUsername());
         return toAjax(eduAchievementService.insertEduAchievement(eduAchievement));
     }
@@ -176,12 +179,21 @@ public class EduAchievementController extends BaseController
         if (!oldData.getTeacherId().equals(SecurityUtils.getUserId())) {
             return AjaxResult.error("你无权修改他人的成果");
         }
+        String oldStatus = oldData.getStatus();
         // 3. 状态检查：审核中(2)或已通过(3)不可修改
-        if ("2".equals(oldData.getStatus())) {
+        if ("2".equals(oldStatus)) {
             return AjaxResult.error("该成果审核中，不可修改");
         }
-        if ("3".equals(oldData.getStatus())) {
+        if ("3".equals(oldStatus)) {
             return AjaxResult.error("该成果已通过审核，不可修改");
+        }
+
+        if ("0".equals(oldStatus)) {
+            eduAchievement.setStatus("2".equals(eduAchievement.getStatus()) ? "2" : "0");
+        } else if ("4".equals(oldStatus)) {
+            eduAchievement.setStatus("4");
+        } else {
+            return AjaxResult.error("成果状态非法");
         }
 
         // 4. 强制将当前登录用户的ID注入，确保教师只能修改自己的数据

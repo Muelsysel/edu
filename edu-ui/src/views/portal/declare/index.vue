@@ -224,13 +224,14 @@ export default {
           customClass: 'elegant-confirm-box'
         }).then(() => {
           this.submitting = true
+          const submitData = { ...this.form, status: '2' };
           let apiCall;
           if (this.form.achievementId && this.form.status === '4') {
-            apiCall = teacherResubmit(this.form);
+            apiCall = teacherResubmit(submitData);
           } else if (this.form.achievementId) {
-            apiCall = teacherUpdateAchievement(this.form);
+            apiCall = teacherUpdateAchievement(submitData);
           } else {
-            apiCall = teacherAddAchievement(this.form);
+            apiCall = teacherAddAchievement(submitData);
           }
           apiCall.then(() => {
             this.$message.success(this.form.achievementId ? '修改成功！' : '申报提交成功！');

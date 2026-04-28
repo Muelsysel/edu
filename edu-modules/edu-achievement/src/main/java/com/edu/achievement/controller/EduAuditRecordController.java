@@ -62,6 +62,12 @@ public class EduAuditRecordController extends BaseController
     @PostMapping("/school/handle")
     public AjaxResult schoolHandle(@RequestBody EduAuditRecord auditRecord)
     {
+        if (auditRecord == null
+            || (!"1".equals(auditRecord.getAuditResult()) && !"2".equals(auditRecord.getAuditResult())))
+        {
+            return AjaxResult.error("Invalid audit result");
+        }
+
         EduAchievement achievement = eduAchievementService.selectEduAchievementByAchievementId(auditRecord.getAchievementId());
         if (achievement == null)
         {
