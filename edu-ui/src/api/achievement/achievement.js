@@ -132,3 +132,12 @@ export function exportAchievement(query) {
   })
 }
 
+export function teacherExportAchievement(query) {
+  return request({
+    url: '/achievement/achievement/teacherExport',
+    method: 'post',
+    params: query,
+    responseType: 'blob'
+  })
+}
+

@@ -44,6 +44,9 @@
         <el-form-item>
           <el-button type="primary" icon="el-icon-search" @click="handleQuery">查询</el-button>
           <el-button icon="el-icon-refresh" @click="resetQuery">重置</el-button>
+          <el-button type="warning" icon="el-icon-download" @click="handleExport" style="margin-left:8px">
+            导出Excel
+          </el-button>
         </el-form-item>
       </el-form>
     </section>
@@ -105,6 +108,7 @@
 
 <script>
 import { listAuditRecord, getStatistics } from '@/api/achievement/audit'
+import { exportAuditRecord } from '@/api/achievement/audit'
 import { listDept } from '@/api/system/dept'
 
 export default {
@@ -117,6 +121,7 @@ export default {
       recordList: [],
       collegeOptions: [],
       stats: { totalCount: 0, monthPassed: 0, monthRejected: 0 },
+      dateRange: null,
       queryParams: {
         pageNum: 1,
         pageSize: 10,
@@ -165,6 +170,27 @@ export default {
     handleQuery() {
       this.queryParams.pageNum = 1
       this.getList()
+    },
+    handleExport() {
+      this.$confirm('确认导出当前筛选的审核记录？', '导出确认', {
+        confirmButtonText: '导出', cancelButtonText: '取消', type: 'info'
+      }).then(() => {
+        const params = {};
+        if (this.queryParams.achievementTitle) params.title = this.queryParams.achievementTitle;
+        if (this.queryParams.auditLevel) params.auditLevel = this.queryParams.auditLevel;
+        if (this.queryParams.auditResult) params.auditResult = this.queryParams.auditResult;
+        if (this.queryParams.auditorName) params.auditorName = this.queryParams.auditorName;
+        exportAuditRecord(params).then(blob => {
+          const url = window.URL.createObjectURL(new Blob([blob]));
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = '审核档案.xlsx';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          window.URL.revokeObjectURL(url);
+        }).catch(() => { this.$message.error('导出失败'); });
+      }).catch(() => {});
     },
     resetQuery() {
       this.queryParams = {

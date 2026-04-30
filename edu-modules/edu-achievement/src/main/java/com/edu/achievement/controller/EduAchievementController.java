@@ -57,8 +57,24 @@ public class EduAchievementController extends BaseController
     public void export(HttpServletResponse response, EduAchievement eduAchievement)
     {
         List<EduAchievement> list = eduAchievementService.selectEduAchievementList(eduAchievement);
+        list.forEach(EduAchievement::getScore);
         ExcelUtil<EduAchievement> util = new ExcelUtil<EduAchievement>(EduAchievement.class);
         util.exportExcel(response, list, "教学成果管理数据");
+    }
+
+    /**
+     * 教师导出自己的成果列表
+     */
+    @RequiresPermissions("achievement:achievement:teacherQuery")
+    @Log(title = "我的成果-导出", businessType = BusinessType.EXPORT)
+    @PostMapping("/teacherExport")
+    public void teacherExport(HttpServletResponse response, EduAchievement eduAchievement)
+    {
+        eduAchievement.setTeacherId(SecurityUtils.getUserId());
+        List<EduAchievement> list = eduAchievementService.selectEduAchievementList(eduAchievement);
+        list.forEach(EduAchievement::getScore);
+        ExcelUtil<EduAchievement> util = new ExcelUtil<EduAchievement>(EduAchievement.class);
+        util.exportExcel(response, list, "我的教学成果");
     }
 
     /**

@@ -20,6 +20,22 @@
       </div>
     </el-collapse-transition>
 
+    <div class="category-nav">
+      <span class="nav-label">成果类型</span>
+      <div class="category-grid">
+        <div
+          v-for="item in dict.type.edu_achievement_category"
+          :key="item.value"
+          class="category-cell"
+          :class="{ selected: form.category === item.value }"
+          @click="form.category = item.value"
+        >
+          <span class="cell-label">{{ item.label }}</span>
+          <span class="cell-desc">{{ categoryDesc(item.value) }}</span>
+        </div>
+      </div>
+    </div>
+
     <el-form
       ref="formRef"
       :model="form"
@@ -43,13 +59,7 @@
         </el-form-item>
 
         <el-row :gutter="22">
-          <el-col :xs="24" :sm="8">
-            <el-form-item label="成果类型" prop="category">
-              <el-select v-model="form.category" placeholder="请选择" filterable>
-                <el-option v-for="dict in dict.type.edu_achievement_category" :key="dict.value" :label="dict.label" :value="dict.value" />
-              </el-select>
-            </el-form-item>
-          </el-col>
+
           <el-col :xs="24" :sm="8">
             <el-form-item label="申报等级" prop="level">
               <el-select v-model="form.level" placeholder="请选择" filterable>
@@ -65,6 +75,10 @@
             </el-form-item>
           </el-col>
         </el-row>
+
+        <el-form-item prop="category" style="display:none">
+          <el-input v-model="form.category" />
+        </el-form-item>
       </section>
 
       <section class="form-panel">
@@ -196,6 +210,17 @@ export default {
           this.saving = false
         }, 800)
       }, 15000)
+    },
+    categoryDesc(val) {
+      const map = {
+        '1': '期刊论文、专著等',
+        '2': '规划教材、校本教材',
+        '3': '指导学生获奖',
+        '4': '教学改革研究',
+        '5': '教学评估工作',
+        '6': '课程建设'
+      };
+      return map[val] || '';
     },
     saveDraft() {
       this.saving = true
@@ -404,5 +429,44 @@ export default {
   .form-panel {
     padding: 24px 18px;
   }
+}
+
+.category-nav {
+  margin-bottom: 32px;
+  .nav-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #0f172a;
+    margin-bottom: 12px;
+    display: block;
+  }
+}
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+.category-cell {
+  padding: 16px 20px;
+  background: #f8fafc;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.25s;
+  border: 2px solid transparent;
+  text-align: center;
+  &:hover {
+    background: #eff6ff;
+    border-color: #bfdbfe;
+  }
+  &.selected {
+    background: #eff6ff;
+    border-color: #2563eb;
+    .cell-label { color: #2563eb; font-weight: 600; }
+  }
+  .cell-label { display: block; font-size: 15px; color: #334155; font-weight: 500; margin-bottom: 4px; transition: color 0.2s; }
+  .cell-desc { display: block; font-size: 12px; color: #94a3b8; }
+}
+@media (max-width: 768px) {
+  .category-grid { grid-template-columns: repeat(2, 1fr); }
 }
 </style>

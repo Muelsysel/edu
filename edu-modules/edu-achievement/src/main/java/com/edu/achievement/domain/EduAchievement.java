@@ -1,5 +1,6 @@
 package com.edu.achievement.domain;
 
+import java.util.Date;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.edu.common.core.annotation.Excel;
@@ -28,7 +29,8 @@ public class EduAchievement extends BaseEntity
     @Excel(name = "成果标题")
     private String title;
 
-    /** 成果详述内容（富文本 HTML，不导出） */
+    /** 成果详述内容（富文本 HTML） */
+    @Excel(name = "详细描述")
     private String content;
 
     /** 佐证材料文件路径，多文件以逗号分隔（不导出） */
@@ -51,7 +53,7 @@ public class EduAchievement extends BaseEntity
     private String delFlag;
 
     /** 成果类型 (1:论文 2:教材 3:竞赛 4:教改) */
-    @Excel(name = "成果类型", readConverterExp = "1=论文,2=教材,3=竞赛,4=教改")
+    @Excel(name = "成果类型", readConverterExp = "1=科研指导,2=教材建设,3=竞赛指导,4=教学改革,5=教学评估,6=优秀课程")
     private String category;
 
     /** 申报等级 (如特等奖、一等奖等，字典 edu_achievement_level) */
@@ -71,6 +73,123 @@ public class EduAchievement extends BaseEntity
 
     public void setTeacherName(String teacherName) {
         this.teacherName = teacherName;
+    }
+
+    /** 非数据库字段：学院名称（JOIN sys_dept） */
+    @Excel(name = "所属学院")
+    private String collegeName;
+
+    /** 非数据库字段：审核结果（JOIN edu_audit_record） */
+    @Excel(name = "审核结果")
+    private String auditResultLabel;
+
+    /** 非数据库字段：审核意见（JOIN edu_audit_record） */
+    @Excel(name = "审核意见")
+    private String auditOpinionExport;
+
+    /** 非数据库字段：审核人姓名（JOIN edu_audit_record） */
+    @Excel(name = "审核人")
+    private String auditorNameExport;
+
+    /** 非数据库字段：审核时间（JOIN edu_audit_record） */
+    @Excel(name = "审核时间")
+    private String auditTimeExport;
+
+    /** 非数据库字段：审核人所属学院（JOIN sys_dept via auditor） */
+    @Excel(name = "审核人所属学院")
+    private String auditorCollege;
+
+    /** 非数据库字段：成果得分（根据level计算） */
+    @Excel(name = "成果得分")
+    private Integer score;
+
+    /** 非数据库字段：提交时间（重写 BaseEntity 字段以添加 Excel 注解） */
+    @Excel(name = "提交时间", width = 20, dateFormat = "yyyy-MM-dd HH:mm:ss")
+    private Date createTime;
+
+    public String getCollegeName() {
+        return collegeName;
+    }
+
+    public void setCollegeName(String collegeName) {
+        this.collegeName = collegeName;
+    }
+
+    public String getAuditResultLabel() {
+        if (auditResultLabel != null) return auditResultLabel;
+        if (status == null) return "未知";
+        switch (status) {
+            case "0": return "草稿";
+            case "2": return "待审核";
+            case "3": return "通过";
+            case "4": return "驳回";
+            default: return String.valueOf(status);
+        }
+    }
+
+    public void setAuditResultLabel(String auditResultLabel) {
+        this.auditResultLabel = auditResultLabel;
+    }
+
+    public String getAuditOpinionExport() {
+        return auditOpinionExport;
+    }
+
+    public void setAuditOpinionExport(String auditOpinionExport) {
+        this.auditOpinionExport = auditOpinionExport;
+    }
+
+    public String getAuditorNameExport() {
+        return auditorNameExport;
+    }
+
+    public void setAuditorNameExport(String auditorNameExport) {
+        this.auditorNameExport = auditorNameExport;
+    }
+
+    public String getAuditTimeExport() {
+        return auditTimeExport;
+    }
+
+    public void setAuditTimeExport(String auditTimeExport) {
+        this.auditTimeExport = auditTimeExport;
+    }
+
+    public String getAuditorCollege() {
+        return auditorCollege;
+    }
+
+    public void setAuditorCollege(String auditorCollege) {
+        this.auditorCollege = auditorCollege;
+    }
+
+    public Integer getScore() {
+        if (level == null) return 0;
+        int s;
+        switch (level) {
+            case "0": s = 10; break;
+            case "1": s = 8; break;
+            case "2": s = 6; break;
+            case "3": s = 4; break;
+            case "4": s = 2; break;
+            default: s = 0;
+        }
+        this.score = s;
+        return s;
+    }
+
+    public void setScore(Integer score) {
+        this.score = score;
+    }
+
+    @Override
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    @Override
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
     public void setCategory(String category) {
@@ -188,8 +307,15 @@ public class EduAchievement extends BaseEntity
             .append("teacherId", getTeacherId())
             .append("teacherName", getTeacherName())
             .append("collegeId", getCollegeId())
+            .append("collegeName", getCollegeName())
             .append("auditDeptId", getAuditDeptId())
             .append("status", getStatus())
+            .append("auditResultLabel", getAuditResultLabel())
+            .append("auditOpinionExport", getAuditOpinionExport())
+            .append("auditorNameExport", getAuditorNameExport())
+            .append("auditTimeExport", getAuditTimeExport())
+            .append("auditorCollege", getAuditorCollege())
+            .append("score", getScore())
             .append("createBy", getCreateBy())
             .append("createTime", getCreateTime())
             .append("updateBy", getUpdateBy())

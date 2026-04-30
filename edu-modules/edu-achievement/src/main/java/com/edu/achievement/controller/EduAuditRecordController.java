@@ -140,6 +140,16 @@ public class EduAuditRecordController extends BaseController
         util.exportExcel(response, list, "audit_record");
     }
 
+    @RequiresPermissions("achievement:audit:recordList")
+    @PostMapping("/record/exportAudit")
+    public void exportAuditRecord(HttpServletResponse response, EduAchievement eduAchievement)
+    {
+        List<EduAchievement> list = eduAchievementService.selectEduAchievementList(eduAchievement);
+        list.forEach(EduAchievement::getScore);
+        ExcelUtil<EduAchievement> util = new ExcelUtil<>(EduAchievement.class);
+        util.exportExcel(response, list, "审核档案");
+    }
+
     @GetMapping("/statistics")
     public AjaxResult statistics(@RequestParam(value = "teacherId", required = false) Long teacherId)
     {

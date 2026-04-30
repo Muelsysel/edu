@@ -6,7 +6,12 @@
         <h1>我的成果</h1>
         <p>查看申报记录、审核状态与归档结果。</p>
       </div>
-      <el-button type="primary" icon="el-icon-edit-outline" @click="$router.push('/portal/declare')">新增申报</el-button>
+      <div class="head-right">
+        <el-button type="primary" icon="el-icon-edit-outline" @click="$router.push('/portal/declare')">新增申报</el-button>
+        <el-button type="warning" icon="el-icon-download" @click="handleExport" size="small" round>
+          导出我的成果
+        </el-button>
+      </div>
     </section>
 
     <section class="filter-panel">
@@ -131,7 +136,7 @@
 </template>
 
 <script>
-import { teacherGetAchievement, teacherListAchievement } from '@/api/achievement/achievement'
+import { teacherGetAchievement, teacherListAchievement, teacherExportAchievement } from '@/api/achievement/achievement'
 import { teacherWithdraw } from '@/api/achievement/portal'
 import { getAuditProgress } from '@/api/achievement/audit'
 import { listDept } from '@/api/system/dept'
@@ -219,6 +224,22 @@ export default {
     handleQuery() {
       this.queryParams.pageNum = 1
       this.getList()
+    },
+    handleExport() {
+      this.$confirm('确认导出您的全部教学成果？', '导出确认', {
+        confirmButtonText: '导出', cancelButtonText: '取消', type: 'info'
+      }).then(() => {
+        teacherExportAchievement(this.queryParams).then(blob => {
+          const url = window.URL.createObjectURL(new Blob([blob]));
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = '我的教学成果.xlsx';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          window.URL.revokeObjectURL(url);
+        }).catch(() => { this.$message.error('导出失败'); });
+      }).catch(() => {});
     },
     switchStatus(status) {
       this.queryParams.status = status
@@ -323,6 +344,12 @@ export default {
   background: #fff8e6;
   border-color: #d6a23a;
   color: #8a5b08;
+}
+
+.head-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .filter-panel,

@@ -56,3 +56,13 @@ export function getAuditProgress(achievementId) {
     params: { achievementId: achievementId, pageSize: 100 }
   })
 }
+
+// 导出审核档案
+export function exportAuditRecord(query) {
+  return request({
+    url: '/achievement/audit/record/exportAudit',
+    method: 'post',
+    params: query,
+    responseType: 'blob'
+  })
+}

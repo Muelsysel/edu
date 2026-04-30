@@ -20,14 +20,33 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="category"    column="category"    />
         <result property="level"       column="level"       />
         <result property="teacherName"  column="nick_name"    />
+        <result property="collegeName" column="college_name"/>
+        <result property="auditResultLabel" column="audit_result_label"/>
+        <result property="auditOpinionExport" column="audit_opinion_export"/>
+        <result property="auditorNameExport" column="auditor_name_export"/>
+        <result property="auditTimeExport" column="audit_time_export"/>
+        <result property="auditorCollege" column="auditor_college"/>
     </resultMap>
 
     <sql id="selectEduAchievementVo">
         select a.achievement_id, a.title, a.content, a.file_url, a.teacher_id, a.college_id,
                a.status, a.create_by, a.create_time, a.update_by, a.update_time, a.del_flag, a.category, a.level,
-               u.nick_name
+               u.nick_name,
+               d.dept_name as college_name,
+               ar.audit_result as audit_result_label,
+               ar.audit_opinion as audit_opinion_export,
+               au.nick_name as auditor_name_export,
+               ar.create_time as audit_time_export,
+               ad.dept_name as auditor_college
         from edu_achievement a
         left join sys_user u on a.teacher_id = u.user_id
+        left join sys_dept d on a.college_id = d.dept_id
+        left join edu_audit_record ar on a.achievement_id = ar.achievement_id
+          and ar.record_id = (
+            select max(record_id) from edu_audit_record where achievement_id = a.achievement_id
+          )
+        left join sys_user au on ar.auditor_id = au.user_id
+        left join sys_dept ad on au.dept_id = ad.dept_id
     </sql>
 
     <select id="selectEduAchievementList" parameterType="EduAchievement" resultMap="EduAchievementResult">
