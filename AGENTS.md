@@ -9,7 +9,6 @@ Spring Cloud Alibaba microservices (Java 8) + Vue 2 frontend. University teachin
    ```bash
    mysql -u root -p < sql/data/edu_system.sql
    mysql -u root -p < sql/data/edu_config.sql
-   mysql -u root -p < sql/quartz.sql
    ```
 3. **Start Nacos**: `startup.cmd -m standalone` (Win) / `sh startup.sh -m standalone` (Linux/Mac)
 4. **Start services in order**:

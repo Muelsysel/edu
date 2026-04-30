@@ -121,7 +121,10 @@ public class EduAuditRecordController extends BaseController
         startPage();
         if (!SecurityUtils.isAdmin(SecurityUtils.getUserId()))
         {
-            eduAuditRecord.setAuditorId(SecurityUtils.getUserId());
+            if (eduAuditRecord.getAchievementId() == null)
+            {
+                eduAuditRecord.setAuditorId(SecurityUtils.getUserId());
+            }
         }
         List<EduAuditRecord> list = eduAuditRecordService.selectEduAuditRecordList(eduAuditRecord);
         return getDataTable(list);

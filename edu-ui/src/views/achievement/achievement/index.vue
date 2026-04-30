@@ -27,6 +27,17 @@
             <el-option v-for="dict in dict.type.edu_achievement_category" :key="dict.value" :label="dict.label" :value="dict.value" />
           </el-select>
         </el-form-item>
+        <el-form-item label="提交时间">
+          <el-date-picker
+            v-model="dateRange"
+            type="daterange"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            value-format="yyyy-MM-dd"
+            style="width: 260px"
+          />
+        </el-form-item>
         <el-form-item>
           <el-button type="primary" icon="el-icon-search" @click="handleQuery">搜索</el-button>
           <el-button icon="el-icon-refresh" @click="resetQuery">重置</el-button>
@@ -39,6 +50,7 @@
       <div class="toolbar-left">
         <el-button type="primary" icon="el-icon-plus" @click="handleAdd" v-hasPermi="['achievement:achievement:add']">新增申报</el-button>
         <el-button type="danger" plain icon="el-icon-delete" :disabled="multiple" @click="handleDelete" v-hasPermi="['achievement:achievement:remove']">批量删除</el-button>
+        <el-button type="warning" icon="el-icon-download" @click="handleExport">导出Excel</el-button>
       </div>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </div>
@@ -144,7 +156,7 @@
 </template>
 
 <script>
-import { listAchievement, getAchievement, delAchievement, addAchievement, updateAchievement } from "@/api/achievement/achievement"
+import { listAchievement, getAchievement, delAchievement, addAchievement, updateAchievement, exportAchievement } from "@/api/achievement/achievement"
 import { listDept } from "@/api/system/dept";
 import { parseTime } from "@/utils/ruoyi";
 
@@ -172,6 +184,7 @@ export default {
         teacherName: null,
         collegeId: null
       },
+      dateRange: null,
       form: {},
       rules: {
         title: [{ required: true, message: "成果标题不能为空", trigger: "blur" }],
@@ -225,6 +238,7 @@ export default {
     },
     resetQuery() {
       this.resetForm("queryForm");
+      this.dateRange = null;
       this.handleQuery();
     },
     handleSelectionChange(selection) {
@@ -264,6 +278,36 @@ export default {
           }
         }
       });
+    },
+    handleExport() {
+      this.$confirm('确认按当前筛选条件导出全部数据？', '导出确认', {
+        confirmButtonText: '导出',
+        cancelButtonText: '取消',
+        type: 'info'
+      }).then(() => {
+        const params = {};
+        if (this.queryParams.title) params.title = this.queryParams.title;
+        if (this.queryParams.teacherName) params.teacherName = this.queryParams.teacherName;
+        if (this.queryParams.collegeId) params.collegeId = this.queryParams.collegeId;
+        if (this.queryParams.status) params.status = this.queryParams.status;
+        if (this.queryParams.category) params.category = this.queryParams.category;
+        if (this.dateRange && this.dateRange.length === 2) {
+          params.beginTime = this.dateRange[0];
+          params.endTime = this.dateRange[1];
+        }
+        exportAchievement(params).then(blob => {
+          const url = window.URL.createObjectURL(new Blob([blob]));
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = '教学成果管理数据.xlsx';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          window.URL.revokeObjectURL(url);
+        }).catch(() => {
+          this.$message.error('导出失败');
+        });
+      }).catch(() => {});
     },
     handleDelete(row) {
       const achievementIds = row.achievementId || this.ids;

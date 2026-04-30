@@ -87,14 +87,13 @@ Docker 部署场景下，项目也提供了 `docker` 目录用于容器化启动
 ```bash
 mysql -u root -p < sql/data/edu_system.sql
 mysql -u root -p < sql/data/edu_config.sql
-mysql -u root -p < sql/quartz.sql
 ```
 
 说明：
 
 - `edu_system.sql`：系统基础表、业务表、菜单、角色、字典及初始化数据。
 - `edu_config.sql`：Nacos 配置数据。
-- `quartz.sql`：定时任务相关表。
+
 
 ## 后端启动
 

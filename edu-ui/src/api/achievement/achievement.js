@@ -122,3 +122,13 @@ export function checkPlagiarism(data) {
   })
 }
 
+// 导出教学成果
+export function exportAchievement(query) {
+  return request({
+    url: '/achievement/achievement/export',
+    method: 'post',
+    params: query,
+    responseType: 'blob'
+  })
+}
+
