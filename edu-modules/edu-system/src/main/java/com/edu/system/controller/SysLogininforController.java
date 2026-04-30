@@ -26,7 +26,7 @@ import com.edu.system.service.ISysLogininforService;
 /**
  * 系统访问记录
  * 
- * @author ruoyi
+ * @author zpz
  */
 @RestController
 @RequestMapping("/logininfor")

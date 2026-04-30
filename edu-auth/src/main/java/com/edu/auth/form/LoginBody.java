@@ -3,7 +3,7 @@ package com.edu.auth.form;
 /**
  * 用户登录对象
  * 
- * @author ruoyi
+ * @author zpz
  */
 public class LoginBody
 {

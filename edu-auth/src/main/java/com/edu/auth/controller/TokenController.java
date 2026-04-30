@@ -20,7 +20,7 @@ import com.edu.system.api.model.LoginUser;
 /**
  * token 控制
  * 
- * @author ruoyi
+ * @author zpz
  */
 @RestController
 public class TokenController

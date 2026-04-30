@@ -10,7 +10,7 @@ import com.edu.system.api.domain.SysOperLog;
 /**
  * 异步调用日志服务
  * 
- * @author ruoyi
+ * @author zpz
  */
 @Service
 public class AsyncLogService

@@ -29,7 +29,7 @@ import com.edu.system.service.ISysDictTypeService;
 /**
  * 数据字典信息
  * 
- * @author ruoyi
+ * @author zpz
  */
 @RestController
 @RequestMapping("/dict/data")

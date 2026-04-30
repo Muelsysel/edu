@@ -158,7 +158,7 @@
 <script>
 import { listAchievement, getAchievement, delAchievement, addAchievement, updateAchievement, exportAchievement } from "@/api/achievement/achievement"
 import { listDept } from "@/api/system/dept";
-import { parseTime } from "@/utils/ruoyi";
+import { parseTime } from "@/utils/util";
 
 export default {
   name: "Achievement",

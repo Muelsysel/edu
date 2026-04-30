@@ -214,7 +214,7 @@ import {
 } from "@/api/achievement/achievement";
 import { getAuditProgress } from "@/api/achievement/audit";
 import { listDept } from "@/api/system/dept";
-import { parseTime } from "@/utils/ruoyi";
+import { parseTime } from "@/utils/util";
 import dict from "@/utils/dict";
 
 export default {

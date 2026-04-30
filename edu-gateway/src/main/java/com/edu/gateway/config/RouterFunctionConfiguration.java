@@ -12,7 +12,7 @@ import com.edu.gateway.handler.ValidateCodeHandler;
 /**
  * 路由配置信息
  * 
- * @author ruoyi
+ * @author zpz
  */
 @Configuration
 public class RouterFunctionConfiguration

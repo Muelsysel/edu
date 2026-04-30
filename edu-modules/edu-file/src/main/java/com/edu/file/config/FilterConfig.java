@@ -13,7 +13,7 @@ import com.edu.file.filter.RefererFilter;
 /**
  * Filter配置
  *
- * @author ruoyi
+ * @author zpz
  */
 @Configuration
 public class FilterConfig

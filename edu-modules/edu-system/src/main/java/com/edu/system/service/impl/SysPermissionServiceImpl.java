@@ -18,7 +18,7 @@ import com.edu.system.service.ISysRoleService;
 /**
  * 用户权限处理
  * 
- * @author ruoyi
+ * @author zpz
  */
 @Service
 public class SysPermissionServiceImpl implements ISysPermissionService

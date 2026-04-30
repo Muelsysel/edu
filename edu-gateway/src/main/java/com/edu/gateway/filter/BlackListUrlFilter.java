@@ -11,7 +11,7 @@ import com.edu.common.core.utils.ServletUtils;
 /**
  * 黑名单过滤器
  * 
- * @author ruoyi
+ * @author zpz
  */
 @Component
 public class BlackListUrlFilter extends AbstractGatewayFilterFactory<BlackListUrlFilter.Config>

@@ -18,7 +18,7 @@ import com.edu.common.core.utils.StringUtils;
 /**
  * SpringDoc配置类
  *
- * @author ruoyi
+ * @author zpz
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(value = "springdoc.api-docs.enabled", matchIfMissing = true)

@@ -22,7 +22,7 @@ import com.edu.system.api.model.LoginUser;
 /**
  * token验证处理
  * 
- * @author ruoyi
+ * @author zpz
  */
 @Component
 public class TokenService

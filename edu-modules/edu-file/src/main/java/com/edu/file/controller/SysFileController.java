@@ -16,7 +16,7 @@ import com.edu.system.api.domain.SysFile;
 /**
  * 文件请求处理
  * 
- * @author ruoyi
+ * @author zpz
  */
 @RestController
 public class SysFileController

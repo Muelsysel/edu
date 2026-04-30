@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.edu.common.log.annotation.Log;
 import com.edu.common.log.enums.BusinessType;
@@ -54,11 +55,17 @@ public class EduAchievementController extends BaseController
     @RequiresPermissions("achievement:achievement:export")
     @Log(title = "教学成果管理", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
-    public void export(HttpServletResponse response, EduAchievement eduAchievement)
+    public void export(HttpServletResponse response, EduAchievement eduAchievement,
+            @RequestParam(required = false) String beginTime,
+            @RequestParam(required = false) String endTime)
     {
+        if (beginTime != null && !beginTime.isEmpty())
+            eduAchievement.getParams().put("beginTime", beginTime);
+        if (endTime != null && !endTime.isEmpty())
+            eduAchievement.getParams().put("endTime", endTime);
         List<EduAchievement> list = eduAchievementService.selectEduAchievementList(eduAchievement);
         list.forEach(EduAchievement::getScore);
-        ExcelUtil<EduAchievement> util = new ExcelUtil<EduAchievement>(EduAchievement.class);
+        ExcelUtil<EduAchievement> util = new ExcelUtil<>(EduAchievement.class);
         util.exportExcel(response, list, "教学成果管理数据");
     }
 

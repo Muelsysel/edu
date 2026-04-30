@@ -3,7 +3,7 @@ package com.edu.common.log.enums;
 /**
  * 操作状态
  * 
- * @author ruoyi
+ * @author zpz
  *
  */
 public enum BusinessStatus

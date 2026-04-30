@@ -9,7 +9,7 @@ import com.edu.system.domain.vo.TreeSelect;
 /**
  * 菜单 业务层
  * 
- * @author ruoyi
+ * @author zpz
  */
 public interface ISysMenuService
 {

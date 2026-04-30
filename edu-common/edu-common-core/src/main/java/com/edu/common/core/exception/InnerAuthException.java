@@ -3,7 +3,7 @@ package com.edu.common.core.exception;
 /**
  * 内部认证异常
  * 
- * @author ruoyi
+ * @author zpz
  */
 public class InnerAuthException extends RuntimeException
 {

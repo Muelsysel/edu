@@ -16,7 +16,7 @@ import io.minio.RemoveObjectArgs;
 /**
  * Minio 文件存储
  *
- * @author ruoyi
+ * @author zpz
  */
 @Primary
 @Service

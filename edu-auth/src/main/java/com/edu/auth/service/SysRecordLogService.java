@@ -12,7 +12,7 @@ import com.edu.system.api.domain.SysLogininfor;
 /**
  * 记录日志方法
  * 
- * @author ruoyi
+ * @author zpz
  */
 @Component
 public class SysRecordLogService

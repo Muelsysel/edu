@@ -26,7 +26,7 @@ import com.edu.system.service.ISysUserOnlineService;
 /**
  * 在线用户监控
  * 
- * @author ruoyi
+ * @author zpz
  */
 @RestController
 @RequestMapping("/online")

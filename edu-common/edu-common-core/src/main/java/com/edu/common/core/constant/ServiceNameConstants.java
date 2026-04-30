@@ -3,7 +3,7 @@ package com.edu.common.core.constant;
 /**
  * 服务名称
  * 
- * @author ruoyi
+ * @author zpz
  */
 public class ServiceNameConstants
 {

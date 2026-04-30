@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -46,25 +46,25 @@
             <artifactId>mysql-connector-j</artifactId>
         </dependency>
 
-        <!-- RuoYi Common DataSource -->
+        <!-- Edu Common DataSource -->
         <dependency>
             <groupId>com.edu</groupId>
             <artifactId>edu-common-datasource</artifactId>
         </dependency>
 
-        <!-- RuoYi Common DataScope -->
+        <!-- Edu Common DataScope -->
         <dependency>
             <groupId>com.edu</groupId>
             <artifactId>edu-common-datascope</artifactId>
         </dependency>
 
-        <!-- RuoYi Common Log -->
+        <!-- Edu Common Log -->
         <dependency>
             <groupId>com.edu</groupId>
             <artifactId>edu-common-log</artifactId>
         </dependency>
 
-        <!-- RuoYi Common Swagger -->
+        <!-- Edu Common Swagger -->
         <dependency>
             <groupId>com.edu</groupId>
             <artifactId>edu-common-swagger</artifactId>

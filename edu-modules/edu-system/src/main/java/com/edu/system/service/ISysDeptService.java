@@ -7,7 +7,7 @@ import com.edu.system.domain.vo.TreeSelect;
 /**
  * 部门管理 服务层
  * 
- * @author ruoyi
+ * @author zpz
  */
 public interface ISysDeptService
 {

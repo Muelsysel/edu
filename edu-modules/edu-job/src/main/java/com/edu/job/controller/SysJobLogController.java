@@ -22,7 +22,7 @@ import com.edu.job.service.ISysJobLogService;
 /**
  * 调度日志操作处理
  * 
- * @author ruoyi
+ * @author zpz
  */
 @RestController
 @RequestMapping("/job/log")

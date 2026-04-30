@@ -17,7 +17,7 @@ import io.swagger.v3.oas.models.servers.Server;
 /**
  * Swagger 文档配置
  *
- * @author ruoyi
+ * @author zpz
  */
 @EnableConfigurationProperties(SpringDocProperties.class)
 @ConditionalOnProperty(name = "springdoc.api-docs.enabled", havingValue = "true", matchIfMissing = true)

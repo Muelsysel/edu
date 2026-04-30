@@ -31,7 +31,7 @@ import com.edu.system.service.ISysUserService;
 /**
  * 角色信息
  * 
- * @author ruoyi
+ * @author zpz
  */
 @RestController
 @RequestMapping("/role")

@@ -8,7 +8,7 @@ import com.edu.common.core.web.page.TableSupport;
 /**
  * 分页工具类
  * 
- * @author ruoyi
+ * @author zpz
  */
 public class PageUtils extends PageHelper
 {

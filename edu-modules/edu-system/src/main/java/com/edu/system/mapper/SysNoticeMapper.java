@@ -6,7 +6,7 @@ import com.edu.system.domain.SysNotice;
 /**
  * 通知公告表 数据层
  * 
- * @author ruoyi
+ * @author zpz
  */
 public interface SysNoticeMapper
 {

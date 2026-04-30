@@ -6,7 +6,7 @@ import com.edu.job.domain.SysJobLog;
 /**
  * 调度任务日志信息 数据层
  * 
- * @author ruoyi
+ * @author zpz
  */
 public interface SysJobLogMapper
 {

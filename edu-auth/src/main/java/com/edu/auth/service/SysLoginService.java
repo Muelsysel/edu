@@ -22,7 +22,7 @@ import com.edu.system.api.model.LoginUser;
 /**
  * 登录校验方法
  * 
- * @author ruoyi
+ * @author zpz
  */
 @Component
 public class SysLoginService

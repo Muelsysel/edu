@@ -7,7 +7,7 @@ import com.edu.system.api.domain.SysDept;
 /**
  * 部门管理 数据层
  * 
- * @author ruoyi
+ * @author zpz
  */
 public interface SysDeptMapper
 {

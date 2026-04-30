@@ -3,7 +3,7 @@ package com.edu.common.core.constant;
 /**
  * 权限相关通用常量
  * 
- * @author ruoyi
+ * @author zpz
  */
 public class SecurityConstants
 {

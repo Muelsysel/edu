@@ -12,7 +12,7 @@ import com.edu.common.core.web.domain.BaseEntity;
 /**
  * 岗位表 sys_post
  * 
- * @author ruoyi
+ * @author zpz
  */
 public class SysPost extends BaseEntity
 {

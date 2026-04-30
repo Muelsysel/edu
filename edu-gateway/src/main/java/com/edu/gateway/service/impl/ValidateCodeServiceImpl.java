@@ -23,7 +23,7 @@ import com.edu.gateway.service.ValidateCodeService;
 /**
  * 验证码实现处理
  *
- * @author ruoyi
+ * @author zpz
  */
 @Service
 public class ValidateCodeServiceImpl implements ValidateCodeService

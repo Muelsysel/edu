@@ -24,7 +24,7 @@ import com.edu.common.core.web.domain.AjaxResult;
 /**
  * 全局异常处理器
  *
- * @author ruoyi
+ * @author zpz
  */
 @RestControllerAdvice
 public class GlobalExceptionHandler

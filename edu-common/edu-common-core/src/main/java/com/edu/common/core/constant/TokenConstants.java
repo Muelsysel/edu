@@ -3,7 +3,7 @@ package com.edu.common.core.constant;
 /**
  * Token的Key常量
  * 
- * @author ruoyi
+ * @author zpz
  */
 public class TokenConstants
 {

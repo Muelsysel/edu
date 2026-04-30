@@ -3,7 +3,7 @@ package com.edu.common.core.constant;
 /**
  * 缓存常量信息
  * 
- * @author ruoyi
+ * @author zpz
  */
 public class CacheConstants
 {

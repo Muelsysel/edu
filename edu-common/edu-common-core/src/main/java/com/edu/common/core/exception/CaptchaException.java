@@ -3,7 +3,7 @@ package com.edu.common.core.exception;
 /**
  * 验证码错误异常类
  * 
- * @author ruoyi
+ * @author zpz
  */
 public class CaptchaException extends RuntimeException
 {

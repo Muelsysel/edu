@@ -6,7 +6,7 @@ import com.edu.system.api.domain.SysDictType;
 /**
  * 字典表 数据层
  * 
- * @author ruoyi
+ * @author zpz
  */
 public interface SysDictTypeMapper
 {

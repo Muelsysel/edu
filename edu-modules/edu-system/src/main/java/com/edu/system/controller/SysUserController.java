@@ -46,7 +46,7 @@ import com.edu.system.service.ISysUserService;
 /**
  * 用户信息
  * 
- * @author ruoyi
+ * @author zpz
  */
 @RestController
 @RequestMapping("/user")

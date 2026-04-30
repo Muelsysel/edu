@@ -13,7 +13,7 @@ import com.edu.system.api.domain.SysUser;
 /**
  * 登录密码方法
  * 
- * @author ruoyi
+ * @author zpz
  */
 @Component
 public class SysPasswordService

@@ -25,7 +25,7 @@ import com.edu.system.service.ISysMenuService;
 /**
  * 菜单信息
  * 
- * @author ruoyi
+ * @author zpz
  */
 @RestController
 @RequestMapping("/menu")
