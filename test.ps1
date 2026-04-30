@@ -1,4 +1,4 @@
-# ==================== 高校教学成果管理系统 - 自动化测试 ====================
+# 自动化测试
 # 用法: powershell -ExecutionPolicy Bypass -File test.ps1
 # 前置: Gateway 已启动 (port 8080), Nacos 中 captcha.enabled=false
 

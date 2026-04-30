@@ -226,7 +226,7 @@ export default {
       this.getList()
     },
     handleExport() {
-      this.$confirm('确认导出您的全部教学成果？', '导出确认', {
+      this.$confirm('确认按当前筛选条件导出全部数据？', '导出确认', {
         confirmButtonText: '导出', cancelButtonText: '取消', type: 'info'
       }).then(() => {
         teacherExportAchievement(this.queryParams).then(blob => {

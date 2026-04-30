@@ -1,5 +1,5 @@
-# AGENTS.md — edu-achievement-master
-
+# edu-achievement-master
+# AGENTS.md — 
 ## Project Type
 Spring Cloud Alibaba microservices (Java 8) + Vue 2 frontend. University teaching-achievement management system.
 

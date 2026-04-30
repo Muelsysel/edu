@@ -66,6 +66,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="params.endTime != null and params.endTime != ''">
                 and a.create_time &lt;= concat(#{params.endTime}, ' 23:59:59')
             </if>
+            <if test="params.auditLevel != null and params.auditLevel != ''">
+                and ar.audit_level = #{params.auditLevel}
+            </if>
+            <if test="params.auditResult != null and params.auditResult != ''">
+                and ar.audit_result = #{params.auditResult}
+            </if>
+            <if test="params.auditorName != null and params.auditorName != ''">
+                and ar.auditor_name like concat('%', #{params.auditorName}, '%')
+            </if>
         </where>
         order by a.create_time desc, a.achievement_id desc
     </select>

@@ -1,8 +1,6 @@
 import router from './router'
 import store from './store'
 import { Message } from 'element-ui'
-import NProgress from 'nprogress'
-import 'nprogress/nprogress.css'
 import { getToken } from '@/utils/auth'
 import { isPathMatch } from '@/utils/validate'
 import { isRelogin } from '@/utils/request'
@@ -12,8 +10,6 @@ import {
   isAdminUser,
   isPortalUser
 } from '@/utils/role-route'
-
-NProgress.configure({ showSpinner: false })
 
 const whiteList = ['/','/login', '/register']
 
@@ -51,14 +47,11 @@ const guardPortalAccess = (to, next, roles) => {
 }
 
 router.beforeEach((to, from, next) => {
-  NProgress.start()
-
   if (!getToken()) {
     if (isWhiteList(to.path) || isPublicRoute(to) || to.path === '/') {
       next()
     } else {
       next('/login?redirect=' + encodeURIComponent(to.fullPath))
-      NProgress.done()
     }
     return
   }
@@ -71,7 +64,6 @@ router.beforeEach((to, from, next) => {
     } else {
       next()
     }
-    NProgress.done()
     return
   }
 
@@ -120,6 +112,4 @@ router.beforeEach((to, from, next) => {
   afterGetInfo(store.getters.roles)
 })
 
-router.afterEach(() => {
-  NProgress.done()
-})
+

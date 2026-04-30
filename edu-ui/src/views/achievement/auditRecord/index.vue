@@ -172,7 +172,7 @@ export default {
       this.getList()
     },
     handleExport() {
-      this.$confirm('确认导出当前筛选的审核记录？', '导出确认', {
+      this.$confirm('确认按当前筛选条件导出全部数据？', '导出确认', {
         confirmButtonText: '导出', cancelButtonText: '取消', type: 'info'
       }).then(() => {
         const params = {};
