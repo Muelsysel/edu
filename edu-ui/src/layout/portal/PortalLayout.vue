@@ -84,7 +84,7 @@
             </template>
 
             <template v-else>
-              <el-button type="primary" size="mini" class="login-btn" @click="goLogin">账号登录</el-button>
+              <el-button size="small" round class="login-btn" @click="goLogin">账号登录</el-button>
             </template>
           </div>
         </div>
@@ -387,9 +387,19 @@ export default {
 }
 
 .login-btn {
-  border-color: #8fb7de;
-  background: #edf6ff;
-  color: #245173;
+  border: 2px solid #1e293b;
+  background: #ffffff;
+  color: #1e293b;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 8px 24px;
+  border-radius: 8px;
+  letter-spacing: 0.5px;
+  transition: all 0.25s;
+}
+.login-btn:hover {
+  background: #1e293b;
+  color: #ffffff;
 }
 
 .portal-main {

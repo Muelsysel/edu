@@ -27,7 +27,6 @@
               <div v-if="newsList.length === 0" class="empty-line">暂无新闻动态</div>
               <div v-for="item in newsList" :key="item.newsId" class="news-line" @click.stop="goDetail(item.newsId)">
                 <span class="line-title">{{ item.title }}</span>
-                <span class="new-mark" v-if="isRecent(item.publishTime)">NEW</span>
                 <time>{{ parseTime(item.publishTime, '{m}-{d}') }}</time>
               </div>
             </div>
@@ -116,11 +115,6 @@ export default {
       portalNewsList({ pageNum: 1, pageSize: 5, noticeType: '1' }).then(res => {
         this.noticeList = res.rows || []
       }).catch(() => {})
-    },
-    isRecent(date) {
-      if (!date) return false
-      const time = new Date(date).getTime()
-      return !Number.isNaN(time) && Date.now() - time < 1000 * 60 * 60 * 24 * 14
     },
     goDetail(id) {
       if (id) this.$router.push('/portal/news/' + id)
@@ -298,15 +292,6 @@ $line: #d9e4ef;
   white-space: nowrap;
   text-overflow: ellipsis;
   font-size: 16px;
-}
-
-.new-mark {
-  padding: 1px 5px;
-  border-radius: 2px;
-  background: #ff503d;
-  color: #fff;
-  font-size: 11px;
-  font-weight: 700;
 }
 
 .news-line time {
