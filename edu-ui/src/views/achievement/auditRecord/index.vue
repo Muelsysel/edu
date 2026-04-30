@@ -47,6 +47,9 @@
           <el-button type="warning" icon="el-icon-download" @click="handleExport" style="margin-left:8px">
             导出Excel
           </el-button>
+          <el-button type="success" icon="el-icon-download" @click="handleExportApproved" style="margin-left:8px">
+            导出已通过
+          </el-button>
         </el-form-item>
       </el-form>
     </section>
@@ -185,6 +188,27 @@ export default {
           const link = document.createElement('a');
           link.href = url;
           link.download = '审核档案.xlsx';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          window.URL.revokeObjectURL(url);
+        }).catch(() => { this.$message.error('导出失败'); });
+      }).catch(() => {});
+    },
+    handleExportApproved() {
+      this.$confirm('确认导出当前筛选条件下已通过的数据？', '导出确认', {
+        confirmButtonText: '导出', cancelButtonText: '取消', type: 'info'
+      }).then(() => {
+        const params = {};
+        if (this.queryParams.achievementTitle) params.title = this.queryParams.achievementTitle;
+        if (this.queryParams.auditorName) params.auditorName = this.queryParams.auditorName;
+        if (this.queryParams.auditLevel) params.auditLevel = this.queryParams.auditLevel;
+        params.auditResult = '1';
+        exportAuditRecord(params).then(blob => {
+          const url = window.URL.createObjectURL(new Blob([blob]));
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = '审核通过.xlsx';
           document.body.appendChild(link);
           link.click();
           document.body.removeChild(link);

@@ -142,8 +142,18 @@ public class EduAuditRecordController extends BaseController
 
     @RequiresPermissions("achievement:audit:recordList")
     @PostMapping("/record/exportAudit")
-    public void exportAuditRecord(HttpServletResponse response, EduAchievement eduAchievement)
+    public void exportAuditRecord(HttpServletResponse response, EduAchievement eduAchievement,
+            @RequestParam(required = false) String auditLevel,
+            @RequestParam(required = false) String auditResult,
+            @RequestParam(required = false) String auditorName)
     {
+        if (!SecurityUtils.isAdmin(SecurityUtils.getUserId())) {
+            eduAchievement.getParams().put("auditorId", String.valueOf(SecurityUtils.getUserId()));
+        }
+        eduAchievement.getParams().put("exportStatus", "2,3,4");
+        if (auditLevel != null && !auditLevel.isEmpty()) eduAchievement.getParams().put("auditLevel", auditLevel);
+        if (auditResult != null && !auditResult.isEmpty()) eduAchievement.getParams().put("auditResult", auditResult);
+        if (auditorName != null && !auditorName.isEmpty()) eduAchievement.getParams().put("auditorName", auditorName);
         List<EduAchievement> list = eduAchievementService.selectEduAchievementList(eduAchievement);
         list.forEach(EduAchievement::getScore);
         ExcelUtil<EduAchievement> util = new ExcelUtil<>(EduAchievement.class);

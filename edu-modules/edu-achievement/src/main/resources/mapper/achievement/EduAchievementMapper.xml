@@ -75,6 +75,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="params.auditorName != null and params.auditorName != ''">
                 and ar.auditor_name like concat('%', #{params.auditorName}, '%')
             </if>
+            <if test="params.auditorId != null and params.auditorId != ''">
+                and ar.auditor_id = #{params.auditorId}
+            </if>
+            <if test="params.exportStatus != null and params.exportStatus != ''">
+                and find_in_set(a.status, #{params.exportStatus})
+            </if>
         </where>
         order by a.create_time desc, a.achievement_id desc
     </select>
