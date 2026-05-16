@@ -1,0 +1,77 @@
+@startuml 图3-1 系统微服务架构图
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontColor #000000
+skinparam componentFontColor #000000
+skinparam componentBorderColor #000000
+skinparam nodeBorderColor #000000
+skinparam nodeFontColor #000000
+
+package "用户层" {
+  [Vue 2 前端\n(Element UI)] as Frontend
+}
+
+package "网关层 (8080)" {
+  [Spring Cloud Gateway\n(AuthFilter + CORS + Route)] as Gateway
+}
+
+package "业务服务层" {
+  node "edu-auth\n(9200)" as Auth {
+    [TokenController] as TC
+    [SysLoginService] as SLS
+  }
+  node "edu-system\n(9201)" as System {
+    [用户管理] as UM
+    [角色管理] as RM
+    [菜单管理] as MM
+    [部门管理] as DM
+  }
+  node "edu-achievement\n(9205)" as Achievement {
+    [成果管理\nController] as AC
+    [审核管理\nController] as ADC
+    [门户新闻\nController] as NC
+  }
+  node "edu-file\n(9300)" as File {
+    [文件上传/下载\nController] as FC
+  }
+  node "edu-job\n(9203)" as Job {
+    [Quartz定时任务] as QJ
+  }
+}
+
+package "基础设施层" {
+  database "MySQL 8.0\n(3306)" as MySQL
+  database "Redis 5.0\n(6379)" as Redis
+  cloud "Nacos\n(8848)" as Nacos
+  database "MinIO/FastDFS\n(附件存储)" as MinIO
+}
+
+cloud "edu-monitor\n(9100)\nSpring Boot Admin" as Monitor
+
+Frontend --> Gateway : HTTP /dev-api
+Gateway --> Auth : /auth/**
+Gateway --> System : /system/**
+Gateway --> Achievement : /achievement/**
+Gateway --> File : /file/**
+Gateway --> Job : /schedule/**
+
+Auth --> Redis : 令牌存储/校验
+System --> MySQL : 数据持久化
+Achievement --> MySQL : 数据持久化
+Achievement --> File : Feign调用
+File --> MinIO : 文件存储
+Monitor ..> Auth
+
+Auth --> Nacos : 注册/配置
+System --> Nacos : 注册/配置
+Achievement --> Nacos : 注册/配置
+File --> Nacos : 注册/配置
+Gateway --> Nacos : 注册/配置
+Job --> Nacos : 注册/配置
+
+note right of Gateway
+  启动顺序: edu-auth → edu-gateway
+  → edu-system → edu-achievement
+  → edu-file → edu-job
+end note
+
+@enduml

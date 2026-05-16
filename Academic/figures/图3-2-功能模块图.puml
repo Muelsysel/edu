@@ -1,0 +1,61 @@
+@startuml 图3-2 功能模块图
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontColor #000000
+
+package "高校教学成果管理系统" {
+
+  package "认证与权限模块" as P1 {
+    [用户登录/登出]
+    [令牌刷新]
+    [用户注册]
+    [权限验证]\n(PreAuthorizeAspect)
+    [数据权限]\n(DataScopeAspect)
+  }
+
+  package "系统管理模块" as P2 {
+    [用户管理]
+    [角色管理]
+    [菜单管理]
+    [部门管理]
+    [字典管理]
+    [通知公告]
+    [操作日志]
+  }
+
+  package "成果管理模块" as P3 {
+    [成果新增/编辑/删除]
+    [成果列表查询]
+    [富文本内容编辑]
+    [附件上传管理]
+    [Excel数据导出]
+    [个人状态统计]
+  }
+
+  package "审核流程模块" as P4 {
+    [待审成果查询]
+    [审核通过操作]
+    [审核驳回操作]
+    [审核意见填写]
+    [审核历史追溯]
+    [状态流转控制]
+  }
+
+  package "门户展示模块" as P5 {
+    [新闻动态发布]
+    [通知公告发布]
+    [门户首页展示]
+    [新闻详情浏览]
+    [浏览量统计]\n(无需登录访问)
+  }
+
+  package "文件服务模块" as P6 {
+    [文件上传]
+    [文件下载]
+    [本地存储]
+    [MinIO存储]
+    [FastDFS存储]
+    [防盗链控制]
+  }
+}
+
+@enduml

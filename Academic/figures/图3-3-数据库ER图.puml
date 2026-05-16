@@ -1,0 +1,118 @@
+@startuml 图3-3 数据库E-R图
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontColor #000000
+
+entity "sys_user\n(用户表)" as User {
+  * user_id : bigint <<PK>>
+  --
+  user_name : varchar(30)
+  nick_name : varchar(30)
+  password : varchar(100)
+  phonenumber : varchar(11)
+  email : varchar(50)
+  sex : char(1)
+  dept_id : bigint <<FK>>
+  status : char(1)
+  del_flag : char(1)
+  create_time : datetime
+}
+
+entity "sys_dept\n(部门表)" as Dept {
+  * dept_id : bigint <<PK>>
+  --
+  parent_id : bigint
+  ancestors : varchar(50)
+  dept_name : varchar(30)
+  order_num : int
+  leader : varchar(20)
+  status : char(1)
+}
+
+entity "sys_role\n(角色表)" as Role {
+  * role_id : bigint <<PK>>
+  --
+  role_name : varchar(30)
+  role_key : varchar(100)
+  role_sort : int
+  data_scope : char(1)
+  status : char(1)
+}
+
+entity "sys_menu\n(菜单表)" as Menu {
+  * menu_id : bigint <<PK>>
+  --
+  menu_name : varchar(50)
+  parent_id : bigint
+  perms : varchar(100)
+  menu_type : char(1)
+  path : varchar(200)
+  component : varchar(255)
+  icon : varchar(100)
+  order_num : int
+  status : char(1)
+}
+
+entity "sys_user_role\n(用户角色关联)" as UR {
+  * user_id : bigint <<PK,FK>>
+  * role_id : bigint <<PK,FK>>
+}
+
+entity "sys_role_menu\n(角色菜单关联)" as RM {
+  * role_id : bigint <<PK,FK>>
+  * menu_id : bigint <<PK,FK>>
+}
+
+entity "edu_achievement\n(教学成果表)" as Achievement {
+  * achievement_id : bigint <<PK>>
+  --
+  title : varchar(200)
+  content : text
+  file_url : varchar(1500)
+  teacher_id : bigint <<FK>>
+  college_id : bigint <<FK>>
+  status : char(1)
+  category : char(1)
+  level : varchar(30)
+  create_time : datetime
+  update_time : datetime
+  del_flag : char(1)
+}
+
+entity "edu_audit_record\n(审核记录表)" as AuditRecord {
+  * record_id : bigint <<PK>>
+  --
+  achievement_id : bigint <<FK>>
+  audit_level : char(1)
+  audit_result : char(1)
+  audit_opinion : varchar(500)
+  auditor_id : bigint <<FK>>
+  auditor_name : varchar(64)
+  create_time : datetime
+}
+
+entity "edu_news\n(门户新闻表)" as News {
+  * news_id : bigint <<PK>>
+  --
+  title : varchar(120)
+  summary : varchar(255)
+  cover_image : varchar(500)
+  content : longtext
+  publish_time : datetime
+  view_count : bigint
+  publish_portal : char(1)
+  sort_weight : int
+  notice_type : char(1)
+}
+
+User }o--|| Dept : 所属
+User ||--o{ Achievement : 申报
+Dept ||--o{ Achievement : 所属学院
+Achievement ||--o{ AuditRecord : 审核记录
+Achievement }o--|| News : 可公示为
+
+User ||--o{ UR : 
+Role ||--o{ UR : 
+Role ||--o{ RM : 
+Menu ||--o{ RM : 
+
+@enduml
