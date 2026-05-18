@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="drawio" version="26.0.0">
+  <diagram name="系统用例图">
+    <mxGraphModel dx="1000" dy="650" grid="1" gridSize="10" guides="1">
+      <root><mxCell id="0"/><mxCell id="1" parent="0"/>
+        <mxCell id="a1" value="教师" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1"><mxGeometry x="40" y="100" width="30" height="60" as="geometry"/></mxCell>
+        <mxCell id="a2" value="审核员" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1"><mxGeometry x="40" y="260" width="30" height="60" as="geometry"/></mxCell>
+        <mxCell id="a3" value="管理员" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1"><mxGeometry x="40" y="440" width="30" height="60" as="geometry"/></mxCell>
+        <mxCell id="sys" value="高校教学成果管理系统" style="swimlane;startSize=30;fillColor=#f5f5f5;strokeColor=#666666;fontStyle=1;fontSize=14;" vertex="1" parent="1"><mxGeometry x="160" y="30" width="640" height="560" as="geometry"/></mxCell>
+        <mxCell id="u1" value="创建/编辑成果" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="sys"><mxGeometry x="20" y="40" width="130" height="45" as="geometry"/></mxCell>
+        <mxCell id="u2" value="提交成果审核" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="sys"><mxGeometry x="190" y="40" width="130" height="45" as="geometry"/></mxCell>
+        <mxCell id="u3" value="查看我的成果" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="sys"><mxGeometry x="20" y="120" width="130" height="45" as="geometry"/></mxCell>
+        <mxCell id="u4" value="撤回/重新提交" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="sys"><mxGeometry x="190" y="120" width="130" height="45" as="geometry"/></mxCell>
+        <mxCell id="u5" value="上传证明材料" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="sys"><mxGeometry x="20" y="200" width="130" height="45" as="geometry"/></mxCell>
+        <mxCell id="u6" value="查看待审列表" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" vertex="1" parent="sys"><mxGeometry x="20" y="300" width="130" height="45" as="geometry"/></mxCell>
+        <mxCell id="u7" value="审核通过" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" vertex="1" parent="sys"><mxGeometry x="190" y="300" width="130" height="45" as="geometry"/></mxCell>
+        <mxCell id="u8" value="审核驳回" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" vertex="1" parent="sys"><mxGeometry x="190" y="380" width="130" height="45" as="geometry"/></mxCell>
+        <mxCell id="u9" value="查看审核历史" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" vertex="1" parent="sys"><mxGeometry x="20" y="380" width="130" height="45" as="geometry"/></mxCell>
+        <mxCell id="u10" value="用户/角色/菜单管理" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;" vertex="1" parent="sys"><mxGeometry x="380" y="40" width="150" height="45" as="geometry"/></mxCell>
+        <mxCell id="u11" value="数据统计与导出" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;" vertex="1" parent="sys"><mxGeometry x="380" y="130" width="150" height="45" as="geometry"/></mxCell>
+        <mxCell id="u12" value="新闻/公告发布" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;" vertex="1" parent="sys"><mxGeometry x="380" y="220" width="150" height="45" as="geometry"/></mxCell>
+        <mxCell id="u13" value="操作日志查看" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;" vertex="1" parent="sys"><mxGeometry x="380" y="310" width="150" height="45" as="geometry"/></mxCell>
+        <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="a1" target="u1"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="a1" target="u3"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e3" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="a2" target="u6"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e4" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="a3" target="u10"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e5" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;" edge="1" parent="1" source="u1" target="u2"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e6" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;" edge="1" parent="1" source="u7" target="u6"><mxGeometry relative="1" as="geometry"/></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

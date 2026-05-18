@@ -40,3 +40,7 @@ $RedisConfig
 $NacosStartup
 $MinioExe
 $MinioDataDir
+
+
+/academic-paper-composer 1：表只需要数据库设计那里出现就可以了
+2：请确保引用的论文是真实存在的，引用的要是真实内容

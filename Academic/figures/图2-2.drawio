@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="drawio" version="26.0.0">
+  <diagram name="状态流转图">
+    <mxGraphModel dx="1000" dy="700" grid="1" gridSize="10" guides="1">
+      <root><mxCell id="0"/><mxCell id="1" parent="0"/>
+        <mxCell id="s" value="" style="ellipse;whiteSpace=wrap;html=1;fillColor=#555;strokeColor=#555;" vertex="1" parent="1"><mxGeometry x="460" y="10" width="30" height="30" as="geometry"/></mxCell>
+        <mxCell id="draft" value="草稿 (状态码 0)&#xa;允许自由编辑 | 可提交" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1"><mxGeometry x="400" y="90" width="170" height="70" as="geometry"/></mxCell>
+        <mxCell id="rev" value="审核中 (状态码 2)&#xa;禁止编辑 | 允许撤回" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" vertex="1" parent="1"><mxGeometry x="400" y="240" width="170" height="70" as="geometry"/></mxCell>
+        <mxCell id="appr" value="已通过 (状态码 3)&#xa;终态 · 禁止修改&#xa;自动推送门户公示" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" vertex="1" parent="1"><mxGeometry x="200" y="410" width="170" height="80" as="geometry"/></mxCell>
+        <mxCell id="rej" value="已驳回 (状态码 4)&#xa;允许查看审核意见&#xa;允许修改后重新提交" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=11;" vertex="1" parent="1"><mxGeometry x="600" y="410" width="180" height="80" as="geometry"/></mxCell>
+        <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="s" target="draft"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e2" value="教师提交" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;fontSize=10;" edge="1" parent="1" source="draft" target="rev"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e3" value="审核员通过" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;fontSize=10;" edge="1" parent="1" source="rev" target="appr"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e4" value="审核员驳回" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;fontSize=10;" edge="1" parent="1" source="rev" target="rej"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="e5" value="教师撤回" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;fontSize=10;strokeColor=#999;" edge="1" parent="1" source="rev" target="draft"><mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="350" y="275"/><mxPoint x="350" y="125"/></Array></mxGeometry></mxCell>
+        <mxCell id="e6" value="修改后重新提交" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;fontSize=10;" edge="1" parent="1" source="rej" target="rev"><mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="690" y="370"/><mxPoint x="690" y="275"/></Array></mxGeometry></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
