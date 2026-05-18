@@ -40,4 +40,3 @@ $RedisConfig
 $NacosStartup
 $MinioExe
 $MinioDataDir
-111
