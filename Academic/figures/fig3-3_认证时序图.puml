@@ -1,0 +1,33 @@
+@startuml
+!theme plain
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName "Microsoft YaHei"
+skinparam defaultFontSize 12
+
+actor "用户" as U
+participant "前端\n(Vue 2)" as FE
+participant "网关\n(Spring Cloud Gateway)" as GW
+participant "认证服务\n(edu-auth)" as Auth
+database "Redis" as Redis
+database "MySQL" as DB
+
+U -> FE : 输入用户名和密码
+FE -> GW : POST /auth/login\n{username, password}
+GW -> Auth : 转发登录请求
+Auth -> DB : 查询用户信息\nSELECT * FROM sys_user\nWHERE user_name = ?
+DB --> Auth : 返回用户记录
+Auth -> Auth : 验证密码\n(BCrypt匹配)
+Auth -> Auth : 生成UUID\n作为user_key
+Auth -> Redis : 存储LoginUser\nlogin_tokens:{user_key}\nTTL=720分钟
+Auth --> GW : 返回JWT令牌\n{user_key, user_id, username}
+GW --> FE : 返回access_token
+FE -> FE : 存储令牌到localStorage
+U <-- FE : 登录成功，跳转首页
+
+note right of Auth
+  双令牌机制：
+  JWT仅承载身份标识
+  权限数据存于Redis
+end note
+
+@enduml

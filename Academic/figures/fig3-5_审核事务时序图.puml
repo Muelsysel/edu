@@ -1,0 +1,48 @@
+@startuml
+!theme plain
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName "Microsoft YaHei"
+skinparam defaultFontSize 12
+
+actor "审核员" as A
+participant "EduAuditRecord\nController" as C
+participant "EduAuditRecord\nServiceImpl" as S
+database "MySQL" as DB
+
+A -> C : POST /audit/school/handle\n{achievementId, auditResult,\nauditOpinion}
+
+C -> S : handleAudit(achievementId,\nauditResult, auditOpinion)
+
+S -> DB : BEGIN TRANSACTION\n(@Transactional)
+
+S -> DB : SELECT * FROM edu_achievement\nWHERE achievement_id = ?\nFOR UPDATE (行锁)
+
+group 事务内操作
+  S -> S : 校验成果状态\n必须为 status="2"(审核中)
+
+  alt status != "2"
+    S --> C : 错误：成果状态异常
+  else status == "2"
+    S -> DB : UPDATE edu_achievement\nSET status = ?\nWHERE achievement_id = ?
+
+    alt auditResult == "1" (通过)
+      note right: status → "3" (已通过)
+    else auditResult == "2" (驳回)
+      note right: status → "4" (已驳回)
+    end
+
+    S -> DB : INSERT INTO edu_audit_record\n(auditor_id, auditor_name,\naudit_level, audit_result,\naudit_opinion, create_time)\nVALUES (?, ?, ?, ?, ?, NOW())
+  end
+end
+
+DB --> S : 操作完成
+S -> DB : COMMIT
+
+S --> C : 返回审核结果
+C --> A : 200 审核完成
+
+note over S, DB
+  Transactional确保状态更新和记录插入在同一事务中原子执行，任一失败则全部回滚
+end note
+
+@enduml

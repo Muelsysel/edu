@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="drawio" version="30.0.1">
+  <diagram name="Page-1">
+    <mxGraphModel>
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- User Layer -->
+        <mxCell id="user_layer" value="用户层" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="360" y="70" width="280" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="teacher" value="教师" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="380" y="80" width="80" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="auditor" value="审核员" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="470" y="80" width="70" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="admin" value="管理员" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="550" y="80" width="70" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- Gateway -->
+        <mxCell id="gateway" value="API 网关 (Spring Cloud Gateway)&#xa;AuthFilter + CORS" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="360" y="150" width="280" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- Arrow: user_layer -> gateway -->
+        <mxCell id="e_u2g" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="user_layer" target="gateway">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Business Service Layer Container -->
+        <mxCell id="svc_layer" value="业务服务层" style="swimlane;startSize=25;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="40" y="230" width="920" height="280" as="geometry" />
+        </mxCell>
+
+        <!-- Module 1: Auth -->
+        <mxCell id="mod_auth" value="认证与权限模块&#xa;(edu-auth :9200)&#xa;登录/登出/令牌刷新" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=10;verticalAlign=top;" vertex="1" parent="svc_layer">
+          <mxGeometry x="30" y="35" width="175" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Module 2: System -->
+        <mxCell id="mod_sys" value="系统管理模块&#xa;(edu-system :9201)&#xa;用户/角色/菜单/部门管理" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;verticalAlign=top;" vertex="1" parent="svc_layer">
+          <mxGeometry x="230" y="35" width="175" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Module 3: Achievement (core) -->
+        <mxCell id="mod_achv" value="成果管理模块&#xa;(edu-achievement :9205)&#xa;成果CRUD/状态控制/导出" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;verticalAlign=top;strokeWidth=2;" vertex="1" parent="svc_layer">
+          <mxGeometry x="430" y="35" width="175" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Module 4: Audit -->
+        <mxCell id="mod_audit" value="审核流程模块&#xa;(edu-achievement :9205)&#xa;审核处理/记录查询" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;verticalAlign=top;" vertex="1" parent="svc_layer">
+          <mxGeometry x="630" y="35" width="170" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Module 5: Portal -->
+        <mxCell id="mod_portal" value="门户展示模块&#xa;(PortalNewsController)&#xa;新闻发布/门户公示" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;verticalAlign=top;" vertex="1" parent="svc_layer">
+          <mxGeometry x="120" y="150" width="175" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Module 6: File -->
+        <mxCell id="mod_file" value="文件服务模块&#xa;(edu-file :9300)&#xa;上传/下载/多后端存储" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;verticalAlign=top;" vertex="1" parent="svc_layer">
+          <mxGeometry x="320" y="150" width="175" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Job service -->
+        <mxCell id="mod_job" value="定时任务服务&#xa;(edu-job :9203)&#xa;Quartz调度" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=10;verticalAlign=top;" vertex="1" parent="svc_layer">
+          <mxGeometry x="520" y="150" width="160" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Data Layer -->
+        <mxCell id="data_layer" value="数据层" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="140" y="540" width="720" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="db_mysql" value="MySQL" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="170" y="550" width="100" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="db_redis" value="Redis" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="300" y="550" width="100" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="db_nacos" value="Nacos" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="430" y="550" width="100" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="db_file" value="文件存储&#xa;(Local/MinIO/FastDFS)" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=9;" vertex="1" parent="1">
+          <mxGeometry x="580" y="545" width="100" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- Edges: gateway -> modules -->
+        <mxCell id="e_g2auth" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="gateway" target="mod_auth">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_g2sys" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="gateway" target="mod_sys">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_g2achv" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="gateway" target="mod_achv">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Internal edges -->
+        <mxCell id="e_auth2sys" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;dashed=1;" edge="1" parent="1" source="mod_auth" target="mod_sys">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_sys2portal" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="mod_sys" target="mod_portal">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Feign calls between services -->
+        <mxCell id="e_achv2file" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;dashed=1;" edge="1" parent="1" source="mod_achv" target="mod_file">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_achv2audit" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="mod_achv" target="mod_audit">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_audit2job" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;entryX=0.25;entryY=0;dashed=1;" edge="1" parent="1" source="mod_audit" target="mod_job">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Data layer connections -->
+        <mxCell id="e_mod2mysql" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="svc_layer" target="db_mysql">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_mod2redis" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="svc_layer" target="db_redis">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_mod2nacos" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="svc_layer" target="db_nacos">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_file2storage" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="mod_file" target="db_file">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Legend -->
+        <mxCell id="legend" value="图例:" style="text;html=1;fontSize=10;fontColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="60" y="630" width="50" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="leg_feign" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;" edge="1" parent="1" source="leg_feign_src" target="leg_feign_dst">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="leg_feign_src" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="120" y="635" width="10" height="10" as="geometry" />
+        </mxCell>
+        <mxCell id="leg_feign_dst" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="200" y="635" width="10" height="10" as="geometry" />
+        </mxCell>
+        <mxCell id="leg_feign_label" value="Feign内部调用" style="text;html=1;fontSize=9;fontColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="220" y="632" width="100" height="15" as="geometry" />
+        </mxCell>
+        <mxCell id="leg_rpc" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="leg_rpc_src" target="leg_rpc_dst">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="leg_rpc_src" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="340" y="635" width="10" height="10" as="geometry" />
+        </mxCell>
+        <mxCell id="leg_rpc_dst" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="400" y="635" width="10" height="10" as="geometry" />
+        </mxCell>
+        <mxCell id="leg_rpc_label" value="网关路由调用" style="text;html=1;fontSize=9;fontColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="410" y="632" width="100" height="15" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

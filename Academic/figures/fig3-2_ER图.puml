@@ -1,0 +1,87 @@
+@startuml
+!theme plain
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName "Microsoft YaHei"
+skinparam defaultFontSize 12
+
+entity "教师 (sys_user)" as user {
+  * user_id : bigint <<PK>>
+  --
+  user_name : varchar(30)
+  nick_name : varchar(30)
+  password : varchar(100)
+  dept_id : bigint <<FK>>
+  status : char(1)
+}
+
+entity "学院 (sys_dept)" as dept {
+  * dept_id : bigint <<PK>>
+  --
+  dept_name : varchar(50)
+  parent_id : bigint
+  ancestors : varchar(500)
+}
+
+entity "教学成果 (edu_achievement)" as achv {
+  * achievement_id : bigint <<PK>>
+  --
+  content : text
+  file_url : varchar(1500)
+  teacher_id : bigint <<FK>>
+  college_id : bigint <<FK>>
+  status : char(1)
+  category : char(1)
+  level : varchar(30)
+  del_flag : char(1)
+}
+
+entity "审核记录 (edu_audit_record)" as audit {
+  * record_id : bigint <<PK>>
+  --
+  achievement_id : bigint <<FK>>
+  audit_level : char(1)
+  audit_result : char(1)
+  audit_opinion : varchar(500)
+  auditor_id : bigint
+  auditor_name : varchar(64)
+  create_time : datetime
+}
+
+entity "门户新闻 (edu_news)" as news {
+  * news_id : bigint <<PK>>
+  --
+  summary : varchar(255)
+  cover_image : varchar(500)
+  content : longtext
+  publish_time : datetime
+  view_count : bigint
+  publish_portal : char(1)
+  notice_type : char(1)
+}
+
+entity "角色 (sys_role)" as role {
+  * role_id : bigint <<PK>>
+  --
+  role_name : varchar(30)
+  role_key : varchar(100)
+  data_scope : char(1)
+}
+
+entity "菜单 (sys_menu)" as menu {
+  * menu_id : bigint <<PK>>
+  --
+  menu_name : varchar(50)
+  parent_id : bigint
+  perms : varchar(100)
+  menu_type : char(1)
+  path : varchar(200)
+}
+
+dept ||--o{ user : "包含"
+user ||--o{ achv : "申报"
+dept ||--o{ achv : "归属"
+achv ||--o{ audit : "产生"
+user }o--|| role : "拥有"
+role }o--o{ menu : "授权"
+
+@enduml

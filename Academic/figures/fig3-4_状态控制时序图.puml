@@ -1,0 +1,43 @@
+@startuml
+!theme plain
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName "Microsoft YaHei"
+skinparam defaultFontSize 12
+
+actor "教师" as T
+participant "EduAchievement\nController" as C
+participant "EduAchievement\nServiceImpl" as S
+database "MySQL" as DB
+
+T -> C : PUT /teacherUpdateAchievement\n{achievementId, title, content...}
+C -> C : 获取当前用户ID\nSecurityUtils.getUserId()
+
+C -> S : selectById(achievementId)
+S -> DB : SELECT * FROM edu_achievement\nWHERE achievement_id = ?
+DB --> S : 返回旧数据(oldData)
+
+S -> S : 校验所有权\noldData.teacherId == userId?
+
+alt oldData.teacherId != userId
+  S --> C : 错误："无权修改他人成果"
+  C --> T : 403 无权操作
+else 属于本人
+  S -> S : 检查当前状态\noldData.status
+
+  alt status == "2" (审核中)
+    S --> C : 错误："审核中不可修改"
+  else status == "3" (已通过)
+    S --> C : 错误："已通过不可修改"
+  else status == "0" (草稿)
+    S -> S : 允许修改\n可保持草稿或提交为审核中
+  else status == "4" (已驳回)
+    S -> S : 允许修改\n保持驳回状态
+  end
+
+  S -> DB : UPDATE edu_achievement\nSET title=?, content=?...\n(MyBatis动态SQL，仅更新非空字段)
+  DB --> S : 更新成功
+  S --> C : 返回成功
+  C --> T : 200 修改成功
+end
+
+@enduml

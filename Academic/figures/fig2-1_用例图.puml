@@ -1,0 +1,43 @@
+@startuml
+!theme plain
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName "Microsoft YaHei"
+skinparam defaultFontSize 12
+
+left to right direction
+
+actor "教师" as teacher
+actor "审核员" as auditor
+actor "超级管理员" as admin
+
+rectangle "教学成果管理系统" {
+  usecase "成果申报与编辑" as UC1
+  usecase "查看个人成果列表" as UC2
+  usecase "提交审核/撤回" as UC3
+  usecase "成果审核处理" as UC4
+  usecase "查看审核记录" as UC5
+  usecase "新闻发布与管理" as UC6
+  usecase "查看统计数据" as UC7
+  usecase "用户与权限管理" as UC8
+  usecase "系统基础数据管理" as UC9
+  usecase "Excel数据导出" as UC10
+}
+
+teacher --> UC1
+teacher --> UC2
+teacher --> UC3
+auditor --> UC4
+auditor --> UC5
+auditor --> UC7
+admin --> UC4
+admin --> UC5
+admin --> UC6
+admin --> UC7
+admin --> UC8
+admin --> UC9
+admin --> UC10
+admin --> UC1
+admin --> UC2
+admin --> UC3
+
+@enduml

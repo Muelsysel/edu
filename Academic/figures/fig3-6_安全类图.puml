@@ -1,0 +1,93 @@
+@startuml
+!theme plain
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName "Microsoft YaHei"
+skinparam defaultFontSize 12
+
+package "安全上下文" {
+  class SecurityContextHolder {
+    - {static} inheritableThreadLocal : TransmittableThreadLocal
+    + {static} setLoginUser(LoginUser)
+    + {static} getLoginUser() : LoginUser
+    + {static} getUserId() : Long
+    + {static} getUsername() : String
+  }
+
+  class LoginUser {
+    - userId : Long
+    - username : String
+    - userKey : String
+    - permissions : Set<String>
+    - roles : Set<String>
+    - user : SysUser
+  }
+}
+
+package "切面层" {
+  class PreAuthorizeAspect {
+    - authLogic : AuthLogic
+    + doBefore(JoinPoint) : void
+    --检查@RequiresPermissions--
+  }
+
+  class DataScopeAspect {
+    + doBefore(JoinPoint, DataScope) : void
+    --注入params.dataScope--
+  }
+
+  class InnerAuthAspect {
+    + doBefore(JoinPoint, InnerAuth) : void
+    --校验from-source=inner--
+  }
+
+  class LogAspect {
+    + doAfterReturning(JoinPoint, Log) : void
+    --记录操作日志--
+  }
+}
+
+package "拦截器层" {
+  class HeaderInterceptor {
+    + preHandle(request, response) : boolean
+    --提取user_id/username/user_key--
+  }
+
+  class FeignRequestInterceptor {
+    + apply(RequestTemplate) : void
+    --注入Authorization/用户Header--
+  }
+}
+
+package "注解" {
+  annotation RequiresPermissions {
+    + value : String[]
+    + logical : Logical
+  }
+  annotation RequiresRoles {
+    + value : String[]
+  }
+  annotation RequiresLogin
+  annotation DataScope
+  annotation InnerAuth
+  annotation Log
+}
+
+SecurityContextHolder *-- LoginUser
+PreAuthorizeAspect ..> SecurityContextHolder : 读取权限
+PreAuthorizeAspect ..> RequiresPermissions : 拦截
+DataScopeAspect ..> SecurityContextHolder : 读取角色数据范围
+DataScopeAspect ..> DataScope : 拦截
+InnerAuthAspect ..> InnerAuth : 拦截
+LogAspect ..> Log : 拦截
+HeaderInterceptor ..> SecurityContextHolder : 设置上下文
+FeignRequestInterceptor ..> SecurityContextHolder : 传递身份
+
+note right of DataScopeAspect
+  五级数据范围：
+  1=全部 2=自定义
+  3=本部门 4=本部门及以下
+  5=仅本人
+  userId==1 绕过所有过滤
+end note
+
+@enduml
